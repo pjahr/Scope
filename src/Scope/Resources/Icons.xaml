@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <PathGeometry
+    x:Key="FileIcon"
+    x:Shared="True"
+    Figures="M16.399994,0.20001221L25.199999,8.7999878 16.399994,8.7999878z M0,0L13.89999,0 13.89999,11.200012 25.100023,11.200012 25.100023,32 0,32z"
+    />
+
+  <PathGeometry
+    x:Key="DirectoryIcon"
+    x:Shared="True"
+    Figures="M0,0L13.973999,0 15.970001,4.7749913 32,4.7749913 31.940002,24.825 0,24.825z"
+    />
+
+  <PathGeometry
+    x:Key="ChevronIcon"
+    x:Shared="True"
+    Figures="M0,0L8.7030133,0.025009155 22.673001,16.374008 9.4209708,32 0.082946778,32 0,31.917007 13.167008,16.377014z"
+    />
+
+
+</ResourceDictionary>

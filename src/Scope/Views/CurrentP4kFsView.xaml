@@ -1,0 +1,27 @@
+﻿<UserControl
+  x:Class="Scope.Views.CurrentP4kFsView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:vm="clr-namespace:Scope.ViewModels"
+  xmlns:views="clr-namespace:Scope.Views">
+
+  <UserControl.Resources>
+
+    <DataTemplate
+      DataType="{x:Type vm:P4kFileSystemViewModel}">
+
+      <views:FileSystemTreeView/>
+
+    </DataTemplate>
+
+  </UserControl.Resources>
+
+  <Grid>
+
+    <ContentControl
+      Content="{Binding FileSystem}"
+      Focusable="False"/>
+
+  </Grid>
+
+</UserControl>

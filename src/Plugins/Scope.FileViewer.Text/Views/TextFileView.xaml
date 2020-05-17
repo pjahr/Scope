@@ -1,0 +1,12 @@
+﻿<UserControl
+  x:Class="Scope.FileViewer.Text.Views.TextFileView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+  
+  <Grid>
+    <FlowDocumentScrollViewer Document="{Binding Document}"
+                              FontSize="10"
+                              FontFamily="Consolas"/>
+  </Grid>
+
+</UserControl>

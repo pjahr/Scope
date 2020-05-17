@@ -1,0 +1,34 @@
+﻿<Application x:Class="Scope.App" x:ClassModifier="internal"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Application.Resources>
+
+    <ResourceDictionary>
+
+      <ResourceDictionary.MergedDictionaries>
+
+        <ResourceDictionary Source="Resources\Icons.xaml" />
+        <ResourceDictionary Source="Resources\Styles.xaml" />
+        <ResourceDictionary Source="Resources\DataTemplates.xaml" />
+
+      </ResourceDictionary.MergedDictionaries>
+
+      <Style x:Key="{x:Static SystemParameters.FocusVisualStyleKey}">
+        <Setter Property="Control.Template">
+          <Setter.Value>
+            <ControlTemplate>
+              <Rectangle StrokeThickness="1"  
+              Stroke="Red"  
+              StrokeDashArray="1 2"  
+              SnapsToDevicePixels="true"/>
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>
+      </Style>
+
+    </ResourceDictionary>
+
+  </Application.Resources>
+
+</Application>
