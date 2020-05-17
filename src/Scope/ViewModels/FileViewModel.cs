@@ -1,4 +1,7 @@
 ﻿using Scope.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Scope.ViewModels
 {
@@ -10,5 +13,23 @@ namespace Scope.ViewModels
     {
       _file = file;
     }
+
+    public IFile File => _file;
+
+    public override bool HasDummyChild => false;
+
+    protected override void LoadChildren()
+    {
+    }
+
+    protected override void ResetChildren()
+    {
+    }
+
+    public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
+    {
+      throw new NotImplementedException();
+    }
+
   }
 }

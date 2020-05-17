@@ -12,7 +12,9 @@ namespace Scope.ViewModels
     private readonly ICurrentItem _currentItem;
     private readonly ISelectedItems _selectedItems;
 
-    public P4kFileSystemViewModel(IFileSystem fileSystem, ICurrentItem currentItem, ISelectedItems selectedItems)
+    public P4kFileSystemViewModel(IFileSystem fileSystem,
+                                  ICurrentItem currentItem,
+                                  ISelectedItems selectedItems)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;
@@ -20,6 +22,7 @@ namespace Scope.ViewModels
 
       RootItems = new ObservableCollection<object>();
 
+      SetCurrentItemCommand = new RelayCommand<object>(SetCurrentItem);
       SetCurrentFileToNothingCommand = new RelayCommand(_currentItem.Clear);
       ToggleSelectionOfCurrentItemCommand = new RelayCommand(ToggleSelectionOfCurrentItem);
 
@@ -35,6 +38,20 @@ namespace Scope.ViewModels
 
       CreateContainedDirectories();
       CreateContainedFiles();
+    }
+
+    private void SetCurrentItem(object item)
+    {
+      if(item is FileViewModel file)
+      {
+        _currentItem.ChangeTo(file.File);
+        return;
+      }
+
+      if (item is DirectoryViewModel directory)
+      {
+        _currentItem.ChangeTo(directory.Directory);
+      }
     }
 
     private void ToggleSelectionOfCurrentItem()
@@ -67,6 +84,7 @@ namespace Scope.ViewModels
     }
 
     public ObservableCollection<object> RootItems { get; private set; }
+    public ICommand SetCurrentItemCommand { get; }
     public ICommand SetCurrentFileToNothingCommand { get; }
     public ICommand ToggleSelectionOfCurrentItemCommand { get; }
 

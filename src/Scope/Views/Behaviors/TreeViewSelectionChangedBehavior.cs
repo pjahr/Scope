@@ -45,10 +45,11 @@ namespace Scope.Views.Behaviors
     /// </summary>
     private static void OnSelectionChangedCommandChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-      TreeView uiElement = d as TreeView; // Remove the handler if it exist to avoid memory leaks
+      TreeView uiElement = d as TreeView; 
 
       if (uiElement != null)
       {
+        // remove the handler if it exist to avoid memory leaks
         uiElement.SelectedItemChanged -= Selection_Changed;
 
         var command = e.NewValue as ICommand;

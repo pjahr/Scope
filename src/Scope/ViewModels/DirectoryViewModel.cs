@@ -14,6 +14,8 @@ namespace Scope.ViewModels
       _directory = directory;
     }
 
+    public IDirectory Directory => _directory;
+
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
       Children.Clear();

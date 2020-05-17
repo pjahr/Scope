@@ -61,7 +61,8 @@
   </UserControl.Resources>
 
   <TreeView ItemsSource="{Binding RootItems}"
-            behaviors:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding SelectedFolderChangedCommand}"
+            behaviors:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding SetCurrentItemCommand}"
+            
             Style="{StaticResource TreeViewStyle}">
 
     <TreeView.Resources>
