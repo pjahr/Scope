@@ -5,14 +5,20 @@
 
   <DataTemplate
     DataType="{x:Type l:DdsFileViewer}">
-    
-    <ScrollViewer>
 
-      <ContentControl
-        Content="{Binding Image}"/>
-      
-    </ScrollViewer>
-    
+    <Grid>
+
+      <TextBlock Text="{Binding ErrorMessage}" />
+
+      <ScrollViewer>
+
+        <ContentControl
+          Content="{Binding Image}"/>
+
+      </ScrollViewer>
+
+    </Grid>
+
   </DataTemplate>
 
 </ResourceDictionary>

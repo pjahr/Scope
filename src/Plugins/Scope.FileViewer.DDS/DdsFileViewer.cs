@@ -1,44 +1,42 @@
 ﻿using Scope.Interfaces;
-using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System;
 using Pfim;
 using System.Windows.Media;
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 
 namespace Scope.FileViewer.DDS
 {
   public class DdsFileViewer : IFileViewer
   {
-    private System.Windows.Controls.Image _image;
     GCHandle _gcHandle;
 
     public DdsFileViewer(IFile file)
     {
-      using (var s = file.Read())
-      using (var image = Pfim.Pfim.FromStream(s))
+      try
       {
-        _image = CreateImage(image);
+        using (var s = file.Read())
+        using (var image = Pfim.Pfim.FromStream(s))
+        {
+          Image = CreateImage(image);
+        }
       }
-
+      catch (Exception e)
+      {
+        ErrorMessage = $"There was an error opening {file.Name}.\r\n\r\n{e.Message}\r\n\r\n{e.StackTrace}";
+      }
     }
 
     public string Header => "Direct Draw Surface (DDS)";
-    public System.Windows.Controls.Image Image => _image;
+    public string ErrorMessage { get; }
+    public System.Windows.Controls.Image Image { get; }
 
     public void Dispose()
     {
+      if (_gcHandle==null||!_gcHandle.IsAllocated)
+      {
+        return;
+      }
       _gcHandle.Free();
     }
 
@@ -50,31 +48,31 @@ namespace Scope.FileViewer.DDS
           PixelFormat(image), null, addr, image.DataLen, image.Stride);
 
       _gcHandle = pinnedArray;
+
       return new System.Windows.Controls.Image
       {
         Source = bsource,
         Width = image.Width,
         Height = image.Height,
         MaxHeight = image.Height,
-        MaxWidth = image.Width,
-        Margin = new Thickness(4)
+        MaxWidth = image.Width
       };
     }
 
-    private static System.Windows.Media.PixelFormat PixelFormat(IImage image)
+    private static PixelFormat PixelFormat(IImage image)
     {
       switch (image.Format)
       {
-        case Pfim.ImageFormat.Rgb24:
+        case ImageFormat.Rgb24:
           return PixelFormats.Bgr24;
-        case Pfim.ImageFormat.Rgba32:
+        case ImageFormat.Rgba32:
           return PixelFormats.Bgr32;
-        case Pfim.ImageFormat.Rgb8:
+        case ImageFormat.Rgb8:
           return PixelFormats.Gray8;
-        case Pfim.ImageFormat.R5g5b5a1:
-        case Pfim.ImageFormat.R5g5b5:
+        case ImageFormat.R5g5b5a1:
+        case ImageFormat.R5g5b5:
           return PixelFormats.Bgr555;
-        case Pfim.ImageFormat.R5g6b5:
+        case ImageFormat.R5g6b5:
           return PixelFormats.Bgr565;
         default:
           throw new Exception($"Unable to convert {image.Format} to WPF PixelFormat");
