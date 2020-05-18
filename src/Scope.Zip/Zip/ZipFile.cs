@@ -3416,7 +3416,7 @@ namespace Scope.Zip.Zip
             throw new ArgumentException("Negative position is invalid");
           }
 
-          if (newPos >= end_)
+          if (newPos > end_)
           {
             throw new InvalidOperationException("Cannot seek past end");
           }
