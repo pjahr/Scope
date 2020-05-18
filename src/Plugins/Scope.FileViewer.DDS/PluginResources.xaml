@@ -1,0 +1,18 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:l="clr-namespace:Scope.FileViewer.DDS">
+
+  <DataTemplate
+    DataType="{x:Type l:DdsFileViewer}">
+    
+    <ScrollViewer>
+
+      <ContentControl
+        Content="{Binding Image}"/>
+      
+    </ScrollViewer>
+    
+  </DataTemplate>
+
+</ResourceDictionary>
