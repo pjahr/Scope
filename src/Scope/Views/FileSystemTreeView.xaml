@@ -5,7 +5,8 @@
              xmlns:vm="clr-namespace:Scope.ViewModels"
              xmlns:behaviors="clr-namespace:Scope.Views.Behaviors"
              xmlns:views="clr-namespace:Scope.Views"
-             Focusable="False">
+             Focusable="False"
+             >
 
   <UserControl.Resources>
 
@@ -74,6 +75,7 @@
 
     <xaml:Interaction.Behaviors>
       <behaviors:BringVirtualTreeViewItemIntoViewBehavior SelectedItem="{Binding SelectPathItem}" />
+      <behaviors:CommandOnKey Key="Space" Command="{Binding ToggleSelectionOfCurrentItemCommand}"/>
     </xaml:Interaction.Behaviors>
 
     <TreeView.ItemContainerStyle>
