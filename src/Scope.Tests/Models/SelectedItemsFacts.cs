@@ -9,13 +9,13 @@ namespace Scope.Tests.Models
 {
   public class SelectedItemsFacts
   {
-    private Action _changedWasRaised = Mock.Of<Action>();
+    private readonly Action _changedWasRaised = Mock.Of<Action>();
     private ISelectedItems _sut;
 
     [Fact]
     public void Files_can_be_selected()
     {
-      _sut = new SelectedItems();
+      WhenItIsCreated();
 
       var f1 = Mock.Of<IFile>();
       var f2 = Mock.Of<IFile>();
@@ -50,14 +50,14 @@ namespace Scope.Tests.Models
 
       _sut.Remove(f2);
 
-      ThenTheSelectedFilesAre(f1);
-      ThenChangedWasRaised(2);
+      ThenTheSelectedFilesAre();
+      ThenChangedWasRaised(4);
     }
 
     [Fact]
     public void Directories_can_be_selected()
     {
-      _sut = new SelectedItems();
+      WhenItIsCreated();
 
       var d1 = Mock.Of<IDirectory>();
       var d2 = Mock.Of<IDirectory>();
@@ -92,9 +92,8 @@ namespace Scope.Tests.Models
 
       _sut.Remove(d2);
 
-      ThenTheSelectedDirectoriesAre(d1);
+      ThenTheSelectedDirectoriesAre();
       ThenChangedWasRaised(4);
-
     }
 
     [Fact]
@@ -117,7 +116,7 @@ namespace Scope.Tests.Models
 
       ThenTheSelectedFilesAre();
       ThenTheSelectedDirectoriesAre();
-      ThenChangedWasRaised(1);
+      ThenChangedWasRaised(5);
     }
 
     private void WhenItIsCreated()
