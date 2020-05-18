@@ -16,10 +16,11 @@ namespace Scope.FileViewer.Text
         {
             _factories = new Dictionary<string, Func<IFile, IFileViewer>>
                          {
-                             {"txt", f => new TextFileViewModel(f)},
                              {"json", f => new JsonTextFileViewModel(f)},
                              {"xml", f => new CryXmlTextFileViewModel(f)},
                              {"mtl", f => new CryXmlTextFileViewModel(f)},
+                             {"txt", f => new TextFileViewModel(f)},
+                             {"cfg", f => new TextFileViewModel(f)},
                              {"id", f => new TextFileViewModel(f)}
                          };
         }
