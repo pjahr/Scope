@@ -283,7 +283,9 @@ namespace Scope.FileViewer.Text.Models
             Offset = (int)position - stringTableOffset,
             Value = r.ReadCString(),
           };
+
           dataTable.Add(value);
+
           if (writeLog)
           {
             Console.WriteLine("0x{0:X6}: {1:X8} {2}", position, value.Offset, value.Value);
@@ -295,8 +297,6 @@ namespace Scope.FileViewer.Text.Models
         var attributeIndex = 0;
 
         var xmlDoc = new XmlDocument();
-
-        var bugged = false;
 
         Dictionary<int, XmlElement> xmlMap = new Dictionary<int, XmlElement> { };
 
@@ -312,8 +312,8 @@ namespace Scope.FileViewer.Text.Models
             }
             else
             {
-              bugged = true;
-              element.SetAttribute(dataMap[attributeTable[attributeIndex].NameOffset], "BUGGED");
+              throw new InvalidDataException("This is a bug according to the originl code.");
+              //element.SetAttribute(dataMap[attributeTable[attributeIndex].NameOffset], "BUGGED");
             }
             attributeIndex++;
           }
@@ -329,8 +329,8 @@ namespace Scope.FileViewer.Text.Models
           }
           else
           {
-            bugged = true;
-            element.AppendChild(xmlDoc.CreateCDataSection("BUGGED"));
+            throw new InvalidDataException("This is a bug according to the originl code.");
+            //element.AppendChild(xmlDoc.CreateCDataSection("BUGGED"));
           }
 
           if (xmlMap.ContainsKey(node.ParentNodeID))
@@ -345,6 +345,6 @@ namespace Scope.FileViewer.Text.Models
 
         return xmlDoc;
       }
-    }    
+    }
   }
 }

@@ -61,14 +61,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="DdsFileViewer.cs" />
-    <Compile Include="DDSImage.cs" />
     <Compile Include="FileViewerFactory.cs" />
-    <Compile Include="InvalidFileHeaderException.cs" />
-    <Compile Include="NotADDSImageException.cs" />
     <Compile Include="PluginResources.xaml.cs">
       <DependentUpon>PluginResources.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UnknownFileFormatException.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

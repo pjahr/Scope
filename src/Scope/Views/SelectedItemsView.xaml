@@ -128,19 +128,83 @@
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
 
-    <StackPanel
+    <DockPanel
+      x:Name="_headerPanel"
       Grid.Row="0"
-      Background="LightGray"
-      HorizontalAlignment="Stretch"
-      VerticalAlignment="Center">
+      Background="WhiteSmoke"
+      HorizontalAlignment="Stretch">
 
-      <TextBlock Text="Pinned Items"/>
+      <Path         
+        Data="{StaticResource Pin}"
+        Fill="Black"
+        StrokeThickness="1"
+        Width="14"
+        Height="14"
+        Stretch="Uniform"
+        RenderTransformOrigin="0.5,0.5"
+        Margin="3">
 
-    </StackPanel>
+        <Path.RenderTransform>
+          <TransformGroup>
+            <TransformGroup.Children>
+              <RotateTransform Angle="315" />
+            </TransformGroup.Children>
+          </TransformGroup>
+        </Path.RenderTransform>
+
+      </Path>
+
+      <Button 
+        DockPanel.Dock="Right"
+        BorderThickness="0"
+        Padding="2">
+        <Button.Style>
+          <Style TargetType="Button">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+              <DataTrigger
+                Binding="{Binding
+                           RelativeSource={RelativeSource
+                                             Mode=FindAncestor,
+                                             AncestorType=DockPanel},
+                           Path=IsMouseOver}"
+                           Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
+
+        <Path
+          Data="{StaticResource Export}"
+          Fill="Black"
+          Width="16"
+          Height="16"
+          Stretch="Uniform"
+          />
+
+        <Button.ToolTip>
+          Export all pinned items
+        </Button.ToolTip>
+        
+      </Button>
+      
+      <TextBlock
+        Text="Pinned Items"
+        VerticalAlignment="Center"
+        FontFamily="Segoe UI Thin"/>
+
+
+    </DockPanel>
 
     <ListBox
       ItemsSource="{Binding Items}"
-      Grid.Row="1"/>
+      Grid.Row="1"
+      BorderBrush="Transparent">
+      
+      
+      
+    </ListBox>
 
   </Grid>
 

@@ -3,10 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:xaml="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:vm="clr-namespace:Scope.ViewModels"
-             xmlns:behaviors="clr-namespace:Scope.Views.Behaviors"
+             xmlns:b="clr-namespace:Scope.Views.Behaviors"
              xmlns:views="clr-namespace:Scope.Views"
-             Focusable="False"
-             >
+             Focusable="False">
 
   <UserControl.Resources>
 
@@ -42,56 +41,141 @@
       </Setter>
     </Style>
 
-    <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
-                              ItemsSource="{Binding Children}">
-      <StackPanel Orientation="Horizontal">
-        <!-- Image Width="16" Height="16" Margin="3,0" Source="Images\Region.png" / -->
-        <TextBlock Text="{Binding Name}" />
-      </StackPanel>
+    <HierarchicalDataTemplate
+      DataType="{x:Type vm:DirectoryViewModel}"
+      ItemsSource="{Binding Children}">
+      
+      <DockPanel
+        HorizontalAlignment="Stretch"
+        Background="BlueViolet">
+
+        <Path
+          Data="{StaticResource DirectoryIcon}"
+          Style="{StaticResource FileSystemEntryIcon}"/>
+
+        <Button 
+        DockPanel.Dock="Right"
+        BorderThickness="0"
+        Padding="2">
+          <Button.Style>
+            <Style TargetType="Button">
+              <Setter Property="Visibility" Value="Hidden" />
+              <Style.Triggers>
+                <DataTrigger
+                Binding="{Binding
+                           RelativeSource={RelativeSource
+                                             Mode=FindAncestor,
+                                             AncestorType=DockPanel},
+                           Path=IsMouseOver}"
+                           Value="True">
+                  <Setter Property="Visibility" Value="Visible"/>
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Button.Style>
+
+          <Path
+          Data="{StaticResource Export}"
+          Fill="Black"
+          Width="16"
+          Height="16"
+          Stretch="Uniform"
+          />
+
+          <Button.ToolTip>
+            Export all pinned items
+          </Button.ToolTip>
+
+        </Button>
+
+        <TextBlock
+          Text="{Binding Name}" />
+        
+      </DockPanel>
+      
     </HierarchicalDataTemplate>
 
-    <HierarchicalDataTemplate DataType="{x:Type vm:FileViewModel}"
-                              ItemsSource="{Binding Children}">
+    <HierarchicalDataTemplate 
+      DataType="{x:Type vm:FileViewModel}"
+      ItemsSource="{Binding Children}">
 
-      <StackPanel Orientation="Horizontal">
-        <!-- Image Width="16" Height="16" Margin="3,0" Source="Images\Region.png" / -->
-        <TextBlock Text="{Binding Name}" />
+      <StackPanel
+        Orientation="Horizontal">
+        
+        <Path
+          Data="{StaticResource FileIcon}"
+          Style="{StaticResource FileSystemEntryIcon}"/>
+        
+        <TextBlock
+          Text="{Binding Name}" />
+        
       </StackPanel>
+      
     </HierarchicalDataTemplate>
 
   </UserControl.Resources>
 
-  <TreeView ItemsSource="{Binding RootItems}"
-            behaviors:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding SetCurrentItemCommand}"
-            
-            Style="{StaticResource TreeViewStyle}">
+  <TreeView
+    ItemsSource="{Binding RootItems}"
+    b:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding SetCurrentItemCommand}"
+    Style="{StaticResource TreeViewStyle}">
 
     <TreeView.Resources>
       <!-- Use a proxy to bind items to root properties of this collection -->
-      <views:BindingProxy x:Key="DataContextProxy"
-                      Data="{Binding}" />
+      <views:BindingProxy
+        x:Key="DataContextProxy"
+        Data="{Binding}" />
 
     </TreeView.Resources>
 
     <xaml:Interaction.Behaviors>
-      <behaviors:BringVirtualTreeViewItemIntoViewBehavior SelectedItem="{Binding SelectPathItem}" />
-      <behaviors:CommandOnKey Key="Space" Command="{Binding ToggleSelectionOfCurrentItemCommand}"/>
+      
+      <b:BringVirtualTreeViewItemIntoViewBehavior
+        SelectedItem="{Binding SelectPathItem}" />
+      
+      <b:CommandOnKey 
+        Key="Space" 
+        Command="{Binding ToggleSelectionOfCurrentItemCommand}"/>
+      
     </xaml:Interaction.Behaviors>
 
     <TreeView.ItemContainerStyle>
-      <Style TargetType="{x:Type TreeViewItem}"
-             BasedOn="{StaticResource {x:Type TreeViewItem}}">
-        <Setter Property="behaviors:TreeViewItemExpanded.Command"
-                Value="{Binding Path=Data.ExpandCommand, Source={StaticResource DataContextProxy}}" />
-        <Setter Property="IsExpanded"
-                Value="{Binding IsExpanded, Mode=TwoWay}" />
-        <Setter Property="IsSelected"
-                Value="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Setter Property="VerticalAlignment"
-                Value="Center" />
-        <Setter Property="VerticalContentAlignment"
-                Value="Center" />
+      
+      <Style
+        TargetType="{x:Type TreeViewItem}"
+        BasedOn="{StaticResource {x:Type TreeViewItem}}">
+        
+        <Setter
+          Property="b:TreeViewItemExpanded.Command"
+          Value="{Binding Path=Data.ExpandCommand, 
+                          Source={StaticResource DataContextProxy}}" />
+        <Setter
+          Property="IsExpanded"
+          Value="{Binding IsExpanded, 
+                          Mode=TwoWay}" />
+        <Setter 
+          Property="IsSelected"
+          Value="{Binding IsSelected, 
+                          Mode=TwoWay,
+                          UpdateSourceTrigger=PropertyChanged}" />
+        <Setter 
+          Property="VerticalAlignment"
+          Value="Center" />
+        
+        <Setter 
+          Property="VerticalContentAlignment"
+          Value="Center" />
+
+        <!--<Setter Property="Template" >
+          <Setter.Value>
+            <ControlTemplate TargetType="TreeViewItem">
+              
+            </ControlTemplate>
+          </Setter.Value>
+        </Setter>-->
+
       </Style>
+      
     </TreeView.ItemContainerStyle>
 
   </TreeView>
