@@ -226,6 +226,70 @@
       </Setter>
     </Style>
 
+    <Style 
+      x:Key="TogglePinnedButton"
+      BasedOn="{StaticResource FsTreeViewItemActiveItemActionButton}"
+      TargetType="Button">
+
+      <Style.Triggers>
+
+        <MultiDataTrigger>
+          <!--show button only when hovered and item is currently selected-->
+          <MultiDataTrigger.Conditions>
+            <Condition 
+              Binding="{Binding
+                                       RelativeSource={RelativeSource                            
+                                                        Mode=FindAncestor,
+                                                        AncestorType=Border},
+                                       Path=IsMouseOver}"
+              Value="True" />
+
+            <Condition
+              Binding="{Binding IsSelected}"
+              Value="True" />
+
+          </MultiDataTrigger.Conditions>
+
+          <Setter
+            Property="Visibility"
+            Value="Visible"/>
+          
+        </MultiDataTrigger>
+
+      </Style.Triggers>
+
+    </Style>
+
+    <Style 
+      x:Key="ExportItemButton"
+      BasedOn="{StaticResource FsTreeViewItemActiveItemActionButton}"
+      TargetType="Button">
+      <Style.Triggers>
+        <MultiDataTrigger>
+          <!--show only when hovered and item is currently selected-->
+          <MultiDataTrigger.Conditions>
+            <Condition 
+              Binding="{Binding
+                         RelativeSource={RelativeSource                            
+                                          Mode=FindAncestor,
+                                          AncestorType=TreeViewItem},
+                         Path=IsMouseOver}"
+              Value="True" />
+
+            <Condition
+              Binding="{Binding IsSelected}"
+              Value="True" />
+
+          </MultiDataTrigger.Conditions>
+
+          <Setter
+            Property="Visibility"
+            Value="Visible"/>
+
+        </MultiDataTrigger>
+      </Style.Triggers>
+    </Style>
+
     <Style
       x:Key="TreeViewItemStyle1"
       TargetType="{x:Type TreeViewItem}">
@@ -278,38 +342,42 @@
                 Background="{TemplateBinding Background}"
                 Padding="{TemplateBinding Padding}"
                 SnapsToDevicePixels="true">
+
                 <DockPanel>
 
+                 <Button
+                    Command="{Binding
+                               RelativeSource={RelativeSource
+                                                Mode=FindAncestor,
+                                                AncestorType=TreeView},
+                               Path=DataContext.ExportCommand}"
+                    CommandParameter="{Binding}"
+                    Style="{StaticResource FsTreeViewItemActiveItemActionButton}"
+                    DockPanel.Dock="Right">
+
+                   <Path
+                      Data="{StaticResource Export}"
+                      Fill="Black"
+                      Width="16"
+                      Height="16"
+                      Stretch="Uniform" />
+
+                    <Button.ToolTip>Export all pinned items</Button.ToolTip>
+
+                  </Button>
+
                   <Button
-                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView},Path=DataContext.ExportCommand}"
+                    Command="{Binding
+                               RelativeSource={RelativeSource
+                                                Mode=FindAncestor,
+                                                AncestorType=TreeView},
+                               Path=DataContext.ToggleSelectionOfCurrentItemCommand}"
                     CommandParameter="{Binding}"
                     DockPanel.Dock="Right"
-                    BorderThickness="0"
-                    Padding="2">
-                    <Button.Style>
-                      <Style
-                        TargetType="Button">
-                        <Setter
-                          Property="Visibility"
-                          Value="Visible" />
-                        <Style.Triggers>
-                          <DataTrigger
-                            Binding="{Binding
-                           RelativeSource={RelativeSource
-                                             Mode=FindAncestor,
-                                             AncestorType=DockPanel},
-                           Path=IsMouseOver}"
-                            Value="True">
-                            <Setter
-                              Property="Visibility"
-                              Value="Visible" />
-                          </DataTrigger>
-                        </Style.Triggers>
-                      </Style>
-                    </Button.Style>
+                    Style="{StaticResource TogglePinnedButton}">
 
                     <Path
-                      Data="{StaticResource Export}"
+                      Data="{StaticResource Pin}"
                       Fill="Black"
                       Width="16"
                       Height="16"
@@ -324,6 +392,7 @@
                     ContentSource="Header"
                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+
                 </DockPanel>
               </Border>
               <ItemsPresenter

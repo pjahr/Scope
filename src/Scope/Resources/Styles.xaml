@@ -56,4 +56,57 @@
       Value="Center" />
   </Style>
 
+  <Style
+    x:Key="FsTreeViewItemActiveItemActionButton"
+    TargetType="Button">
+
+    <Setter
+      Property="Visibility"
+      Value="Hidden" />
+
+    <Setter
+      Property="BorderThickness"
+      Value="0" />
+
+    <Setter
+      Property="Padding"
+      Value="2" />
+
+    <Setter
+      Property="Margin"
+      Value="0 0 3 0" />
+
+    <Setter
+      Property="Focusable"
+      Value="False" />
+
+    <Style.Triggers>
+
+      <MultiDataTrigger>
+        <!--show button only when hovered and item is currently selected-->
+        <MultiDataTrigger.Conditions>
+          <Condition
+            Binding="{Binding
+                       RelativeSource={RelativeSource                            
+                                        Mode=FindAncestor,
+                                        AncestorType=Border},
+                       Path=IsMouseOver}"
+            Value="True" />
+
+          <Condition
+            Binding="{Binding IsSelected}"
+            Value="True" />
+
+        </MultiDataTrigger.Conditions>
+
+        <Setter
+          Property="Visibility"
+          Value="Visible" />
+
+      </MultiDataTrigger>
+
+    </Style.Triggers>
+
+  </Style>
+
 </ResourceDictionary>
