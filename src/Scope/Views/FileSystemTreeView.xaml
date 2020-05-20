@@ -374,7 +374,7 @@
                                Path=DataContext.ToggleSelectionOfCurrentItemCommand}"
                     CommandParameter="{Binding}"
                     DockPanel.Dock="Right"
-                    Style="{StaticResource TogglePinnedButton}">
+                    Style="{StaticResource FsTreeViewItemActiveItemActionButton}">
 
                     <Path
                       Data="{StaticResource Pin}"
