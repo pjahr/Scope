@@ -46,13 +46,17 @@ namespace Scope.Models
       return Task.Run(DisposeCurrentP4k);
     }
 
+    public Task ExtractP4kContent(IFile file)
+    {
+      
+    }
+
     private OpenP4kFileResult OpenP4kFile(IFileInfo p4kFile)
     {
       try
       {
         _p4k = new ZipFile(p4kFile.FullName) {Key = _key};
-        //_p4k.KeysRequired += ProvideKey;
-
+        
         FileSystem = new GenerateFileSystem().Generate(_p4k);
         FileName = p4kFile.FullName;
       }

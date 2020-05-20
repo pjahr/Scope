@@ -27,16 +27,19 @@ namespace Scope.ViewModels
       ToggleSelectionOfCurrentItemCommand = new RelayCommand(ToggleSelectionOfCurrentItem);
 
       ExpandCommand = new RelayCommand<object>(async p =>
-                                               {
-                                                 if (!(p is DirectoryViewModel directory))
-                                                 {
-                                                   return;
-                                                 }
+      {
+        if (!(p is DirectoryViewModel directory))
+        {
+          return;
+        }
 
-                                                 await directory.LoadChildrenAsync();
-                                               });
+        await directory.LoadChildrenAsync();
+      });
 
-      ExportCommand = new RelayCommand<object>(p => { });
+      ExportCommand = new RelayCommand<object>(p => 
+      {
+        
+      });
 
       CreateContainedDirectories();
       CreateContainedFiles();
