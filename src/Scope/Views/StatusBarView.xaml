@@ -1,35 +1,41 @@
 ﻿<StatusBar
   x:Class="Scope.Views.StatusBarView"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" >
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <StatusBar.ItemsPanel>
     <ItemsPanelTemplate>
       <Grid>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="110" />
+          <ColumnDefinition
+            Width="*" />
+          <ColumnDefinition
+            Width="Auto" />
+          <ColumnDefinition
+            Width="110" />
         </Grid.ColumnDefinitions>
       </Grid>
     </ItemsPanelTemplate>
   </StatusBar.ItemsPanel>
 
   <StatusBarItem>
-    <TextBlock Text="{Binding LastMessage}"/>
+    <TextBlock
+      Text="{Binding LastMessage}" />
   </StatusBarItem>
 
-  <Separator Grid.Column="1" />
-  
-  <StatusBarItem Grid.Column="2">
-    
+  <Separator
+    Grid.Column="1" />
+
+  <StatusBarItem
+    Grid.Column="2">
+
     <ProgressBar
       Visibility="{Binding ProgressActive}"
       IsIndeterminate="{Binding ProgressIndeterminate}"
       Value="{Binding ProgressValue, Mode=OneWay}"
       Height="10"
       Width="100" />
-    
+
   </StatusBarItem>
 
 

@@ -44,8 +44,7 @@ namespace Scope.ViewModels
         return;
       }
 
-      var factory = _fileViewerFactories
-                     .FirstOrDefault(f => f.CanHandle(_currentItem.CurrentFile));
+      var factory = _fileViewerFactories.FirstOrDefault(f => f.CanHandle(_currentItem.CurrentFile));
 
       if (factory == null)
       {

@@ -8,7 +8,10 @@ namespace Scope.ViewModels
   /// </summary>
   internal class NoFileViewerViewModelFactory : IFileViewerFactory
   {
-    public bool CanHandle(IFile file) => true;
+    public bool CanHandle(IFile file)
+    {
+      return true;
+    }
 
     public IFileViewer Create(IFile file)
     {

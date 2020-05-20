@@ -12,7 +12,7 @@ namespace Scope.Tests.Models
   {
     private ICurrentP4k _sut;
     private IFileInfo _path;
-    private Action _changedWasRaised = Mock.Of<Action>();
+    private readonly Action _changedWasRaised = Mock.Of<Action>();
     private OpenP4kFileResult _openResult;
 
     [Fact]
@@ -47,7 +47,8 @@ namespace Scope.Tests.Models
 
     private void ThenChangedWasRaised()
     {
-      _changedWasRaised.Mock().Verify();
+      _changedWasRaised.Mock()
+                       .Verify();
     }
   }
 }

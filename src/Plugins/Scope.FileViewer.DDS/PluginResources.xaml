@@ -8,12 +8,13 @@
 
     <Grid>
 
-      <TextBlock Text="{Binding ErrorMessage}" />
+      <TextBlock
+        Text="{Binding ErrorMessage}" />
 
       <ScrollViewer>
 
         <ContentControl
-          Content="{Binding Image}"/>
+          Content="{Binding Image}" />
 
       </ScrollViewer>
 

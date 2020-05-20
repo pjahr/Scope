@@ -3,10 +3,10 @@
 namespace Scope.FileViewer.Text.Views
 {
   public partial class TextFileView : UserControl
+  {
+    public TextFileView()
     {
-        public TextFileView()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

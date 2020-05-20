@@ -18,7 +18,10 @@ namespace Scope.Views
     /// who has a reference to this object.
     /// </summary>
     public static readonly DependencyProperty DataProperty =
-      DependencyProperty.Register("Data", typeof(object), typeof(BindingProxy), new UIPropertyMetadata(null));
+      DependencyProperty.Register("Data",
+                                  typeof(object),
+                                  typeof(BindingProxy),
+                                  new UIPropertyMetadata(null));
 
     /// <summary>
     /// Gets/sets the data object this class is forwarding to everyone

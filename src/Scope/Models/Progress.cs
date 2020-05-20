@@ -16,10 +16,11 @@ namespace Scope.Models
 
     public void Set(double value)
     {
-      if (value<0||value>1)
+      if (value < 0 || value > 1)
       {
         throw new ArgumentException("Value is expected to be between 0 and 1.");
       }
+
       Value = value;
       InProgress = true;
       Indetermined = false;

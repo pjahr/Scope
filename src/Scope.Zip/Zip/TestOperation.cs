@@ -34,7 +34,6 @@
     /// <summary>
     /// Testing is complete
     /// </summary>
-    Complete,
+    Complete
   }
-
 }

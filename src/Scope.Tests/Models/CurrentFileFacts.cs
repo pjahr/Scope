@@ -11,8 +11,8 @@ namespace Scope.Tests.Models
   {
     private ICurrentItem _sut;
     private Action _changedRaised;
-    private IFile _file = Mock.Of<IFile>();
-    private IDirectory _directory = Mock.Of<IDirectory>();
+    private readonly IFile _file = Mock.Of<IFile>();
+    private readonly IDirectory _directory = Mock.Of<IDirectory>();
 
     [Fact]
     public void A_file_can_be_set_as_current_item()
@@ -72,11 +72,11 @@ namespace Scope.Tests.Models
     public void Only_one_type_can_be_active()
     {
       GivenSut();
-      
+
       _sut.ChangeTo(_directory);
       Assert.Same(_directory, _sut.CurrentDirectory);
       Assert.Null(_sut.CurrentFile);
-      
+
       _sut.ChangeTo(_file);
       Assert.Same(_file, _sut.CurrentFile);
       Assert.Null(_sut.CurrentDirectory);
@@ -93,7 +93,8 @@ namespace Scope.Tests.Models
 
     private void ThenChangedWasRaisedTimes(Times times)
     {
-      _changedRaised.Mock().Verify(m => m(), times);
+      _changedRaised.Mock()
+                    .Verify(m => m(), times);
     }
   }
 }

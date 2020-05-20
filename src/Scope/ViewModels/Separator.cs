@@ -1,6 +1,4 @@
 ﻿namespace Scope.ViewModels
 {
-  public class Separator : MenuItemBase
-  {
-  }
+  public class Separator : MenuItemBase { }
 }

@@ -44,6 +44,7 @@ namespace Scope.Models
       {
         _directories.Remove(item);
       }
+
       Changed.Raise();
     }
 
@@ -53,6 +54,7 @@ namespace Scope.Models
       {
         _files.Remove(item);
       }
+
       Changed.Raise();
     }
   }

@@ -31,15 +31,19 @@ namespace Scope.ViewModels
     private void Update()
     {
       Items.Clear();
-      foreach (var item in _selectedItems.Directories
-                                         .OrderBy(d => d.Name)
-                                         .Select(f => new SelectedDirectoryViewModel(f, _currentItem, _selectedItems)))
+      foreach (var item in _selectedItems.Directories.OrderBy(d => d.Name)
+                                         .Select(f => new SelectedDirectoryViewModel(f,
+                                                                                     _currentItem,
+                                                                                     _selectedItems))
+      )
       {
         Items.Add(item);
       }
-      foreach (var item in _selectedItems.Files
-                                         .OrderBy(d => d.Name)
-                                         .Select(f => new SelectedFileViewModel(f, _currentItem, _selectedItems)))
+
+      foreach (var item in _selectedItems.Files.OrderBy(d => d.Name)
+                                         .Select(f => new SelectedFileViewModel(f,
+                                                                                _currentItem,
+                                                                                _selectedItems)))
       {
         Items.Add(item);
       }

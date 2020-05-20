@@ -27,30 +27,30 @@ namespace Scope.FileViewer.Text.Models
     //  return BitConverter.ToInt64(bytes, 0);
     //}
 
-    public static int ReadInt(this BinaryReader r, ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
+    public static int ReadInt(this BinaryReader r,
+                              ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
     {
-      var bytes = new byte[] {
-                r.ReadByte(),
-                r.ReadByte(),
-                r.ReadByte(),
-                r.ReadByte(),
-            };
+      var bytes = new[] {r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte()};
 
       if (byteOrder == ByteOrderEnum.LittleEndian)
-        bytes = bytes.Reverse().ToArray();
+      {
+        bytes = bytes.Reverse()
+                     .ToArray();
+      }
 
       return BitConverter.ToInt32(bytes, 0);
     }
 
-    public static short ReadInt16(this BinaryReader r, ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
+    public static short ReadInt16(this BinaryReader r,
+                                  ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
     {
-      var bytes = new byte[] {
-                r.ReadByte(),
-                r.ReadByte(),
-            };
+      var bytes = new[] {r.ReadByte(), r.ReadByte()};
 
       if (byteOrder == ByteOrderEnum.LittleEndian)
-        bytes = bytes.Reverse().ToArray();
+      {
+        bytes = bytes.Reverse()
+                     .ToArray();
+      }
 
       return BitConverter.ToInt16(bytes, 0);
     }
@@ -74,17 +74,16 @@ namespace Scope.FileViewer.Text.Models
     //  return BitConverter.ToUInt64(bytes, 0);
     //}
 
-    public static uint ReadUInt32(this BinaryReader r, ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
+    public static uint ReadUInt32(this BinaryReader r,
+                                  ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
     {
-      var bytes = new byte[] {
-                r.ReadByte(),
-                r.ReadByte(),
-                r.ReadByte(),
-                r.ReadByte(),
-            };
+      var bytes = new[] {r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte()};
 
       if (byteOrder == ByteOrderEnum.LittleEndian)
-        bytes = bytes.Reverse().ToArray();
+      {
+        bytes = bytes.Reverse()
+                     .ToArray();
+      }
 
       return BitConverter.ToUInt32(bytes, 0);
     }
@@ -122,7 +121,7 @@ namespace Scope.FileViewer.Text.Models
           return null; // File is already XML
         }
 
-        else if (peek != 'C')
+        if (peek != 'C')
         {
           throw new FormatException("Unknown File Format");
         }
@@ -176,51 +175,66 @@ namespace Scope.FileViewer.Text.Models
           Console.WriteLine("Header");
           Console.WriteLine("0x{0:X6}: {1}", 0x00, header);
           Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8})", headerLength + 0x00, fileLength);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) node offset", headerLength + 0x04, nodeTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) nodes", headerLength + 0x08, nodeTableCount);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) reference offset", headerLength + 0x12, attributeTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) references", headerLength + 0x16, attributeTableCount);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child offset", headerLength + 0x20, childTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child", headerLength + 0x24, childTableCount);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content offset", headerLength + 0x28, stringTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content", headerLength + 0x32, stringTableCount);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) node offset",
+                            headerLength + 0x04,
+                            nodeTableOffset);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) nodes",
+                            headerLength + 0x08,
+                            nodeTableCount);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) reference offset",
+                            headerLength + 0x12,
+                            attributeTableOffset);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) references",
+                            headerLength + 0x16,
+                            attributeTableCount);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child offset",
+                            headerLength + 0x20,
+                            childTableOffset);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child",
+                            headerLength + 0x24,
+                            childTableCount);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content offset",
+                            headerLength + 0x28,
+                            stringTableOffset);
+          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content",
+                            headerLength + 0x32,
+                            stringTableCount);
           Console.WriteLine("");
           Console.WriteLine("Node Table");
         }
 
-        List<CryXmlNode> nodeTable = new List<CryXmlNode> { };
+        List<CryXmlNode> nodeTable = new List<CryXmlNode>();
         r.BaseStream.Seek(nodeTableOffset, SeekOrigin.Begin);
         int nodeID = 0;
         while (r.BaseStream.Position < nodeTableOffset + nodeTableCount * nodeTableSize)
         {
           var position = r.BaseStream.Position;
           var value = new CryXmlNode
-          {
-            NodeID = nodeID++,
-            NodeNameOffset = r.ReadInt(byteOrder),
-            ContentOffset = r.ReadInt(byteOrder),
-            AttributeCount = r.ReadInt16(byteOrder),
-            ChildCount = r.ReadInt16(byteOrder),
-            ParentNodeID = r.ReadInt(byteOrder),
-            FirstAttributeIndex = r.ReadInt(byteOrder),
-            FirstChildIndex = r.ReadInt(byteOrder),
-            Reserved = r.ReadInt(byteOrder),
-          };
+                      {
+                        NodeID = nodeID++,
+                        NodeNameOffset = r.ReadInt(byteOrder),
+                        ContentOffset = r.ReadInt(byteOrder),
+                        AttributeCount = r.ReadInt16(byteOrder),
+                        ChildCount = r.ReadInt16(byteOrder),
+                        ParentNodeID = r.ReadInt(byteOrder),
+                        FirstAttributeIndex = r.ReadInt(byteOrder),
+                        FirstChildIndex = r.ReadInt(byteOrder),
+                        Reserved = r.ReadInt(byteOrder)
+                      };
 
           nodeTable.Add(value);
           if (writeLog)
           {
-            Console.WriteLine(
-                "0x{0:X6}: {1:X8} {2:X8} attr:{3:X4} {4:X4} {5:X8} {6:X8} {7:X8} {8:X8}",
-                position,
-                value.NodeNameOffset,
-                value.ContentOffset,
-                value.AttributeCount,
-                value.ChildCount,
-                value.ParentNodeID,
-                value.FirstAttributeIndex,
-                value.FirstChildIndex,
-                value.Reserved);
+            Console.WriteLine("0x{0:X6}: {1:X8} {2:X8} attr:{3:X4} {4:X4} {5:X8} {6:X8} {7:X8} {8:X8}",
+                              position,
+                              value.NodeNameOffset,
+                              value.ContentOffset,
+                              value.AttributeCount,
+                              value.ChildCount,
+                              value.ParentNodeID,
+                              value.FirstAttributeIndex,
+                              value.FirstChildIndex,
+                              value.Reserved);
           }
         }
 
@@ -230,30 +244,34 @@ namespace Scope.FileViewer.Text.Models
           Console.WriteLine("Reference Table");
         }
 
-        List<CryXmlReference> attributeTable = new List<CryXmlReference> { };
+        List<CryXmlReference> attributeTable = new List<CryXmlReference>();
         r.BaseStream.Seek(attributeTableOffset, SeekOrigin.Begin);
-        while (r.BaseStream.Position < attributeTableOffset + attributeTableCount * referenceTableSize)
+        while (r.BaseStream.Position
+               < attributeTableOffset + attributeTableCount * referenceTableSize)
         {
           var position = r.BaseStream.Position;
           var value = new CryXmlReference
-          {
-            NameOffset = r.ReadInt(byteOrder),
-            ValueOffset = r.ReadInt(byteOrder)
-          };
+                      {
+                        NameOffset = r.ReadInt(byteOrder), ValueOffset = r.ReadInt(byteOrder)
+                      };
 
           attributeTable.Add(value);
           if (writeLog)
           {
-            Console.WriteLine("0x{0:X6}: {1:X8} {2:X8}", position, value.NameOffset, value.ValueOffset);
+            Console.WriteLine("0x{0:X6}: {1:X8} {2:X8}",
+                              position,
+                              value.NameOffset,
+                              value.ValueOffset);
           }
         }
+
         if (writeLog)
         {
           Console.WriteLine("");
           Console.WriteLine("Order Table");
         }
 
-        List<int> parentTable = new List<int> { };
+        List<int> parentTable = new List<int>();
         r.BaseStream.Seek(childTableOffset, SeekOrigin.Begin);
         while (r.BaseStream.Position < childTableOffset + childTableCount * length3)
         {
@@ -273,16 +291,15 @@ namespace Scope.FileViewer.Text.Models
           Console.WriteLine("Dynamic Dictionary");
         }
 
-        List<CryXmlValue> dataTable = new List<CryXmlValue> { };
+        List<CryXmlValue> dataTable = new List<CryXmlValue>();
         r.BaseStream.Seek(stringTableOffset, SeekOrigin.Begin);
         while (r.BaseStream.Position < r.BaseStream.Length)
         {
           var position = r.BaseStream.Position;
           var value = new CryXmlValue
-          {
-            Offset = (int)position - stringTableOffset,
-            Value = r.ReadCString(),
-          };
+                      {
+                        Offset = (int) position - stringTableOffset, Value = r.ReadCString()
+                      };
 
           dataTable.Add(value);
 
@@ -298,23 +315,31 @@ namespace Scope.FileViewer.Text.Models
 
         var xmlDoc = new XmlDocument();
 
-        Dictionary<int, XmlElement> xmlMap = new Dictionary<int, XmlElement> { };
+        Dictionary<int, XmlElement> xmlMap = new Dictionary<int, XmlElement>();
 
         foreach (var node in nodeTable)
         {
           XmlElement element = xmlDoc.CreateElement(dataMap[node.NodeNameOffset]);
 
-          for (int i = 0, j = node.AttributeCount; i < j; i++)
+          for (int i = 0,
+                   j = node.AttributeCount;
+               i < j;
+               i++)
           {
-            if (dataMap.ContainsKey(attributeTable[attributeIndex].ValueOffset))
+            if (dataMap.ContainsKey(attributeTable[attributeIndex]
+                                     .ValueOffset))
             {
-              element.SetAttribute(dataMap[attributeTable[attributeIndex].NameOffset], dataMap[attributeTable[attributeIndex].ValueOffset]);
+              element.SetAttribute(dataMap[attributeTable[attributeIndex]
+                                            .NameOffset],
+                                   dataMap[attributeTable[attributeIndex]
+                                            .ValueOffset]);
             }
             else
             {
               throw new InvalidDataException("This is a bug according to the originl code.");
               //element.SetAttribute(dataMap[attributeTable[attributeIndex].NameOffset], "BUGGED");
             }
+
             attributeIndex++;
           }
 
@@ -335,7 +360,8 @@ namespace Scope.FileViewer.Text.Models
 
           if (xmlMap.ContainsKey(node.ParentNodeID))
           {
-            xmlMap[node.ParentNodeID].AppendChild(element);
+            xmlMap[node.ParentNodeID]
+             .AppendChild(element);
           }
           else
           {

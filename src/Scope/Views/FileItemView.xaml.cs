@@ -43,7 +43,8 @@ namespace Scope.Views
         return;
       }
 
-      var listBoxItem = (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i + 1]);
+      var listBoxItem =
+        (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i + 1]);
       Keyboard.Focus(listBoxItem.FindFocusableChild());
     }
 
@@ -62,7 +63,8 @@ namespace Scope.Views
         return;
       }
 
-      var listBoxItem = (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i - 1]);
+      var listBoxItem =
+        (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i - 1]);
       var lastDeepestChild = GetLastDeepestChild(listBoxItem);
       Keyboard.Focus(lastDeepestChild.FindFocusableChild());
     }
@@ -81,7 +83,8 @@ namespace Scope.Views
         return listBoxItem;
       }
 
-      var lastItem = (ListBoxItem) box.ItemContainerGenerator.ContainerFromItem(box.Items[box.Items.Count - 1]);
+      var lastItem =
+        (ListBoxItem) box.ItemContainerGenerator.ContainerFromItem(box.Items[box.Items.Count - 1]);
       return GetLastDeepestChild(lastItem);
     }
   }

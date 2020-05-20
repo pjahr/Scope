@@ -80,10 +80,11 @@
 //      _currentFile.ReturnsOn(m => m.CurrentFile, Mock.Of<IFile>());
 //    }
 
-
 //    private void GivenTheCurrentFileIsItsFile()
 //    {
 //      _currentFile.ReturnsOn(m => m.CurrentFile, _file);
 //    }
 //  }
 //}
+
+

@@ -5,10 +5,9 @@ namespace Scope.ViewModels
   [Export]
   internal class MainMenuViewModel
   {
-    public MainMenuViewModel(
-      OpenP4kFileMenuItemViewModel openP4kFile,
-      CloseCurrentP4kFileMenuItemViewModel closeP4kFile,
-      DisplayAboutDialogMenuItemViewModel displayAboutDialog)
+    public MainMenuViewModel(OpenP4kFileMenuItemViewModel openP4kFile,
+                             CloseCurrentP4kFileMenuItemViewModel closeP4kFile,
+                             DisplayAboutDialogMenuItemViewModel displayAboutDialog)
     {
       OpenP4kFile = openP4kFile;
       CloseP4kFile = closeP4kFile;

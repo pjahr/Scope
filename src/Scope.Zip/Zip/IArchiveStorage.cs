@@ -46,5 +46,4 @@ namespace Scope.Zip.Zip
     /// </summary>
     void Dispose();
   }
-
 }

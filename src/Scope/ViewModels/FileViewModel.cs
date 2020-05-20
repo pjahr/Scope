@@ -1,7 +1,7 @@
-﻿using Scope.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Scope.Interfaces;
 
 namespace Scope.ViewModels
 {
@@ -18,18 +18,13 @@ namespace Scope.ViewModels
 
     public override bool HasDummyChild => false;
 
-    protected override void LoadChildren()
-    {
-    }
+    protected override void LoadChildren() { }
 
-    protected override void ResetChildren()
-    {
-    }
+    protected override void ResetChildren() { }
 
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
       throw new NotImplementedException();
     }
-
   }
 }

@@ -28,8 +28,10 @@ namespace Scope.ViewModels
     private void DisplayProgress()
     {
       ProgressIndeterminate = _progress.Indetermined;
-      ProgressValue = Convert.ToInt32(_progress.Value*100);
-      ProgressActive = _progress.InProgress?Visibility.Visible:Visibility.Hidden;
+      ProgressValue = Convert.ToInt32(_progress.Value * 100);
+      ProgressActive = _progress.InProgress
+                         ? Visibility.Visible
+                         : Visibility.Hidden;
 
       PropertyChanged.Raise(this, nameof(ProgressIndeterminate));
       PropertyChanged.Raise(this, nameof(ProgressValue));
@@ -45,7 +47,8 @@ namespace Scope.ViewModels
 
     private void DisplayMessage()
     {
-      LastMessage = _messages.Items.Last().Text;
+      LastMessage = _messages.Items.Last()
+                             .Text;
       PropertyChanged.Raise(this, nameof(LastMessage));
     }
 

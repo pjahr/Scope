@@ -1,14 +1,15 @@
-﻿<UserControl x:Class="Scope.Views.AboutWindowView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Width="600"
-             Height="300">
-    <Grid>
-      
+﻿<UserControl
+  x:Class="Scope.Views.AboutWindowView"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  Width="600"
+  Height="300">
+  <Grid>
+
     <TextBlock
-        Text="Scope"
-        HorizontalAlignment="Center"
-        VerticalAlignment="Center"/>
+      Text="Scope"
+      HorizontalAlignment="Center"
+      VerticalAlignment="Center" />
   </Grid>
-  
+
 </UserControl>

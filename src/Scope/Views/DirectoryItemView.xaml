@@ -11,8 +11,10 @@
   <StackPanel>
     <Grid>
       <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition
+          Width="*" />
+        <ColumnDefinition
+          Width="Auto" />
       </Grid.ColumnDefinitions>
     </Grid>
 
@@ -25,7 +27,7 @@
 
       <xaml:Interaction.Behaviors>
         <behaviors:CommandOnClick
-         Command="{Binding SetCurrentItemCommand}" />
+          Command="{Binding SetCurrentItemCommand}" />
         <behaviors:CommandOnReceiveKeyboardFocus
           Command="{Binding SetCurrentItemCommand}" />
         <behaviors:CommandOnDoubleClick
@@ -33,7 +35,7 @@
         <behaviors:CommandOnKey
           Key="Enter"
           Command="{Binding ToggleIsExpandedCommand}" />
-        <behaviors:AcquireKeyboardFocusOnClick/>
+        <behaviors:AcquireKeyboardFocusOnClick />
       </xaml:Interaction.Behaviors>
 
       <ToggleButton
@@ -57,16 +59,19 @@
             Value="Transparent" />
           <Style.Triggers>
             <Trigger
-                Property="IsMouseOver"
-                Value="True">
+              Property="IsMouseOver"
+              Value="True">
               <Setter
-                  Property="Background"
-                  Value="{StaticResource AccentColor40}" />
+                Property="Background"
+                Value="{StaticResource AccentColor40}" />
             </Trigger>
 
-            <Trigger Property="IsFocused" Value="True">
-              <Setter Property="Background"
-                              Value="DarkGoldenrod" />
+            <Trigger
+              Property="IsFocused"
+              Value="True">
+              <Setter
+                Property="Background"
+                Value="DarkGoldenrod" />
             </Trigger>
 
             <DataTrigger
@@ -102,7 +107,7 @@
                 TargetType="ListBoxItem">
                 <Border
                   BorderThickness="0 0 0 0">
-                  <ContentPresenter/>
+                  <ContentPresenter />
                 </Border>
               </ControlTemplate>
             </Setter.Value>

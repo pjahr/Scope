@@ -7,7 +7,6 @@ namespace Scope.Zip.Zip
   /// </summary>
   public class DynamicDiskDataSource : IDynamicDataSource
   {
-
     /// <summary>
     /// Get a <see cref="Stream"/> providing data for an entry.
     /// </summary>
@@ -25,7 +24,5 @@ namespace Scope.Zip.Zip
 
       return result;
     }
-
   }
-
 }

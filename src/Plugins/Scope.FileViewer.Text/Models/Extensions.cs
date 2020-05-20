@@ -13,8 +13,11 @@ namespace Scope.FileViewer.Text.Models
     {
       int stringLength = 0;
 
-      while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length && binaryReader.ReadChar() != 0)
+      while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length
+             && binaryReader.ReadChar() != 0)
+      {
         stringLength++;
+      }
 
       long nul = binaryReader.BaseStream.Position;
 
@@ -25,7 +28,10 @@ namespace Scope.FileViewer.Text.Models
       binaryReader.BaseStream.Seek(nul, SeekOrigin.Begin);
 
       // Why is this necessary?
-      if (stringLength > chars.Length) stringLength = chars.Length;
+      if (stringLength > chars.Length)
+      {
+        stringLength = chars.Length;
+      }
 
       // If there is actually a string to read
       if (stringLength > 0)
@@ -52,6 +58,6 @@ namespace Scope.FileViewer.Text.Models
       }
 
       return new string(chars);
-    } 
+    }
   }
 }

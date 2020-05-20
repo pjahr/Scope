@@ -32,7 +32,6 @@ namespace Scope.Tests.Models
       ThenChangedWasRaised(2);
     }
 
-
     [Fact]
     public void Files_can_be_removed()
     {
@@ -74,7 +73,6 @@ namespace Scope.Tests.Models
       ThenChangedWasRaised(2);
     }
 
-
     [Fact]
     public void Directories_can_be_removed()
     {
@@ -105,7 +103,6 @@ namespace Scope.Tests.Models
       var f2 = Mock.Of<IFile>();
       var d1 = Mock.Of<IDirectory>();
       var d2 = Mock.Of<IDirectory>();
-
 
       _sut.Add(f1);
       _sut.Add(f2);
@@ -147,7 +144,8 @@ namespace Scope.Tests.Models
 
     private void ThenChangedWasRaised(int times)
     {
-      _changedWasRaised.Mock().Verify(m => m(), Times.Exactly(times));
+      _changedWasRaised.Mock()
+                       .Verify(m => m(), Times.Exactly(times));
     }
   }
 }

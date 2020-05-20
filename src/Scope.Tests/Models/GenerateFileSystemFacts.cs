@@ -7,7 +7,6 @@ using Xunit;
 
 namespace Scope.Tests.Models
 {
-
   public class GenerateFileSystemFacts
   {
     private GenerateFileSystem _sut;
@@ -112,16 +111,13 @@ namespace Scope.Tests.Models
 
       for (int i = 0; i < pathSegments.Length - 1; i++)
       {
-        current = current.Directories.Single<IDirectory>(d => d.Name == pathSegments[i]);
+        current = current.Directories.Single(d => d.Name == pathSegments[i]);
       }
 
-      Assert.NotNull(current.Files.SingleOrDefault(f => f.Name == pathSegments[pathSegments.Length - 1]));
+      Assert.NotNull(current.Files.SingleOrDefault(f => f.Name
+                                                        == pathSegments[pathSegments.Length - 1]));
     }
 
-    private void ThenFileContains(string fileName, string fileContent)
-    {
-
-    }
-
+    private void ThenFileContains(string fileName, string fileContent) { }
   }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Scope.Models.Interfaces
 {
-    internal interface IP4kFileSystemFactory
-    {
-        IFileSystem Create(IDirectory root);
-    }
+  internal interface IP4kFileSystemFactory
+  {
+    IFileSystem Create(IDirectory root);
+  }
 }

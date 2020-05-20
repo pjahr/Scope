@@ -17,8 +17,8 @@ namespace Scope.ViewModels
     private bool _isSelected;
 
     internal SelectedFileViewModel(IFile file,
-                         ICurrentItem currentFile,
-                         ISelectedItems selectedItems)
+                                   ICurrentItem currentFile,
+                                   ISelectedItems selectedItems)
     {
       _file = file;
       _currentFile = currentFile;
@@ -42,13 +42,14 @@ namespace Scope.ViewModels
 
     public bool IsActive
     {
-      get { return _isActive; }
+      get => _isActive;
       set
       {
         if (_isActive == value)
         {
           return;
         }
+
         _isActive = value;
         PropertyChanged.Raise(this, nameof(IsActive));
       }
@@ -56,13 +57,14 @@ namespace Scope.ViewModels
 
     public bool IsSelected
     {
-      get { return _isSelected; }
+      get => _isSelected;
       set
       {
         if (_isSelected == value)
         {
           return;
         }
+
         _isSelected = value;
         PropertyChanged.Raise(this, nameof(IsSelected));
       }

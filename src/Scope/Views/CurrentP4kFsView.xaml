@@ -10,7 +10,7 @@
     <DataTemplate
       DataType="{x:Type vm:P4kFileSystemViewModel}">
 
-      <views:FileSystemTreeView/>
+      <views:FileSystemTreeView />
 
     </DataTemplate>
 
@@ -20,7 +20,7 @@
 
     <ContentControl
       Content="{Binding FileSystem}"
-      Focusable="False"/>
+      Focusable="False" />
 
   </Grid>
 

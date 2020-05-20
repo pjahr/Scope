@@ -24,7 +24,7 @@ namespace Scope.FileViewer.Text.ViewModels
         x.Save(writer);
       }
 
-      var p = new Paragraph() { FontFamily = new FontFamily("Consolas"), FontSize = 10 };
+      var p = new Paragraph {FontFamily = new FontFamily("Consolas"), FontSize = 10};
       p.Inlines.Add(text.ToString());
       var doc = new FlowDocument(p);
 
@@ -35,8 +35,6 @@ namespace Scope.FileViewer.Text.ViewModels
 
     public FlowDocument Document { get; }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
   }
 }

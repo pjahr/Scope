@@ -11,6 +11,5 @@ namespace Scope.ViewModels
       Command = command;
       Label = "Open...";
     }
-
   }
 }

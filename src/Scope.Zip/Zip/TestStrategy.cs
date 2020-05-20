@@ -13,7 +13,6 @@
     /// <summary>
     /// Find all possible errors.
     /// </summary>
-    FindAllErrors,
+    FindAllErrors
   }
-
 }

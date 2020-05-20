@@ -1,64 +1,62 @@
 ﻿<Menu
   x:Class="Scope.Views.MainMenuView"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"  
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   IsMainMenu="True">
 
 
-  <MenuItem Header="File">
+  <MenuItem
+    Header="File">
 
     <MenuItem
       DataContext="{Binding OpenP4kFile}"
       Header="{Binding Label}"
       Command="{Binding Command}"
-      InputGestureText="{Binding Shortcut}"/>
+      InputGestureText="{Binding Shortcut}" />
 
     <MenuItem
       DataContext="{Binding CloseP4kFile}"
       Header="{Binding Label}"
       Command="{Binding Command}"
-      InputGestureText="{Binding Shortcut}"/>
+      InputGestureText="{Binding Shortcut}" />
 
-    <Separator/>
+    <Separator />
 
     <MenuItem
       DataContext="{Binding ExitApplication}"
       Header="{Binding Label}"
       Command="{Binding Command}"
-      InputGestureText="{Binding Shortcut}"/>
+      InputGestureText="{Binding Shortcut}" />
 
   </MenuItem>
 
-  <MenuItem Header="View">
+  <MenuItem
+    Header="View" />
 
+  <MenuItem
+    Header="Plugins" />
 
-  </MenuItem>
-
-  <MenuItem Header="Plugins">
-
-
-  </MenuItem>
-
-  <MenuItem Header="Help">
+  <MenuItem
+    Header="Help">
 
     <MenuItem
       DataContext="{Binding OpenReddit}"
       Header="{Binding Label}"
       Command="{Binding Command}"
-      InputGestureText="{Binding Shortcut}"/>
+      InputGestureText="{Binding Shortcut}" />
 
     <MenuItem
       DataContext="{Binding OpenDiscord}"
       Header="{Binding Label}"
       Command="{Binding Command}"
-      InputGestureText="{Binding Shortcut}"/>
+      InputGestureText="{Binding Shortcut}" />
 
-    <Separator/>
+    <Separator />
 
     <MenuItem
       DataContext="{Binding DisplayAboutDialog}"
       Header="{Binding Label}"
-      Command="{Binding Command}"/>
+      Command="{Binding Command}" />
 
   </MenuItem>
 

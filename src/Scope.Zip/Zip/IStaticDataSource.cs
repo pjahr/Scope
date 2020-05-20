@@ -14,5 +14,4 @@ namespace Scope.Zip.Zip
     /// <remarks>Ideally a new stream is created and opened to achieve this, to avoid locking problems.</remarks>
     Stream GetSource();
   }
-
 }

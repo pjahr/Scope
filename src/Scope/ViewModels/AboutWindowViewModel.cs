@@ -17,8 +17,6 @@ namespace Scope.ViewModels
 
     public event Action CloseRequested;
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
   }
 }

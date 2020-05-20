@@ -16,8 +16,8 @@ namespace Scope.FileViewer.Text.ViewModels
         text = Encoding.UTF8.GetString(s.ReadAllBytes());
       }
 
-      var p = new Paragraph() { FontFamily = new FontFamily("Consolas"), FontSize = 10 };
-      p.Inlines.Add(text.ToString());
+      var p = new Paragraph {FontFamily = new FontFamily("Consolas"), FontSize = 10};
+      p.Inlines.Add(text);
       var doc = new FlowDocument(p);
 
       Document = doc;
@@ -27,8 +27,6 @@ namespace Scope.FileViewer.Text.ViewModels
 
     public FlowDocument Document { get; }
 
-    public void Dispose()
-    {
-    }
+    public void Dispose() { }
   }
 }

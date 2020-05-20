@@ -13,7 +13,6 @@
     /// <summary>
     /// Update the archive directly, which is faster but less safe.
     /// </summary>
-    Direct,
+    Direct
   }
-
 }

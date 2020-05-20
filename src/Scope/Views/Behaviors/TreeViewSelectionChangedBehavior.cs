@@ -20,7 +20,8 @@ namespace Scope.Views.Behaviors
       DependencyProperty.RegisterAttached("ChangedCommand",
                                           typeof(ICommand),
                                           typeof(TreeViewSelectionChangedBehavior),
-                                          new PropertyMetadata(null, OnSelectionChangedCommandChange));
+                                          new PropertyMetadata(null,
+                                                               OnSelectionChangedCommandChange));
 
     /// <summary>
     /// Setter method of the attached ChangedCommand <seealso cref="ICommand"/> property
@@ -43,9 +44,10 @@ namespace Scope.Views.Behaviors
     /// It is called whenever the attached property changes - in our case the event of binding
     /// and unbinding the property to a sink is what we are looking for.
     /// </summary>
-    private static void OnSelectionChangedCommandChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnSelectionChangedCommandChange(DependencyObject d,
+                                                        DependencyPropertyChangedEventArgs e)
     {
-      TreeView uiElement = d as TreeView; 
+      TreeView uiElement = d as TreeView;
 
       if (uiElement != null)
       {

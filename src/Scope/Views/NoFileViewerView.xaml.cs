@@ -2,14 +2,14 @@
 
 namespace Scope.Views
 {
-    /// <summary>
-    /// Interaction logic for NoFileViewerView.xaml
-    /// </summary>
-    public partial class NoFileViewerView : UserControl
+  /// <summary>
+  /// Interaction logic for NoFileViewerView.xaml
+  /// </summary>
+  public partial class NoFileViewerView : UserControl
+  {
+    public NoFileViewerView()
     {
-        public NoFileViewerView()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

@@ -4,7 +4,7 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <Grid>
-    
+
     <TabControl
       ItemsSource="{Binding Items}"
       SelectedItem="{Binding Active}"
@@ -13,7 +13,7 @@
       <TabControl.ItemTemplate>
         <DataTemplate>
           <TextBlock
-            Text="{Binding Header}"/>
+            Text="{Binding Header}" />
         </DataTemplate>
       </TabControl.ItemTemplate>
 
@@ -21,19 +21,21 @@
         <DataTemplate>
           <Grid>
             <ContentControl
-                Content="{Binding Viewer}"
-                Focusable="False"/>
+              Content="{Binding Viewer}"
+              Focusable="False" />
           </Grid>
         </DataTemplate>
       </TabControl.ContentTemplate>
 
-        <TabControl.ItemContainerStyle>
-            <Style TargetType="TabItem">
-                <Setter Property="Focusable"
-                        Value="False" />
-                
-            </Style>
-        </TabControl.ItemContainerStyle>
+      <TabControl.ItemContainerStyle>
+        <Style
+          TargetType="TabItem">
+          <Setter
+            Property="Focusable"
+            Value="False" />
+
+        </Style>
+      </TabControl.ItemContainerStyle>
 
     </TabControl>
   </Grid>

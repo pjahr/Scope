@@ -5,11 +5,11 @@ namespace Scope.Zip.Zip
   /// <summary>
   /// An abstract <see cref="IArchiveStorage"/> suitable for extension by inheritance.
   /// </summary>
-  abstract public class BaseArchiveStorage : IArchiveStorage
+  public abstract class BaseArchiveStorage : IArchiveStorage
   {
     #region Constructors
 
-    private FileUpdateMode updateMode_;
+    private readonly FileUpdateMode updateMode_;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseArchiveStorage"/> class.
@@ -26,13 +26,7 @@ namespace Scope.Zip.Zip
     /// Gets the update mode applicable.
     /// </summary>
     /// <value>The update mode.</value>
-    public FileUpdateMode UpdateMode
-    {
-      get
-      {
-        return updateMode_;
-      }
-    }
+    public FileUpdateMode UpdateMode => updateMode_;
 
     /// <summary>
     /// Gets a temporary output <see cref="Stream"/>
@@ -68,5 +62,4 @@ namespace Scope.Zip.Zip
     /// </summary>
     public abstract void Dispose();
   }
-
 }

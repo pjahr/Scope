@@ -9,7 +9,7 @@ namespace Scope.Models
   {
     private readonly ZipEntry _zipEntry;
     private readonly ZipFile _zip;
-    
+
     public P4kFile(ZipEntry zipEntry, ZipFile zip)
     {
       _zipEntry = zipEntry;
@@ -18,8 +18,9 @@ namespace Scope.Models
       Name = _zipEntry.Name.GetFileName();
       Path = _zipEntry.Name;
     }
+
     public string Name { get; }
-    public string Path { get; }    
+    public string Path { get; }
 
     public Stream Read()
     {

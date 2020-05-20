@@ -16,4 +16,3 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.*")]
 [assembly: InternalsVisibleTo("Scope.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
-

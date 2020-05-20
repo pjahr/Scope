@@ -43,7 +43,7 @@ namespace Scope.ViewModels.Commands
 
     public void Execute(object parameter)
     {
-      _action((T)parameter);
+      _action((T) parameter);
     }
   }
 }

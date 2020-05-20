@@ -6,7 +6,7 @@
   xmlns:views="clr-namespace:Scope.Views"
   SnapsToDevicePixels="True"
   WindowStyle="SingleBorderWindow"
-  ResizeMode="CanResizeWithGrip" 
+  ResizeMode="CanResizeWithGrip"
   FontFamily="Tahoma"
   WindowStartupLocation="CenterScreen"
   Height="720"
@@ -14,37 +14,44 @@
   Title="{Binding Title}">
 
   <Window.InputBindings>
-    <KeyBinding Command="{Binding OpenP4kFileCommand}" 
-                Key="O" 
-                Modifiers="Control"/>
+    <KeyBinding
+      Command="{Binding OpenP4kFileCommand}"
+      Key="O"
+      Modifiers="Control" />
   </Window.InputBindings>
 
   <Grid>
 
     <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="3*"/>
-      <RowDefinition Height="5"/>
-      <RowDefinition Height="2*"/>
-      <RowDefinition Height="Auto"/>
+      <RowDefinition
+        Height="Auto" />
+      <RowDefinition
+        Height="3*" />
+      <RowDefinition
+        Height="5" />
+      <RowDefinition
+        Height="2*" />
+      <RowDefinition
+        Height="Auto" />
     </Grid.RowDefinitions>
 
     <Grid.ColumnDefinitions>
-      <ColumnDefinition/>
-      <ColumnDefinition Width="5"/>
-      <ColumnDefinition/>
+      <ColumnDefinition />
+      <ColumnDefinition
+        Width="5" />
+      <ColumnDefinition />
     </Grid.ColumnDefinitions>
 
-    <views:MainMenuView 
+    <views:MainMenuView
       DataContext="{Binding MainMenu}"
       Grid.Row="0"
       Grid.Column="0"
-      Grid.ColumnSpan="3"/>
+      Grid.ColumnSpan="3" />
 
     <views:CurrentP4kFsView
       DataContext="{Binding CurrentP4kFileSystem}"
       Grid.Row="1"
-      Grid.Column="0"/>
+      Grid.Column="0" />
 
     <!--splits current p4k fs and selected items-->
     <GridSplitter
@@ -53,12 +60,12 @@
       Height="5"
       HorizontalAlignment="Stretch"
       Background="LightGray"
-      Focusable="False"/>
+      Focusable="False" />
 
     <views:SelectedItemsView
       DataContext="{Binding SelectedItems}"
       Grid.Row="3"
-      Grid.Column="0"/>
+      Grid.Column="0" />
 
     <!--splits left and right side-->
     <GridSplitter
@@ -68,19 +75,19 @@
       Width="5"
       HorizontalAlignment="Stretch"
       Background="LightGray"
-      Focusable="False"/>
+      Focusable="False" />
 
-    <views:FileViewerCollectionView 
+    <views:FileViewerCollectionView
       DataContext="{Binding FileViewers}"
       Grid.Row="1"
       Grid.Column="2"
-      Grid.RowSpan="3"/>
+      Grid.RowSpan="3" />
 
-    <views:StatusBarView 
+    <views:StatusBarView
       DataContext="{Binding StatusBar}"
       Grid.Row="4"
       Grid.Column="0"
-      Grid.ColumnSpan="3"/>
+      Grid.ColumnSpan="3" />
 
   </Grid>
 

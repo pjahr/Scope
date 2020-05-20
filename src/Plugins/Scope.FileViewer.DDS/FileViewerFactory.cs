@@ -7,14 +7,11 @@ namespace Scope.FileViewer.DDS
   [Export]
   public class FileViewerFactory : IFileViewerFactory
   {
-    private static string[] _extensions;
+    private static readonly string[] _extensions;
 
     static FileViewerFactory()
     {
-      _extensions = new string[]
-      {
-       ".dds",
-      };
+      _extensions = new[] {".dds"};
     }
 
     public bool CanHandle(IFile file)

@@ -20,7 +20,9 @@ namespace Scope.Utils
       action?.Invoke(sender, new EventArgs());
     }
 
-    public static void Raise(this PropertyChangedEventHandler action, object sender, string propertyName)
+    public static void Raise(this PropertyChangedEventHandler action,
+                             object sender,
+                             string propertyName)
     {
       action?.Invoke(sender, new PropertyChangedEventArgs(propertyName));
     }

@@ -22,9 +22,13 @@ namespace Scope.Views.Behaviors
     }
 
     public static readonly DependencyProperty CommandProperty =
-      DependencyProperty.RegisterAttached("Command", typeof(ICommand), typeof(TreeViewItemExpanded), new PropertyMetadata(null, OnPropertyChanged));
+      DependencyProperty.RegisterAttached("Command",
+                                          typeof(ICommand),
+                                          typeof(TreeViewItemExpanded),
+                                          new PropertyMetadata(null, OnPropertyChanged));
 
-    private static void OnPropertyChanged(DependencyObject depObj, DependencyPropertyChangedEventArgs e)
+    private static void OnPropertyChanged(DependencyObject depObj,
+                                          DependencyPropertyChangedEventArgs e)
     {
       TreeViewItem item = depObj as TreeViewItem;
       if (item == null)

@@ -52,6 +52,7 @@ namespace Scope.ViewModels
         {
           return;
         }
+
         _isActive = value;
         PropertyChanged.Raise(this, nameof(IsActive));
       }
@@ -66,6 +67,7 @@ namespace Scope.ViewModels
         {
           return;
         }
+
         _isSelected = value;
         PropertyChanged.Raise(this, nameof(IsSelected));
       }

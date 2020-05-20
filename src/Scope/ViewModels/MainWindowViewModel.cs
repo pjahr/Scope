@@ -55,11 +55,12 @@ namespace Scope.ViewModels
     private void UpdateTitle()
     {
       // 'Scope - P:\ath\to\game\Data.p4k'
-      var spacer = _currentP4K.FileSystem != null ? " - " : "";
+      var spacer = _currentP4K.FileSystem != null
+                     ? " - "
+                     : "";
       Title = $"Scope{spacer}{_currentP4K.FileName}";
 
       PropertyChanged.Raise(this, nameof(Title));
     }
   }
-
 }

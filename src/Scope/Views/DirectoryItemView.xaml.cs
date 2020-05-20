@@ -28,7 +28,8 @@ namespace Scope.Views
           return;
         }
 
-        var listBoxItem = (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i - 1]);
+        var listBoxItem =
+          (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i - 1]);
         Keyboard.Focus(listBoxItem.FindFocusableChild());
         e.Handled = true;
         return;
@@ -51,12 +52,11 @@ namespace Scope.Views
           return;
         }
 
-        var listBoxItem = (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i + 1]);
+        var listBoxItem =
+          (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i + 1]);
         Keyboard.Focus(listBoxItem.FindFocusableChild());
         e.Handled = true;
-        return;
       }
-        }
-
     }
+  }
 }

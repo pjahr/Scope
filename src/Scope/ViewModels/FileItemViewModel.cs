@@ -3,12 +3,11 @@ using Scope.Interfaces;
 
 namespace Scope.ViewModels
 {
-  internal class FileItemViewModel:IDisposable
+  internal class FileItemViewModel : IDisposable
   {
-    private IFile _file;
+    private readonly IFile _file;
 
-    public FileItemViewModel(IFile currentFile,
-                             IFileViewerFactory factory)
+    public FileItemViewModel(IFile currentFile, IFileViewerFactory factory)
     {
       _file = currentFile;
 

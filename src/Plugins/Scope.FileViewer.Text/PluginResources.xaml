@@ -6,17 +6,17 @@
 
   <DataTemplate
     DataType="{x:Type vm:CryXmlTextFileViewModel}">
-    <views:TextFileView/>
+    <views:TextFileView />
   </DataTemplate>
 
-    <DataTemplate
-        DataType="{x:Type vm:JsonTextFileViewModel}">
-        <views:TextFileView/>
-    </DataTemplate>
+  <DataTemplate
+    DataType="{x:Type vm:JsonTextFileViewModel}">
+    <views:TextFileView />
+  </DataTemplate>
 
-    <DataTemplate
-        DataType="{x:Type vm:TextFileViewModel}">
-        <views:TextFileView/>
-    </DataTemplate>
+  <DataTemplate
+    DataType="{x:Type vm:TextFileViewModel}">
+    <views:TextFileView />
+  </DataTemplate>
 
 </ResourceDictionary>

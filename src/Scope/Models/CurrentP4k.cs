@@ -1,16 +1,21 @@
 ﻿using System;
 using System.ComponentModel.Composition;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 using Scope.Zip.Zip;
+using IFileSystem = Scope.Models.Interfaces.IFileSystem;
 
 namespace Scope.Models
 {
   [Export]
   internal class CurrentP4k : ICurrentP4k
   {
-    private readonly byte[] _key = new byte[] { 94, 122, 32, 2, 48, 46, 235, 26, 59, 182, 23, 195, 15, 222, 30, 71 };
+    private readonly byte[] _key =
+    {
+      94, 122, 32, 2, 48, 46, 235, 26, 59, 182, 23, 195, 15, 222, 30, 71
+    };
     private ZipFile _p4k;
 
     public IFileSystem FileSystem { get; private set; }
@@ -23,7 +28,7 @@ namespace Scope.Models
       DisposeCurrentP4k();
     }
 
-    public Task<OpenP4kFileResult> ChangeAsync(System.IO.Abstractions.IFileInfo p4kFile)
+    public Task<OpenP4kFileResult> ChangeAsync(IFileInfo p4kFile)
     {
       DisposeCurrentP4k();
 
@@ -41,16 +46,15 @@ namespace Scope.Models
       return Task.Run(DisposeCurrentP4k);
     }
 
-    private OpenP4kFileResult OpenP4kFile(System.IO.Abstractions.IFileInfo p4kFile)
+    private OpenP4kFileResult OpenP4kFile(IFileInfo p4kFile)
     {
       try
       {
-        _p4k = new ZipFile(p4kFile.FullName) { Key = _key };
+        _p4k = new ZipFile(p4kFile.FullName) {Key = _key};
         //_p4k.KeysRequired += ProvideKey;
 
         FileSystem = new GenerateFileSystem().Generate(_p4k);
         FileName = p4kFile.FullName;
-
       }
       catch (Exception ex)
       {
@@ -76,6 +80,7 @@ namespace Scope.Models
         _p4k.Close();
         _p4k = null;
       }
+
       FileSystem = null;
       FileName = "";
 

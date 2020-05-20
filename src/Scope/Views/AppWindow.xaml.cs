@@ -22,12 +22,12 @@ namespace Scope.Views
     private void ShowRequestedDialog(IDialog dialog)
     {
       var dialogWindow = new Window
-      {
-        WindowStyle = WindowStyle.ToolWindow,
-        WindowStartupLocation = WindowStartupLocation.CenterScreen,
-        Content = dialog,
-        SizeToContent = SizeToContent.WidthAndHeight
-      };
+                         {
+                           WindowStyle = WindowStyle.ToolWindow,
+                           WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                           Content = dialog,
+                           SizeToContent = SizeToContent.WidthAndHeight
+                         };
 
       dialogWindow.ShowDialog();
     }

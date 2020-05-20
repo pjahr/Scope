@@ -11,12 +11,13 @@ namespace Scope.Models
     public IFileSystem Generate(ZipFile zipFile)
     {
       _root = P4kDirectory.Root();
-      foreach (ZipEntry item in zipFile.Cast<ZipEntry>().Where(f => f.IsFile))
+      foreach (ZipEntry item in zipFile.Cast<ZipEntry>()
+                                       .Where(f => f.IsFile))
       {
         var directory = EnsureDirectoryExists(item.Name);
-        directory.Add(new P4kFile(item,zipFile));
+        directory.Add(new P4kFile(item, zipFile));
       }
-      
+
       return new P4kFileSystem(_root);
     }
 
@@ -32,7 +33,8 @@ namespace Scope.Models
           directory = new P4kDirectory(pathSegments[i]);
           current.Add(directory);
         }
-        current = (P4kDirectory)directory;
+
+        current = (P4kDirectory) directory;
       }
 
       return current;

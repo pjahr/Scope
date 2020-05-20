@@ -9,7 +9,7 @@ namespace Scope.Zip.Zip
   {
     #region Constructors
 
-    private string fileName;
+    private readonly string fileName;
 
     private byte[] key;
 
@@ -40,21 +40,13 @@ namespace Scope.Zip.Zip
     /// <summary>
     /// Gets the name of the file for which keys are required.
     /// </summary>
-    public string FileName
-    {
-      get { return fileName; }
-    }
+    public string FileName => fileName;
 
     /// <summary>
     /// Gets or sets the key value
     /// </summary>
-    public byte[] Key
-    {
-      get { return key; }
-      set { key = value; }
-    }
+    public byte[] Key { get => key; set => key = value; }
 
     #endregion Properties
   }
-
 }

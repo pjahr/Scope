@@ -39,19 +39,21 @@ namespace Scope.Views.Behaviors
       set => SetValue(SelectedItemProperty, value);
     }
 
-    public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem",
-                                                                                                 typeof(TreeNodeViewModel[]),
-                                                                                                 typeof(BringVirtualTreeViewItemIntoViewBehavior),
-                                                                                                 new FrameworkPropertyMetadata(null,
-                                                                                                                               FrameworkPropertyMetadataOptions
-                                                                                                                                .BindsTwoWayByDefault,
-                                                                                                                               OnSelectedItemChanged));
+    public static readonly DependencyProperty SelectedItemProperty =
+      DependencyProperty.Register("SelectedItem",
+                                  typeof(TreeNodeViewModel[]),
+                                  typeof(BringVirtualTreeViewItemIntoViewBehavior),
+                                  new FrameworkPropertyMetadata(null,
+                                                                FrameworkPropertyMetadataOptions
+                                                                 .BindsTwoWayByDefault,
+                                                                OnSelectedItemChanged));
 
     /// <summary>
     /// This method is invoked when the value bound at the dependency
     /// property <see cref="SelectedItem"/> has changed.
     /// </summary>
-    private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void OnSelectedItemChanged(DependencyObject d,
+                                              DependencyPropertyChangedEventArgs e)
     {
       // Sanity check: Are we looking at the least required data we need?
       var newNode = e.NewValue as TreeNodeViewModel[];
@@ -76,14 +78,16 @@ namespace Scope.Views.Behaviors
         var node = newNode[i];
 
         // first try the easy way
-        var newParent = currentParent.ItemContainerGenerator.ContainerFromItem(node) as TreeViewItem;
+        var newParent =
+          currentParent.ItemContainerGenerator.ContainerFromItem(node) as TreeViewItem;
         if (newParent == null)
         {
           // if this failed, it's probably because of virtualization, and we will have to do it the hard way.
           // this code is influenced by TreeViewItem.ExpandRecursive decompiled code, and the MSDN sample at http://code.msdn.microsoft.com/Changing-selection-in-a-6a6242c8/sourcecode?fileId=18862&pathId=753647475
           // see also the question at http://stackoverflow.com/q/183636/46635
           currentParent.ApplyTemplate();
-          var itemsPresenter = (ItemsPresenter) currentParent.Template.FindName("ItemsHost", currentParent);
+          var itemsPresenter =
+            (ItemsPresenter) currentParent.Template.FindName("ItemsHost", currentParent);
           if (itemsPresenter != null)
           {
             itemsPresenter.ApplyTemplate();
@@ -111,13 +115,16 @@ namespace Scope.Views.Behaviors
           }
 
           virtualizingPanel.BringIndexIntoViewPublic(index);
-          newParent = currentParent.ItemContainerGenerator.ContainerFromIndex(index) as TreeViewItem;
+          newParent =
+            currentParent.ItemContainerGenerator.ContainerFromIndex(index) as TreeViewItem;
         }
 
         if (newParent == null)
         {
 #if DEBUG
-          throw new InvalidOperationException("Tree view item cannot be found or created for node '" + node + "'");
+          throw new InvalidOperationException("Tree view item cannot be found or created for node '"
+                                              + node
+                                              + "'");
 #else
                     // Use your favourite logger here since the exception will otherwise kill the appliaction
                     System.Console.WriteLine("Node '" + node + "' cannot be fount in container");
@@ -153,7 +160,8 @@ namespace Scope.Views.Behaviors
       AssociatedObject.SelectedItemChanged -= OnTreeViewSelectedItemChanged;
     }
 
-    private void OnTreeViewSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    private void OnTreeViewSelectedItemChanged(object sender,
+                                               RoutedPropertyChangedEventArgs<object> e)
     {
       SelectedItem = e.NewValue as TreeNodeViewModel[];
     }

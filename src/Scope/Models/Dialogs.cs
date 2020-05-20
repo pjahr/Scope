@@ -15,5 +15,4 @@ namespace Scope.Models
       DisplayDialogRequested.Raise(dialog);
     }
   }
-
 }

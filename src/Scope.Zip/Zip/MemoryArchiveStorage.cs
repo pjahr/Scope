@@ -17,20 +17,14 @@ namespace Scope.Zip.Zip
     /// <summary>
     /// Initializes a new instance of the <see cref="MemoryArchiveStorage"/> class.
     /// </summary>
-    public MemoryArchiveStorage()
-      : base(FileUpdateMode.Direct)
-    {
-    }
+    public MemoryArchiveStorage() : base(FileUpdateMode.Direct) { }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MemoryArchiveStorage"/> class.
     /// </summary>
     /// <param name="updateMode">The <see cref="FileUpdateMode"/> to use</param>
     /// <remarks>This constructor is for testing as memory streams dont really require safe mode.</remarks>
-    public MemoryArchiveStorage(FileUpdateMode updateMode)
-      : base(updateMode)
-    {
-    }
+    public MemoryArchiveStorage(FileUpdateMode updateMode) : base(updateMode) { }
 
     #endregion Constructors
 
@@ -39,10 +33,7 @@ namespace Scope.Zip.Zip
     /// <summary>
     /// Get the stream returned by <see cref="ConvertTemporaryToFinal"/> if this was in fact called.
     /// </summary>
-    public MemoryStream FinalStream
-    {
-      get { return finalStream_; }
-    }
+    public MemoryStream FinalStream => finalStream_;
 
     #endregion Properties
 
@@ -95,7 +86,7 @@ namespace Scope.Zip.Zip
     public override Stream OpenForDirectUpdate(Stream stream)
     {
       Stream result;
-      if ((stream == null) || !stream.CanWrite)
+      if (stream == null || !stream.CanWrite)
       {
         result = new MemoryStream();
 
@@ -126,5 +117,4 @@ namespace Scope.Zip.Zip
       }
     }
   }
-
 }

@@ -27,10 +27,10 @@ namespace Scope.ViewModels
     private void Initialize()
     {
       FileSystem = _currentP4K.FileSystem != null
-                      ? new P4kFileSystemViewModel(_currentP4K.FileSystem, 
-                                                   _currentFile,
-                                                   _selectedItems)
-                      : null;
+                     ? new P4kFileSystemViewModel(_currentP4K.FileSystem,
+                                                  _currentFile,
+                                                  _selectedItems)
+                     : null;
 
       PropertyChanged.Raise(this, nameof(FileSystem));
     }

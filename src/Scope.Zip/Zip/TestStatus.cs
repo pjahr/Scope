@@ -8,7 +8,7 @@
   {
     #region Constructors
 
-    private ZipFile file_;
+    private readonly ZipFile file_;
 
     private ZipEntry entry_;
 
@@ -36,50 +36,32 @@
     /// <summary>
     /// Get the current <see cref="TestOperation"/> in progress.
     /// </summary>
-    public TestOperation Operation
-    {
-      get { return operation_; }
-    }
+    public TestOperation Operation => operation_;
 
     /// <summary>
     /// Get the <see cref="ZipFile"/> this status is applicable to.
     /// </summary>
-    public ZipFile File
-    {
-      get { return file_; }
-    }
+    public ZipFile File => file_;
 
     /// <summary>
     /// Get the current/last entry tested.
     /// </summary>
-    public ZipEntry Entry
-    {
-      get { return entry_; }
-    }
+    public ZipEntry Entry => entry_;
 
     /// <summary>
     /// Get the number of errors detected so far.
     /// </summary>
-    public int ErrorCount
-    {
-      get { return errorCount_; }
-    }
+    public int ErrorCount => errorCount_;
 
     /// <summary>
     /// Get the number of bytes tested so far for the current entry.
     /// </summary>
-    public long BytesTested
-    {
-      get { return bytesTested_; }
-    }
+    public long BytesTested => bytesTested_;
 
     /// <summary>
     /// Get a value indicating wether the last entry test was valid.
     /// </summary>
-    public bool EntryValid
-    {
-      get { return entryValid_; }
-    }
+    public bool EntryValid => entryValid_;
 
     #endregion Properties
 
@@ -106,5 +88,4 @@
       bytesTested_ = value;
     }
   }
-
 }

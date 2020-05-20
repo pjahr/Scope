@@ -9,7 +9,7 @@ namespace Scope.Models
   [Export]
   internal class Messages : IMessages
   {
-    Queue<IMessage> _messages = new Queue<IMessage>();
+    private readonly Queue<IMessage> _messages = new Queue<IMessage>();
 
     public IReadOnlyCollection<IMessage> Items => _messages;
 

@@ -7,9 +7,7 @@ namespace Scope.Zip.Zip
   /// </summary>
   public class StaticDiskDataSource : IStaticDataSource
   {
-    private readonly
-
-        string fileName_;
+    private readonly string fileName_;
 
     /// <summary>
     /// Initialise a new instnace of <see cref="StaticDiskDataSource"/>
@@ -29,5 +27,4 @@ namespace Scope.Zip.Zip
       return File.Open(fileName_, FileMode.Open, FileAccess.Read, FileShare.Read);
     }
   }
-
 }

@@ -12,7 +12,7 @@ namespace Scope.Zip.Zip
 
     private Stream temporaryStream_;
 
-    private string fileName_;
+    private readonly string fileName_;
 
     private string temporaryName_;
 
@@ -21,8 +21,7 @@ namespace Scope.Zip.Zip
     /// </summary>
     /// <param name="file">The file.</param>
     /// <param name="updateMode">The update mode.</param>
-    public DiskArchiveStorage(ZipFile file, FileUpdateMode updateMode)
-      : base(updateMode)
+    public DiskArchiveStorage(ZipFile file, FileUpdateMode updateMode) : base(updateMode)
     {
       if (file.Name == null)
       {
@@ -36,10 +35,7 @@ namespace Scope.Zip.Zip
     /// Initializes a new instance of the <see cref="DiskArchiveStorage"/> class.
     /// </summary>
     /// <param name="file">The file.</param>
-    public DiskArchiveStorage(ZipFile file)
-      : this(file, FileUpdateMode.Safe)
-    {
-    }
+    public DiskArchiveStorage(ZipFile file) : this(file, FileUpdateMode.Safe) { }
 
     #endregion Constructors
 
@@ -52,14 +48,20 @@ namespace Scope.Zip.Zip
       if (temporaryName_ != null)
       {
         temporaryName_ = GetTempFileName(temporaryName_, true);
-        temporaryStream_ = File.Open(temporaryName_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+        temporaryStream_ = File.Open(temporaryName_,
+                                     FileMode.OpenOrCreate,
+                                     FileAccess.Write,
+                                     FileShare.None);
       }
       else
       {
         // Determine where to place files based on internal strategy.
         // Currently this is always done in system temp directory.
         temporaryName_ = Path.GetTempFileName();
-        temporaryStream_ = File.Open(temporaryName_, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+        temporaryStream_ = File.Open(temporaryName_,
+                                     FileMode.OpenOrCreate,
+                                     FileAccess.Write,
+                                     FileShare.None);
       }
 
       return temporaryStream_;
@@ -121,9 +123,7 @@ namespace Scope.Zip.Zip
       temporaryName_ = GetTempFileName(fileName_, true);
       File.Copy(fileName_, temporaryName_, true);
 
-      temporaryStream_ = new FileStream(temporaryName_,
-        FileMode.Open,
-        FileAccess.ReadWrite);
+      temporaryStream_ = new FileStream(temporaryName_, FileMode.Open, FileAccess.ReadWrite);
       return temporaryStream_;
     }
 
@@ -136,16 +136,14 @@ namespace Scope.Zip.Zip
     public override Stream OpenForDirectUpdate(Stream stream)
     {
       Stream result;
-      if ((stream == null) || !stream.CanWrite)
+      if (stream == null || !stream.CanWrite)
       {
         if (stream != null)
         {
           stream.Dispose();
         }
 
-        result = new FileStream(fileName_,
-            FileMode.Open,
-            FileAccess.ReadWrite);
+        result = new FileStream(fileName_, FileMode.Open, FileAccess.ReadWrite);
       }
       else
       {
@@ -190,9 +188,8 @@ namespace Scope.Zip.Zip
               try
               {
                 // Try and create the file.
-                using (FileStream stream = File.Create(newName))
-                {
-                }
+                using (FileStream stream = File.Create(newName)) { }
+
                 result = newName;
               }
               catch
@@ -207,8 +204,8 @@ namespace Scope.Zip.Zip
           }
         }
       }
+
       return result;
     }
   }
-
 }

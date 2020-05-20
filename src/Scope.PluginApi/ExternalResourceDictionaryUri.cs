@@ -8,8 +8,7 @@ namespace Scope.Interfaces
     {
       var type = typeof(TResourceDictionary);
 
-      return new Uri($"{type.Assembly.GetName()};component/{type.Name}.xaml",
-                     UriKind.Relative);
+      return new Uri($"{type.Assembly.GetName()};component/{type.Name}.xaml", UriKind.Relative);
     }
   }
 }

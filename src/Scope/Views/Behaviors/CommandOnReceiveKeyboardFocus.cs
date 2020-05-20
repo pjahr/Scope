@@ -8,9 +8,15 @@ namespace Scope.Views.Behaviors
   public class CommandOnReceiveKeyboardFocus : Behavior<Panel>
   {
     public static readonly DependencyProperty CommandProperty =
-      DependencyProperty.Register("Command", typeof(ICommand), typeof(CommandOnReceiveKeyboardFocus));
+      DependencyProperty.Register("Command",
+                                  typeof(ICommand),
+                                  typeof(CommandOnReceiveKeyboardFocus));
 
-    public ICommand Command { get => (ICommand) GetValue(CommandProperty); set => SetValue(CommandProperty, value); }
+    public ICommand Command
+    {
+      get => (ICommand) GetValue(CommandProperty);
+      set => SetValue(CommandProperty, value);
+    }
 
     protected override void OnAttached()
     {

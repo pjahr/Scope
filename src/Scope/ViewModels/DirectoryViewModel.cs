@@ -9,7 +9,8 @@ namespace Scope.ViewModels
   {
     private readonly IDirectory _directory;
 
-    public DirectoryViewModel(IDirectory directory, TreeNodeViewModel parent) : base(parent, directory.Name)
+    public DirectoryViewModel(IDirectory directory, TreeNodeViewModel parent) :
+      base(parent, directory.Name)
     {
       _directory = directory;
     }
@@ -41,6 +42,7 @@ namespace Scope.ViewModels
       {
         contents.Add(new FileViewModel(file, this));
       }
+
       return contents;
     }
   }

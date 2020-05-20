@@ -2,13 +2,13 @@
 
 namespace Scope.Models
 {
-    internal class P4kFileSystem : IFileSystem
+  internal class P4kFileSystem : IFileSystem
+  {
+    public P4kFileSystem(IDirectory root)
     {
-        public P4kFileSystem(IDirectory root)
-        {
-            Root = root;
-        }
-
-        public IDirectory Root { get; }
+      Root = root;
     }
+
+    public IDirectory Root { get; }
+  }
 }
