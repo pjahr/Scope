@@ -36,6 +36,12 @@ namespace Scope.ViewModels
                                                   await directory.LoadChildrenAsync();
                                                 });
 
+      ExportCommand = new RelayCommand<object>(p =>
+      {
+
+      }
+        );
+
       CreateContainedDirectories();
       CreateContainedFiles();
     }
@@ -89,7 +95,7 @@ namespace Scope.ViewModels
     public ICommand ToggleSelectionOfCurrentItemCommand { get; }
 
     public ICommand ExpandCommand { get; }
-
+    public ICommand ExportCommand { get; }
     public ICommand NavigateUpCommand { get; }
     public ICommand NavigateDownCommand { get; }
 

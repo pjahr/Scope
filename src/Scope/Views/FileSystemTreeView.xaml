@@ -44,46 +44,15 @@
         <HierarchicalDataTemplate DataType="{x:Type vm:DirectoryViewModel}"
                                   ItemsSource="{Binding Children}">
 
-            <DockPanel>
+            <StackPanel
+              Orientation="Horizontal">
 
                 <Path Data="{StaticResource DirectoryIcon}"
-                      Style="{StaticResource FileSystemEntryIcon}" />
-
-                <Button DockPanel.Dock="Right"
-                        BorderThickness="0"
-                        Padding="2">
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Visibility"
-                                    Value="Hidden" />
-                            <Style.Triggers>
-                                <DataTrigger
-                                    Binding="{Binding
-                           RelativeSource={RelativeSource
-                                             Mode=FindAncestor,
-                                             AncestorType=DockPanel},
-                           Path=IsMouseOver}"
-                                    Value="True">
-                                    <Setter Property="Visibility"
-                                            Value="Visible" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-
-                    <Path Data="{StaticResource Export}"
-                          Fill="Black"
-                          Width="16"
-                          Height="16"
-                          Stretch="Uniform" />
-
-                    <Button.ToolTip>Export all pinned items</Button.ToolTip>
-
-                </Button>
+                      Style="{StaticResource FileSystemEntryIcon}" />               
 
                 <TextBlock Text="{Binding Name}" />
 
-            </DockPanel>
+            </StackPanel>
 
         </HierarchicalDataTemplate>
 
@@ -247,10 +216,48 @@
                                     Background="{TemplateBinding Background}"
                                     Padding="{TemplateBinding Padding}"
                                     SnapsToDevicePixels="true">
-                                <ContentPresenter x:Name="PART_Header"
+                <DockPanel>
+
+                  <Button 
+                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=TreeView},Path=DataContext.ExportCommand}"
+                    CommandParameter="{Binding}"
+                    DockPanel.Dock="Right"
+                        BorderThickness="0"
+                        Padding="2">
+                    <Button.Style>
+                      <Style TargetType="Button">
+                        <Setter Property="Visibility"
+                                    Value="Visible" />
+                        <Style.Triggers>
+                          <DataTrigger
+                                    Binding="{Binding
+                           RelativeSource={RelativeSource
+                                             Mode=FindAncestor,
+                                             AncestorType=DockPanel},
+                           Path=IsMouseOver}"
+                                    Value="True">
+                            <Setter Property="Visibility"
+                                            Value="Visible" />
+                          </DataTrigger>
+                        </Style.Triggers>
+                      </Style>
+                    </Button.Style>
+
+                    <Path Data="{StaticResource Export}"
+                          Fill="Black"
+                          Width="16"
+                          Height="16"
+                          Stretch="Uniform" />
+
+                    <Button.ToolTip>Export all pinned items</Button.ToolTip>
+
+                  </Button>
+
+                  <ContentPresenter x:Name="PART_Header"
                                                   ContentSource="Header"
                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </DockPanel>
                             </Border>
                             <ItemsPresenter x:Name="ItemsHost"
                                             Grid.Row="1"
