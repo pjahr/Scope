@@ -33,7 +33,7 @@
           Style="{StaticResource FileSystemEntryIcon}" />
 
         <TextBlock
-          Text="{Binding Name}"
+          Text="{Binding Path}"
           Margin="3 0"
           VerticalAlignment="Center" />
 
@@ -88,7 +88,7 @@
           Style="{StaticResource FileSystemEntryIcon}" />
 
         <TextBlock
-          Text="{Binding Name}"
+          Text="{Binding Path}"
           Margin="3"
           VerticalAlignment="Center" />
 
@@ -200,11 +200,50 @@
 
       </Button>
 
+      <Button
+        DockPanel.Dock="Right"
+        BorderThickness="0"
+        Padding="2"
+        Margin="3 0">
+        <Button.Style>
+          <Style
+            TargetType="Button">
+            <Setter
+              Property="Visibility"
+              Value="Hidden" />
+            <Style.Triggers>
+              <DataTrigger
+                Binding="{Binding
+                           RelativeSource={RelativeSource
+                                             Mode=FindAncestor,
+                                             AncestorType=DockPanel},
+                           Path=IsMouseOver}"
+                Value="True">
+                <Setter
+                  Property="Visibility"
+                  Value="Visible" />
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
+
+        <Path
+          Data="{StaticResource OutputDirectory}"
+          Fill="Black"
+          Width="16"
+          Height="16"
+          Stretch="Uniform" />
+
+        <Button.ToolTip>Choose output directory</Button.ToolTip>
+
+      </Button>
+
       <TextBlock
         Text="Pinned Items"
         VerticalAlignment="Center"
         FontFamily="Segoe UI Thin" />
 
+      <TextBlock Text="{Binding OutputDirectory}" DockPanel.Dock="Right"/>
 
     </DockPanel>
 

@@ -46,11 +46,6 @@ namespace Scope.Models
       return Task.Run(DisposeCurrentP4k);
     }
 
-    public Task ExtractP4kContent(IFile file)
-    {
-      
-    }
-
     private OpenP4kFileResult OpenP4kFile(IFileInfo p4kFile)
     {
       try
