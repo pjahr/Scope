@@ -27,10 +27,12 @@ namespace Scope.Models
       P4kDirectory current = _root;
       for (int i = 0; i < pathSegments.Length - 1; i++)
       {
-        var directory = current.Directories.SingleOrDefault(d => d.Name == pathSegments[i]);
+        var name = pathSegments[i];
+        var directory = current.Directories.SingleOrDefault(d => d.Name == name);
         if (directory == null)
         {
-          directory = new P4kDirectory(pathSegments[i]);
+          string path = $"{current.Path}{name}/";
+          directory = new P4kDirectory(pathSegments[i], path);
           current.Add(directory);
         }
 

@@ -8,19 +8,21 @@ namespace Scope.Models
   {
     private readonly List<IDirectory> _directories = new List<IDirectory>();
     private readonly List<IFile> _files = new List<IFile>();
-    private readonly IDirectory _parent;
 
     private P4kDirectory()
     {
       Name = "Root";
+      Path = string.Empty;
     }
 
-    public P4kDirectory(string name)
+    public P4kDirectory(string name, string path)
     {
       Name = name;
+      Path = path;
     }
 
     public string Name { get; }
+    public string Path { get; }
     public IReadOnlyCollection<IDirectory> Directories => _directories;
     public IReadOnlyCollection<IFile> Files => _files;
 

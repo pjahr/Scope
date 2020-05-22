@@ -37,6 +37,7 @@ namespace Scope.ViewModels
     public event PropertyChangedEventHandler PropertyChanged;
 
     public string Name => _directory.Name;
+    public string Path => _directory.Path;
     public bool HasChildren { get; private set; }
     public ObservableCollection<object> Items { get; private set; }
     public ICommand SetCurrentItemCommand { get; }
