@@ -4,7 +4,7 @@ using Scope.Interfaces;
 
 namespace Scope.Models.Interfaces
 {
-  internal interface ISelectedItems
+  internal interface IPinnedItems
   {
     event Action Changed;
 

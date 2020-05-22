@@ -111,6 +111,7 @@
     <ProjectReference Include="..\..\Scope.Utils\Scope.Utils.csproj">
       <Project>{e60dd48e-1e9a-4e9d-9b5f-d5af75ab4cbb}</Project>
       <Name>Scope.Utils</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

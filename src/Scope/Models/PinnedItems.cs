@@ -8,7 +8,7 @@ using Scope.Utils;
 namespace Scope.Models
 {
   [Export]
-  internal class SelectedItems : ISelectedItems
+  internal class PinnedItems : IPinnedItems
   {
     private readonly List<IDirectory> _directories = new List<IDirectory>();
     private readonly List<IFile> _files = new List<IFile>();

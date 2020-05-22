@@ -163,7 +163,7 @@
     <Compile Include="Models\Interfaces\IOutputDirectory.cs" />
     <Compile Include="Models\Interfaces\IP4kFileSystemFactory.cs" />
     <Compile Include="Models\Interfaces\IProgress.cs" />
-    <Compile Include="Models\Interfaces\ISelectedItems.cs" />
+    <Compile Include="Models\Interfaces\IPinnedItems.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\OpenP4kFileResult.cs" />
@@ -173,7 +173,7 @@
     <Compile Include="Models\P4kFileSystem.cs" />
     <Compile Include="Models\P4kFileSystemFactory.cs" />
     <Compile Include="Models\Progress.cs" />
-    <Compile Include="Models\SelectedItems.cs" />
+    <Compile Include="Models\PinnedItems.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="ViewModels\CloseCurrentP4kFileMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Commands\OpenP4kFileCommand.cs" />
@@ -195,9 +195,9 @@
     <Compile Include="ViewModels\P4kFileSystemViewModel.cs" />
     <Compile Include="ViewModels\Commands\RelayCommand.cs" />
     <Compile Include="ViewModels\RootMenuItemViewModel.cs" />
-    <Compile Include="ViewModels\SelectedDirectoryViewModel.cs" />
-    <Compile Include="ViewModels\SelectedFileViewModel.cs" />
-    <Compile Include="ViewModels\SelectedItemsViewModel.cs" />
+    <Compile Include="ViewModels\PinnedDirectoryViewModel.cs" />
+    <Compile Include="ViewModels\PinnedFileViewModel.cs" />
+    <Compile Include="ViewModels\PinnedItemsViewModel.cs" />
     <Compile Include="ViewModels\Separator.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\TreeNodeViewModel.cs" />
@@ -237,8 +237,8 @@
     <Compile Include="Views\NoFileViewerView.xaml.cs">
       <DependentUpon>NoFileViewerView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SelectedItemsView.xaml.cs">
-      <DependentUpon>SelectedItemsView.xaml</DependentUpon>
+    <Compile Include="Views\PinnedItemsView.xaml.cs">
+      <DependentUpon>PinnedItemsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -296,7 +296,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SelectedItemsView.xaml">
+    <Page Include="Views\PinnedItemsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

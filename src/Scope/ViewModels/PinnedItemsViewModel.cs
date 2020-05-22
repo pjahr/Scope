@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
-using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Scope.Models.Interfaces;
 using Scope.Utils;
@@ -13,22 +12,25 @@ using Scope.ViewModels.Commands;
 namespace Scope.ViewModels
 {
   [Export]
-  internal class SelectedItemsViewModel : INotifyPropertyChanged, IDisposable
+  internal class PinnedItemsViewModel : INotifyPropertyChanged, IDisposable
   {
     private readonly ICurrentItem _currentItem;
-    private readonly ISelectedItems _selectedItems;
+    private readonly IPinnedItems _pinnedItems;
     private readonly IOutputDirectory _outputDirectory;
 
-    public SelectedItemsViewModel(ICurrentItem currentItem, ISelectedItems selectedItems, IOutputDirectory outputDirectory)
+    public PinnedItemsViewModel(ICurrentItem currentItem,
+                                IPinnedItems pinnedItems,
+                                IOutputDirectory outputDirectory)
     {
       _currentItem = currentItem;
-      _selectedItems = selectedItems;
+      _pinnedItems = pinnedItems;
       _outputDirectory = outputDirectory;
-      Items = new ObservableCollection<object>();
-      _selectedItems.Changed += Update;
-      _outputDirectory.Changed += RaiseOutputDirectoryChanged;
 
+      Items = new ObservableCollection<object>();
       ChooseOutputDirectoryCommand = new RelayCommand(ChooseOutputDirectory);
+
+      _pinnedItems.Changed += Update;
+      _outputDirectory.Changed += RaiseOutputDirectoryChanged;
 
       Update();
     }
@@ -47,19 +49,23 @@ namespace Scope.ViewModels
     private void Update()
     {
       Items.Clear();
-      foreach (var item in _selectedItems.Directories.OrderBy(d => d.Name)
-                                         .Select(f => new SelectedDirectoryViewModel(f,
-                                                                                     _currentItem,
-                                                                                     _selectedItems))
-      )
+
+      var directories = _pinnedItems.Directories
+                                    .OrderBy(d => d.Name)
+                                    .Select(d => new PinnedDirectoryViewModel(d,
+                                                                              _currentItem,
+                                                                              _pinnedItems));
+      foreach (var item in directories)
       {
         Items.Add(item);
       }
 
-      foreach (var item in _selectedItems.Files.OrderBy(d => d.Name)
-                                         .Select(f => new SelectedFileViewModel(f,
-                                                                                _currentItem,
-                                                                                _selectedItems)))
+      var files = _pinnedItems.Files
+                              .OrderBy(d => d.Name)
+                              .Select(f => new PinnedFileViewModel(f,
+                                                                  _currentItem,
+                                                                  _pinnedItems));
+      foreach (var item in files)
       {
         Items.Add(item);
       }
@@ -67,7 +73,7 @@ namespace Scope.ViewModels
 
     public void Dispose()
     {
-      _selectedItems.Changed -= Update;
+      _pinnedItems.Changed -= Update;
     }
 
     private void ChooseOutputDirectory()

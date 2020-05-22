@@ -17,7 +17,7 @@ namespace Scope.ViewModels
     public MainWindowViewModel(ICurrentP4k currentP4k,
                                MainMenuViewModel mainMenu,
                                CurrentP4kFileSystemViewModel currentP4KFileSystem,
-                               SelectedItemsViewModel selectedItems,
+                               PinnedItemsViewModel selectedItems,
                                StatusBarViewModel statusBar,
                                FileViewerCollectionViewModel fileViewers,
                                OpenP4kFileCommand openP4KFileCommand)
@@ -41,7 +41,7 @@ namespace Scope.ViewModels
     public CurrentP4kFileSystemViewModel CurrentP4kFileSystem { get; }
     public StatusBarViewModel StatusBar { get; }
     public FileViewerCollectionViewModel FileViewers { get; }
-    public SelectedItemsViewModel SelectedItems { get; }
+    public PinnedItemsViewModel SelectedItems { get; }
 
     public ICommand OpenP4kFileCommand => _openP4KFileCommand;
 

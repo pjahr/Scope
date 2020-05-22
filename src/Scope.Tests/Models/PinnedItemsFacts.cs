@@ -7,10 +7,10 @@ using Xunit;
 
 namespace Scope.Tests.Models
 {
-  public class SelectedItemsFacts
+  public class PinnedItemsFacts
   {
     private readonly Action _changedWasRaised = Mock.Of<Action>();
-    private ISelectedItems _sut;
+    private IPinnedItems _sut;
 
     [Fact]
     public void Files_can_be_selected()
@@ -118,7 +118,7 @@ namespace Scope.Tests.Models
 
     private void WhenItIsCreated()
     {
-      _sut = new SelectedItems();
+      _sut = new PinnedItems();
       _sut.Changed += _changedWasRaised;
     }
 

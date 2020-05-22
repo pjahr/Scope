@@ -62,7 +62,7 @@
       Background="LightGray"
       Focusable="False" />
 
-    <views:SelectedItemsView
+    <views:PinnedItemsView
       DataContext="{Binding SelectedItems}"
       Grid.Row="3"
       Grid.Column="0" />

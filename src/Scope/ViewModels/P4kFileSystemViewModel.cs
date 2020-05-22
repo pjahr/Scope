@@ -10,11 +10,11 @@ namespace Scope.ViewModels
   {
     private readonly IFileSystem _fileSystem;
     private readonly ICurrentItem _currentItem;
-    private readonly ISelectedItems _selectedItems;
+    private readonly IPinnedItems _selectedItems;
 
     public P4kFileSystemViewModel(IFileSystem fileSystem,
                                   ICurrentItem currentItem,
-                                  ISelectedItems selectedItems)
+                                  IPinnedItems selectedItems)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;

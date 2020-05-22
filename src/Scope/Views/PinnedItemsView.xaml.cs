@@ -2,9 +2,9 @@
 
 namespace Scope.Views
 {
-  public partial class SelectedItemsView : UserControl
+  public partial class PinnedItemsView : UserControl
   {
-    public SelectedItemsView()
+    public PinnedItemsView()
     {
       InitializeComponent();
     }
