@@ -9,21 +9,20 @@
       <RowDefinition
         Height="Auto" />
       <RowDefinition
+        Height="Auto" />
+      <RowDefinition
         Height="*" />
     </Grid.RowDefinitions>
 
-    <DockPanel
-      x:Name="_headerPanel"
-      Grid.Row="0"
-      Background="WhiteSmoke"
-      HorizontalAlignment="Stretch">
-
+    <StackPanel Orientation="Horizontal"
+                Grid.Row="0">
+      
       <Path
         Data="{StaticResource Pin}"
         Fill="Black"
         StrokeThickness="1"
-        Width="14"
-        Height="14"
+        Width="16"
+        Height="16"
         Stretch="Uniform"
         RenderTransformOrigin="0.5,0.5"
         Margin="3">
@@ -39,10 +38,55 @@
 
       </Path>
 
+      <TextBlock
+        Text="PINNED ITEMS"
+        VerticalAlignment="Center"
+        FontFamily="Segoe UI Thin"
+        FontSize="16"/>
+
+    </StackPanel>
+    
+    <DockPanel
+      x:Name="_headerPanel"
+      Grid.Row="1"
+      HorizontalAlignment="Stretch"
+      Background="Transparent">
+
       <Button
+        Command="{Binding ChooseOutputDirectoryCommand}"
         DockPanel.Dock="Right"
         BorderThickness="0"
-        Padding="2">
+        Padding="2"
+        Margin="3 0">       
+
+        <Path
+          Data="{StaticResource OutputDirectory}"
+          Fill="Black"
+          Width="16"
+          Height="16"
+          Stretch="Uniform" />
+
+        <Button.ToolTip>Choose output directory</Button.ToolTip>
+
+      </Button>
+
+      <TextBlock
+        Text="{Binding OutputDirectory}"
+        DockPanel.Dock="Right"
+        HorizontalAlignment="Right"
+        VerticalAlignment="Center"
+        TextTrimming="CharacterEllipsis"/>
+      
+      <Button
+        x:Name="_extractAllItems"
+        DockPanel.Dock="Right"
+        HorizontalAlignment="Right"
+        Padding="2"
+        Margin="3 0"
+        BorderThickness="0"
+        Width="20"
+        Command="{Binding ChooseOutputDirectoryCommand}">
+        
         <Button.Style>
           <Style
             TargetType="Button">
@@ -76,56 +120,11 @@
 
       </Button>
 
-      <Button
-        DockPanel.Dock="Right"
-        BorderThickness="0"
-        Padding="2"
-        Margin="3 0">
-        <Button.Style>
-          <Style
-            TargetType="Button">
-            <Setter
-              Property="Visibility"
-              Value="Hidden" />
-            <Style.Triggers>
-              <DataTrigger
-                Binding="{Binding
-                           RelativeSource={RelativeSource
-                                             Mode=FindAncestor,
-                                             AncestorType=DockPanel},
-                           Path=IsMouseOver}"
-                Value="True">
-                <Setter
-                  Property="Visibility"
-                  Value="Visible" />
-              </DataTrigger>
-            </Style.Triggers>
-          </Style>
-        </Button.Style>
-
-        <Path
-          Data="{StaticResource OutputDirectory}"
-          Fill="Black"
-          Width="16"
-          Height="16"
-          Stretch="Uniform" />
-
-        <Button.ToolTip>Choose output directory</Button.ToolTip>
-
-      </Button>
-
-      <TextBlock
-        Text="Pinned Items"
-        VerticalAlignment="Center"
-        FontFamily="Segoe UI Thin" />
-
-      <TextBlock Text="{Binding OutputDirectory}" DockPanel.Dock="Right"/>
-
     </DockPanel>
 
     <ListBox
       ItemsSource="{Binding Items}"
-      Grid.Row="1"
+      Grid.Row="2"
       BorderBrush="Transparent">      
       
     </ListBox>
