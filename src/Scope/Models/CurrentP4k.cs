@@ -16,7 +16,13 @@ namespace Scope.Models
     {
       94, 122, 32, 2, 48, 46, 235, 26, 59, 182, 23, 195, 15, 222, 30, 71
     };
+    private readonly IOutputDirectory _outputDirectory;
     private ZipFile _p4k;
+
+    public CurrentP4k(IOutputDirectory outputDirectory)
+    {
+      _outputDirectory = outputDirectory;
+    }
 
     public IFileSystem FileSystem { get; private set; }
     public string FileName { get; private set; } = "";
@@ -59,6 +65,11 @@ namespace Scope.Models
       {
         DisposeCurrentP4k();
         return new OpenP4kFileResult(ex.Message);
+      }
+
+      if (_outputDirectory.Path==null)
+      {
+        _outputDirectory.Path = p4kFile.DirectoryName;
       }
 
       Changed.Raise();

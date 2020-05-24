@@ -9,7 +9,6 @@ namespace Scope.ViewModels
 {
   internal class PinnedFileViewModel
   {
-    private readonly IFile _file;
     private readonly ICurrentItem _currentFile;
     private bool _isActive;
 
@@ -17,10 +16,10 @@ namespace Scope.ViewModels
                                  ICurrentItem currentFile,
                                  IPinnedItems pinnedItems)
     {
-      _file = file;
+      Model = file;
       _currentFile = currentFile;
 
-      SetCurrentItemCommand = new RelayCommand(() => _currentFile.ChangeTo(_file));
+      SetCurrentItemCommand = new RelayCommand(() => _currentFile.ChangeTo(Model));
 
       _currentFile.Changed += SetIsActive;
 
@@ -29,8 +28,9 @@ namespace Scope.ViewModels
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string Name => _file.Name;
-    public string Path => _file.Path;
+    public IFile Model { get; }
+    public string Name => Model.Name;
+    public string Path => Model.Path;
     public ICommand SetCurrentItemCommand { get; }
 
     public bool IsActive
@@ -55,7 +55,7 @@ namespace Scope.ViewModels
 
     private void SetIsActive()
     {
-      IsActive = _currentFile.CurrentFile == _file;
+      IsActive = _currentFile.CurrentFile == Model;
     }
   }
 }

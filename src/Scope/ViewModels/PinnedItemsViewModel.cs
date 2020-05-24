@@ -17,17 +17,21 @@ namespace Scope.ViewModels
     private readonly ICurrentItem _currentItem;
     private readonly IPinnedItems _pinnedItems;
     private readonly IOutputDirectory _outputDirectory;
+    private readonly IExtractP4kContent _extractP4KContent;
 
     public PinnedItemsViewModel(ICurrentItem currentItem,
                                 IPinnedItems pinnedItems,
-                                IOutputDirectory outputDirectory)
+                                IOutputDirectory outputDirectory,
+                                IExtractP4kContent extractP4KContent)
     {
       _currentItem = currentItem;
       _pinnedItems = pinnedItems;
       _outputDirectory = outputDirectory;
+      _extractP4KContent = extractP4KContent;
 
       Items = new ObservableCollection<object>();
       ChooseOutputDirectoryCommand = new RelayCommand(ChooseOutputDirectory);
+      ExtractCommand = new RelayCommand<object>(ExtractItem);
 
       _pinnedItems.Changed += Update;
       _outputDirectory.Changed += RaiseOutputDirectoryChanged;
@@ -35,16 +39,17 @@ namespace Scope.ViewModels
       Update();
     }
 
-    private void RaiseOutputDirectoryChanged()
-    {
-      PropertyChanged.Raise(this, nameof(OutputDirectory));
-    }
-
     public event PropertyChangedEventHandler PropertyChanged;
     public string OutputDirectory => _outputDirectory.Path;
     public ICommand ChooseOutputDirectoryCommand { get; }
+    public ICommand ExtractCommand { get; }
 
     public ObservableCollection<object> Items { get; private set; }
+
+    public void Dispose()
+    {
+      _pinnedItems.Changed -= Update;
+    }
 
     private void Update()
     {
@@ -71,9 +76,20 @@ namespace Scope.ViewModels
       }
     }
 
-    public void Dispose()
+    private void ExtractItem(object item)
     {
-      _pinnedItems.Changed -= Update;
+      switch (item)
+      {
+        case PinnedDirectoryViewModel directory:
+          ExtractDirectory(directory);
+          return;
+        case PinnedFileViewModel file:
+          ExtractFile(file);
+          return;
+        case null:
+          ExtractAll();
+          return;
+      }
     }
 
     private void ChooseOutputDirectory()
@@ -86,6 +102,33 @@ namespace Scope.ViewModels
         return;
       }
       _outputDirectory.Path = chooseDirectoryDialog.FileName;
+    }
+
+    private void ExtractAll()
+    {
+      foreach (var directory in _pinnedItems.Directories)
+      {
+        _extractP4KContent.Extract(directory, _outputDirectory.Path);
+      }
+      foreach (var file in _pinnedItems.Files)
+      {
+        _extractP4KContent.Extract(file, _outputDirectory.Path);
+      }
+    }
+
+    private void ExtractFile(PinnedFileViewModel file)
+    {
+      _extractP4KContent.Extract(file.Model, _outputDirectory.Path);
+    }
+
+    private void ExtractDirectory(PinnedDirectoryViewModel directory)
+    {
+      _extractP4KContent.Extract(directory.Model, _outputDirectory.Path);
+    }
+
+    private void RaiseOutputDirectoryChanged()
+    {
+      PropertyChanged.Raise(this, nameof(OutputDirectory));
     }
   }
 }

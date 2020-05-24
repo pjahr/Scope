@@ -8,18 +8,18 @@ namespace Scope.ViewModels
 {
   internal class PinnedDirectoryViewModel : INotifyPropertyChanged
   {
-    private readonly IDirectory _directory;
     private readonly ICurrentItem _currentItem;
     private bool _isActive;
 
     internal PinnedDirectoryViewModel(IDirectory directory,
-                                      ICurrentItem currentFile,
+                                      ICurrentItem currentItem,
                                       IPinnedItems selectedItems)
     {
-      _directory = directory;
-      _currentItem = currentFile;
+      Model = directory;
+
+      _currentItem = currentItem;
       
-      SetCurrentItemCommand = new RelayCommand(() => _currentItem.ChangeTo(_directory));
+      SetCurrentItemCommand = new RelayCommand(() => _currentItem.ChangeTo(Model));
             
       _currentItem.Changed += SetIsActive;
 
@@ -28,9 +28,10 @@ namespace Scope.ViewModels
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string Name => _directory.Name;
-    public string Path => _directory.Path;
-    
+    public IDirectory Model { get; }
+    public string Name => Model.Name;
+    public string Path => Model.Path;
+
     public ICommand SetCurrentItemCommand { get; }
 
     public bool IsActive
@@ -55,7 +56,7 @@ namespace Scope.ViewModels
 
     private void SetIsActive()
     {
-      IsActive = _currentItem.CurrentDirectory == _directory;
+      IsActive = _currentItem.CurrentDirectory == Model;
     }
   }
 }

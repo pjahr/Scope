@@ -21,6 +21,8 @@ namespace Scope.FileViewer.Text
                      {"mtl", f => new CryXmlTextFileViewModel(f)},
                      {"txt", f => new TextFileViewModel(f)},
                      {"cfg", f => new TextFileViewModel(f)},
+                     {"cfgf", f => new TextFileViewModel(f)},
+                     {"cfgm", f => new TextFileViewModel(f)},
                      {"id", f => new TextFileViewModel(f)}
                    };
     }
@@ -32,7 +34,7 @@ namespace Scope.FileViewer.Text
 
     public IFileViewer Create(IFile file)
     {
-      return _factories[file.Name.GetExtension()](file);
+      return _factories[file.Name.GetExtension().ToLower()](file);
     }
   }
 }

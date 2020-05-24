@@ -1,10 +1,11 @@
 ﻿using Scope.Interfaces;
 using Scope.Models.Interfaces;
+using System.ComponentModel.Composition;
 using System.IO;
 
 namespace Scope.Models
 {
-
+  [Export]
   internal class ExtractP4kContent : IExtractP4kContent
   {
     private readonly System.IO.Abstractions.IFileSystem _fileSystem;
@@ -28,6 +29,12 @@ namespace Scope.Models
     public void Extract(IDirectory directory, string outputDirectoryPath)
     {
       var outputPath = Path.Combine(outputDirectoryPath, directory.Name);
+
+      foreach (var subdirectory in directory.Directories)
+      {
+        Extract(subdirectory, outputPath);
+      }
+
       foreach (var file in directory.Files)
       {
         Extract(file, outputPath);

@@ -31,7 +31,7 @@ namespace Scope.Models
         var directory = current.Directories.SingleOrDefault(d => d.Name == name);
         if (directory == null)
         {
-          string path = $"{current.Path}{name}/";
+          string path = $"{current.Path}\\{name}";
           directory = new P4kDirectory(pathSegments[i], path);
           current.Add(directory);
         }
