@@ -45,6 +45,7 @@ namespace Scope.ViewModels
     public ICommand ExtractCommand { get; }
 
     public ObservableCollection<object> Items { get; private set; }
+    public bool HasItems => Items.Any();
 
     public void Dispose()
     {
@@ -74,6 +75,8 @@ namespace Scope.ViewModels
       {
         Items.Add(item);
       }
+
+      PropertyChanged.Raise(this, nameof(HasItems));
     }
 
     private void ExtractItem(object item)

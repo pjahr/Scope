@@ -350,19 +350,19 @@
                                RelativeSource={RelativeSource
                                                 Mode=FindAncestor,
                                                 AncestorType=TreeView},
-                               Path=DataContext.ExportCommand}"
+                               Path=DataContext.ExtractCommand}"
                     CommandParameter="{Binding}"
                     Style="{StaticResource FsTreeViewItemActiveItemActionButton}"
                     DockPanel.Dock="Right">
 
                    <Path
-                      Data="{StaticResource Export}"
+                      Data="{StaticResource Extract}"
                       Fill="Black"
                       Width="16"
                       Height="16"
                       Stretch="Uniform" />
 
-                    <Button.ToolTip>Export all pinned items</Button.ToolTip>
+                    <Button.ToolTip>Extract this item</Button.ToolTip>
 
                   </Button>
 
@@ -383,7 +383,7 @@
                       Height="16"
                       Stretch="Uniform" />
 
-                    <Button.ToolTip>Export all pinned items</Button.ToolTip>
+                    <Button.ToolTip>Pin this item</Button.ToolTip>
 
                   </Button>
 

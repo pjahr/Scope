@@ -19,6 +19,8 @@ namespace Scope.Models
     {
       var outputPath = Path.Combine(outputDirectoryPath, file.Name);
 
+      AssertExistenceOfDirectory(outputDirectoryPath);
+
       using (var s = file.Read())
       using (var f=_fileSystem.File.Create(outputPath))
       {
@@ -26,13 +28,18 @@ namespace Scope.Models
       }
     }
 
+    private void AssertExistenceOfDirectory(string outputDirectoryPath)
+    {
+      _fileSystem.Directory.CreateDirectory(outputDirectoryPath);
+    }
+
     public void Extract(IDirectory directory, string outputDirectoryPath)
     {
       var outputPath = Path.Combine(outputDirectoryPath, directory.Name);
 
-      foreach (var subdirectory in directory.Directories)
+      foreach (var childDirectory in directory.Directories)
       {
-        Extract(subdirectory, outputPath);
+        Extract(childDirectory, outputPath);
       }
 
       foreach (var file in directory.Files)

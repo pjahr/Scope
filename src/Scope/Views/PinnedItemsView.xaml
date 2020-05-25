@@ -70,23 +70,33 @@
               Property="Visibility"
               Value="Hidden" />
             <Style.Triggers>
-              <DataTrigger
-                Binding="{Binding
+              <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+
+                  <Condition
+                    Binding="{Binding
                            RelativeSource={RelativeSource
                                              Mode=FindAncestor,
                                              AncestorType=DockPanel},
                            Path=IsMouseOver}"
-                Value="True">
+                    Value="True"/>
+
+                  <Condition
+                    Binding="{Binding HasItems}"
+                    Value="True"/>
+
+                </MultiDataTrigger.Conditions>
+
                 <Setter
                   Property="Visibility"
                   Value="Visible" />
-              </DataTrigger>
+              </MultiDataTrigger>
             </Style.Triggers>
           </Style>
         </Button.Style>
 
         <Path
-          Data="{StaticResource Export}"
+          Data="{StaticResource Extract}"
           Fill="Black"
           Width="16"
           Height="16"
