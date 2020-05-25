@@ -7,15 +7,13 @@ namespace Scope.ViewModels
 {
   internal class DirectoryViewModel : TreeNodeViewModel
   {
-    private readonly IDirectory _directory;
-
     public DirectoryViewModel(IDirectory directory, TreeNodeViewModel parent) :
       base(parent, directory.Name)
     {
-      _directory = directory;
+      Model = directory;
     }
 
-    public IDirectory Directory => _directory;
+    public IDirectory Model { get; }
 
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
@@ -33,12 +31,12 @@ namespace Scope.ViewModels
     {
       var contents = new List<TreeNodeViewModel>();
 
-      foreach (var directory in _directory.Directories)
+      foreach (var directory in Model.Directories)
       {
         contents.Add(new DirectoryViewModel(directory, this));
       }
 
-      foreach (var file in _directory.Files)
+      foreach (var file in Model.Files)
       {
         contents.Add(new FileViewModel(file, this));
       }

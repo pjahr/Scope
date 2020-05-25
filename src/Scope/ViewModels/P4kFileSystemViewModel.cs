@@ -11,51 +11,60 @@ namespace Scope.ViewModels
     private readonly IFileSystem _fileSystem;
     private readonly ICurrentItem _currentItem;
     private readonly IPinnedItems _selectedItems;
+    private readonly IExtractP4kContent _extractP4KContent;
 
     public P4kFileSystemViewModel(IFileSystem fileSystem,
                                   ICurrentItem currentItem,
-                                  IPinnedItems selectedItems)
+                                  IPinnedItems selectedItems,
+                                  IExtractP4kContent extractP4KContent)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;
       _selectedItems = selectedItems;
+      _extractP4KContent = extractP4KContent;
 
       RootItems = new ObservableCollection<object>();
 
       SetCurrentItemCommand = new RelayCommand<object>(SetCurrentItem);
       SetCurrentFileToNothingCommand = new RelayCommand(_currentItem.Clear);
       ToggleSelectionOfCurrentItemCommand = new RelayCommand(ToggleSelectionOfCurrentItem);
+      ExtractCommand = new RelayCommand<object>(ExtractItem);
 
       ExpandCommand = new RelayCommand<object>(async p =>
-      {
-        if (!(p is DirectoryViewModel directory))
-        {
-          return;
-        }
+                                               {
+                                                 if (!(p is DirectoryViewModel directory))
+                                                 {
+                                                   return;
+                                                 }
 
-        await directory.LoadChildrenAsync();
-      });
+                                                 await directory.LoadChildrenAsync();
+                                               });
 
-      ExtractCommand = new RelayCommand<object>(p => 
-      {
-        
-      });
+      ExtractCommand = new RelayCommand<object>(p => { });
 
       CreateContainedDirectories();
       CreateContainedFiles();
     }
 
+    public ObservableCollection<object> RootItems { get; private set; }
+    public ICommand SetCurrentItemCommand { get; }
+    public ICommand SetCurrentFileToNothingCommand { get; }
+    public ICommand ToggleSelectionOfCurrentItemCommand { get; }
+
+    public ICommand ExpandCommand { get; }
+    public ICommand ExtractCommand { get; }
+
     private void SetCurrentItem(object item)
     {
       if (item is FileViewModel file)
       {
-        _currentItem.ChangeTo(file.File);
+        _currentItem.ChangeTo(file.Model);
         return;
       }
 
       if (item is DirectoryViewModel directory)
       {
-        _currentItem.ChangeTo(directory.Directory);
+        _currentItem.ChangeTo(directory.Model);
       }
     }
 
@@ -88,14 +97,6 @@ namespace Scope.ViewModels
       }
     }
 
-    public ObservableCollection<object> RootItems { get; private set; }
-    public ICommand SetCurrentItemCommand { get; }
-    public ICommand SetCurrentFileToNothingCommand { get; }
-    public ICommand ToggleSelectionOfCurrentItemCommand { get; }
-
-    public ICommand ExpandCommand { get; }
-    public ICommand ExtractCommand { get; }
-
     private void CreateContainedFiles()
     {
       foreach (var vm in _fileSystem.Root.Files.Select(d => new FileViewModel(d, null)))
@@ -110,6 +111,29 @@ namespace Scope.ViewModels
       {
         RootItems.Add(vm);
       }
+    }
+
+    private void ExtractItem(object item)
+    {
+      switch (item)
+      {
+        case DirectoryViewModel directory:
+          ExtractDirectory(directory);
+          return;
+        case FileViewModel file:
+          ExtractFile(file);
+          return;
+      }
+    }
+
+    private void ExtractFile(FileViewModel file)
+    {
+      _extractP4KContent.Extract(file.Model);
+    }
+
+    private void ExtractDirectory(DirectoryViewModel directory)
+    {
+      _extractP4KContent.Extract(directory.Model);
     }
   }
 }

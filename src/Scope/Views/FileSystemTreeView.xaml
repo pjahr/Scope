@@ -491,8 +491,8 @@
 
     <xaml:Interaction.Behaviors>
 
-      <b:BringVirtualTreeViewItemIntoViewBehavior
-        SelectedItem="{Binding SelectPathItem}" />
+      <!--<b:BringVirtualTreeViewItemIntoViewBehavior
+        SelectedItem="{Binding SelectPathItem}" />-->
 
       <b:CommandOnKey
         Key="Space"

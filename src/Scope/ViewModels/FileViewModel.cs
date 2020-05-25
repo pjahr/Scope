@@ -7,15 +7,12 @@ namespace Scope.ViewModels
 {
   internal class FileViewModel : TreeNodeViewModel
   {
-    private readonly IFile _file;
-
     public FileViewModel(IFile file, TreeNodeViewModel parent) : base(parent, file.Name)
     {
-      _file = file;
+      Model = file;
     }
 
-    public IFile File => _file;
-
+    public IFile Model { get; }
     public override bool HasDummyChild => false;
 
     protected override void LoadChildren() { }
