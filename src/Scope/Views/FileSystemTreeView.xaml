@@ -238,10 +238,10 @@
           <MultiDataTrigger.Conditions>
             <Condition 
               Binding="{Binding
-                                       RelativeSource={RelativeSource                            
-                                                        Mode=FindAncestor,
-                                                        AncestorType=Border},
-                                       Path=IsMouseOver}"
+                          RelativeSource={RelativeSource                            
+                                          Mode=FindAncestor,
+                                          AncestorType=Border},
+                          Path=IsMouseOver}"
               Value="True" />
 
             <Condition

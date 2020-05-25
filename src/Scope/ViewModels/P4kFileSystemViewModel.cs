@@ -39,9 +39,6 @@ namespace Scope.ViewModels
 
                                                  await directory.LoadChildrenAsync();
                                                });
-
-      ExtractCommand = new RelayCommand<object>(p => { });
-
       CreateContainedDirectories();
       CreateContainedFiles();
     }

@@ -111,22 +111,22 @@ namespace Scope.ViewModels
     {
       foreach (var directory in _pinnedItems.Directories)
       {
-        _extractP4KContent.Extract(directory, _outputDirectory.Path);
+        _extractP4KContent.Extract(directory);
       }
       foreach (var file in _pinnedItems.Files)
       {
-        _extractP4KContent.Extract(file, _outputDirectory.Path);
+        _extractP4KContent.Extract(file);
       }
     }
 
     private void ExtractFile(PinnedFileViewModel file)
     {
-      _extractP4KContent.Extract(file.Model, _outputDirectory.Path);
+      _extractP4KContent.Extract(file.Model);
     }
 
     private void ExtractDirectory(PinnedDirectoryViewModel directory)
     {
-      _extractP4KContent.Extract(directory.Model, _outputDirectory.Path);
+      _extractP4KContent.Extract(directory.Model);
     }
 
     private void RaiseOutputDirectoryChanged()
