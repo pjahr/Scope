@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.IO;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
@@ -11,14 +12,19 @@ namespace Scope.Models
   {
     private readonly IFileSystem _fileSystem;
     private readonly IOutputDirectory _outputDirectory;
+    private readonly IMessages _messages;
 
-    public ExtractP4kContent(IFileSystem fileSystem, IOutputDirectory outputDirectory)
+    public ExtractP4kContent(IFileSystem fileSystem, 
+                             IOutputDirectory outputDirectory,
+                             IMessages messages)
     {
       _fileSystem = fileSystem;
       _outputDirectory = outputDirectory;
+      _messages = messages;
     }
 
-    public void Extract(IFile file, string outputDirectoryPath)
+    public void Extract(IFile file,
+                        string outputDirectoryPath)
     {
       if (outputDirectoryPath == "")
       {
@@ -27,13 +33,24 @@ namespace Scope.Models
 
       var outputPath = Path.Combine(outputDirectoryPath, file.Name);
 
-      AssertExistenceOfDirectory(outputDirectoryPath);
-
-      using (var s = file.Read())
-      using (var f = _fileSystem.File.Create(outputPath))
+      try
       {
-        s.CopyTo(f);
+        AssertExistenceOfDirectory(outputDirectoryPath);
+
+        using (var s = file.Read())
+        using (var f = _fileSystem.File.Create(outputPath))
+        {
+          s.CopyTo(f);
+        }
       }
+      catch (Exception e)
+      {
+        _messages.Add($"Extraction failed: {file.Path} --> {outputPath}");
+        _messages.Add(e.Message);
+        _messages.Add(e.StackTrace);
+      }
+
+      _messages.Add($"Extracted: {file.Path} --> {outputPath}");
     }
 
     private void AssertExistenceOfDirectory(string outputDirectoryPath)

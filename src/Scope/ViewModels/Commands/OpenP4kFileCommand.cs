@@ -51,9 +51,10 @@ namespace Scope.ViewModels.Commands
       _command.Execution.PropertyChanged += UpdateCanExecuteWhenTaskIsComplete;
 
       var openFileDialog = new OpenFileDialog
-                           {
-                             DefaultExt = ".p4k", Filter = "Game archive (.p4k)|*.p4k"
-                           };
+      {
+        DefaultExt = ".p4k",
+        Filter = "Game archive (.p4k)|*.p4k"
+      };
 
       if (!openFileDialog.ShowDialog()
                          .Value)
@@ -71,13 +72,15 @@ namespace Scope.ViewModels.Commands
 
     private void UpdateCanExecuteWhenTaskIsComplete(object sender, PropertyChangedEventArgs _)
     {
-      var task = (NotifyTask) sender;
-      if (task.IsCompleted)
+      var task = (NotifyTask)sender;
+      if (!task.IsCompleted)
       {
-        task.PropertyChanged -= UpdateCanExecuteWhenTaskIsComplete; // unhook this
-        CanExecuteChanged
-         .Raise(this); // raise event so that consumers (buttons) can reactivate
+        return;
       }
+
+      task.PropertyChanged -= UpdateCanExecuteWhenTaskIsComplete; // unhook itself
+
+      CanExecuteChanged.Raise(this); // raise event so that consumers (buttons) can reactivate
 
       _messages.Add($"Loaded {_currentP4K.FileName}.");
       _progress.Stop();
