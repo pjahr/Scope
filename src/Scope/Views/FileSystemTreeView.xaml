@@ -250,10 +250,10 @@
           <MultiDataTrigger.Conditions>
             <Condition 
               Binding="{Binding
-                                       RelativeSource={RelativeSource                            
-                                                        Mode=FindAncestor,
-                                                        AncestorType=Border},
-                                       Path=IsMouseOver}"
+                          RelativeSource={RelativeSource                            
+                                          Mode=FindAncestor,
+                                          AncestorType=Border},
+                          Path=IsMouseOver}"
               Value="True" />
 
             <Condition
@@ -369,10 +369,7 @@
 
                    <Path
                       Data="{StaticResource Extract}"
-                      Fill="Black"
-                      Width="16"
-                      Height="16"
-                      Stretch="Uniform" />
+                     Style="{StaticResource ActionIcon}"/>
 
                     <Button.ToolTip>Extract this item</Button.ToolTip>
 
@@ -390,10 +387,7 @@
 
                     <Path
                       Data="{StaticResource Pin}"
-                      Fill="Black"
-                      Width="16"
-                      Height="16"
-                      Stretch="Uniform" />
+                     Style="{StaticResource ActionIcon}"/>
 
                     <Button.ToolTip>Pin this item</Button.ToolTip>
 
