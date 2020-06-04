@@ -11,7 +11,6 @@
   d:DesignWidth="800">
 
   <StackPanel
-    x:Name="_panel"
     Orientation="Horizontal"
     Height="20"
     Focusable="True"
@@ -28,6 +27,16 @@
     <Path
       Data="{StaticResource FileIcon}"
       Style="{StaticResource FileSystemEntryIcon}" />
+
+    <TextBlock
+      Text="{Binding Name}"
+      Margin="3"
+      VerticalAlignment="Center" />
+
+    <TextBlock
+      Text="{Binding Name}"
+      Margin="3"
+      VerticalAlignment="Center" />
 
     <TextBlock
       Text="{Binding Name}"

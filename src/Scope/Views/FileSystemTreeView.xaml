@@ -76,17 +76,29 @@
       DataType="{x:Type vm:FileViewModel}"
       ItemsSource="{Binding Children}">
 
-      <StackPanel
-        Orientation="Horizontal">
+      <DockPanel>
 
         <Path
           Data="{StaticResource FileIcon}"
-          Style="{StaticResource FileSystemEntryIcon}" />
+          Style="{StaticResource FileSystemEntryIcon}"
+          DockPanel.Dock="Left"/>
 
         <TextBlock
-          Text="{Binding Name}" />
+          Text="{Binding CompressedSize}"
+          Margin="0 0 6 0"
+          DockPanel.Dock="Right"/>
 
-      </StackPanel>
+        <TextBlock
+          Text="{Binding UncompressedSize}"
+          Margin="0 0 6 0" 
+          DockPanel.Dock="Right"/>
+
+        <TextBlock
+          Text="{Binding Name}"
+          Margin="0 0 6 0"
+          DockPanel.Dock="Left" />
+
+      </DockPanel>
 
     </HierarchicalDataTemplate>
 

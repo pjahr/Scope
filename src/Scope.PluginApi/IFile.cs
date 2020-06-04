@@ -6,6 +6,8 @@ namespace Scope.Interfaces
   {
     string Name { get; }
     string Path { get; }
+    long BytesCompressed { get; }
+    long BytesUncompressed { get; }
     Stream Read();
   }
 }

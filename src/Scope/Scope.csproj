@@ -201,6 +201,7 @@
     <Compile Include="ViewModels\Separator.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\TreeNodeViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelExtensions.cs" />
     <Compile Include="Views\AboutWindowView.xaml.cs">
       <DependentUpon>AboutWindowView.xaml</DependentUpon>
     </Compile>

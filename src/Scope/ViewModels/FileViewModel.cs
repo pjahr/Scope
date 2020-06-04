@@ -10,9 +10,14 @@ namespace Scope.ViewModels
     public FileViewModel(IFile file, TreeNodeViewModel parent) : base(parent, file.Name)
     {
       Model = file;
+      CompressedSize = file.BytesCompressed.ToFileSize();
+      UncompressedSize = file.BytesUncompressed.ToFileSize();
     }
 
     public IFile Model { get; }
+    public string CompressedSize { get; }
+    public string UncompressedSize { get; }
+
     public override bool HasDummyChild => false;
 
     protected override void LoadChildren() { }

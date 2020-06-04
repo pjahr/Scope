@@ -69,7 +69,7 @@ namespace Scope.Views
       Keyboard.Focus(lastDeepestChild.FindFocusableChild());
     }
 
-    private ListBoxItem GetLastDeepestChild(ListBoxItem listBoxItem)
+    private static ListBoxItem GetLastDeepestChild(ListBoxItem listBoxItem)
     {
       ListBox box = listBoxItem.FindChild<ListBox>();
       if (box == null)
@@ -79,7 +79,6 @@ namespace Scope.Views
 
       if (box.Items.Count == 0)
       {
-        Console.WriteLine("Directory Listbox with 0 items!");
         return listBoxItem;
       }
 

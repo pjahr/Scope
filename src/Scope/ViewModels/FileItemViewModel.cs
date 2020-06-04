@@ -13,11 +13,13 @@ namespace Scope.ViewModels
 
       Header = _file.Name;
       Path = _file.Path;
+
       Viewer = factory.Create(_file);
     }
 
     public string Header { get; }
     public string Path { get; }
+
     public IFileViewer Viewer { get; }
 
     public void Dispose()
