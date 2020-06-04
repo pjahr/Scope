@@ -33,16 +33,6 @@
       Margin="3"
       VerticalAlignment="Center" />
 
-    <TextBlock
-      Text="{Binding Name}"
-      Margin="3"
-      VerticalAlignment="Center" />
-
-    <TextBlock
-      Text="{Binding Name}"
-      Margin="3"
-      VerticalAlignment="Center" />
-
     <StackPanel.Style>
       <Style
         TargetType="StackPanel">
