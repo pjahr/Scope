@@ -21,7 +21,7 @@
   <StatusBarItem>
     
     <Grid>
-
+        
       <Border
         Height="300"
         HorizontalAlignment="Stretch"

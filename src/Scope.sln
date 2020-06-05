@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scope.Utils", "Scope.Utils\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scope.FileViewer.DDS", "Plugins\Scope.FileViewer.DDS\Scope.FileViewer.DDS.csproj", "{A100182E-4AE0-438A-B923-A7D722557523}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scope.FileViewer.DataForge", "Plugins\Scope.FileViewer.DataForge\Scope.FileViewer.DataForge.csproj", "{F57B89A8-2846-473C-946C-9C24BB9AAB51}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -80,6 +82,14 @@ Global
 		{A100182E-4AE0-438A-B923-A7D722557523}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A100182E-4AE0-438A-B923-A7D722557523}.Release|x64.ActiveCfg = Release|Any CPU
 		{A100182E-4AE0-438A-B923-A7D722557523}.Release|x64.Build.0 = Release|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Debug|x64.Build.0 = Debug|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Release|x64.ActiveCfg = Release|Any CPU
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +97,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CF56FE6D-58FC-4177-957D-542C6E6802A7} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 		{A100182E-4AE0-438A-B923-A7D722557523} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
+		{F57B89A8-2846-473C-946C-9C24BB9AAB51} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95680C4D-E13E-48B9-881C-B36A90D15804}
