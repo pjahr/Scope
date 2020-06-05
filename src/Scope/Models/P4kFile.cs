@@ -17,10 +17,14 @@ namespace Scope.Models
 
       Name = _zipEntry.Name.GetFileName();
       Path = _zipEntry.Name;
+      BytesCompressed = _zipEntry.CompressedSize;
+      BytesUncompressed = _zipEntry.Size;
     }
 
     public string Name { get; }
     public string Path { get; }
+    public long BytesCompressed { get; }
+    public long BytesUncompressed { get; }
 
     public Stream Read()
     {

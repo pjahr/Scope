@@ -6,4 +6,8 @@
 	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/TAB_WIDTH/@EntryValue">2</s:Int64>
 	<s:String x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/TagAttributesFormat/@EntryValue">OnDifferentLines</s:String>
 	<s:Boolean x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/USE_INDENT_FROM_VS/@EntryValue">False</s:Boolean>
-	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/WRAP_LIMIT/@EntryValue">90</s:Int64></wpf:ResourceDictionary>
+	<s:Int64 x:Key="/Default/CodeStyle/CodeFormatting/XmlFormatter/WRAP_LIMIT/@EntryValue">90</s:Int64>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpKeepExistingMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpPlaceEmbeddedOnSameLineMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ECSharpUseContinuousIndentInsideBracesMigration/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/Environment/SettingsMigration/IsMigratorApplied/=JetBrains_002EReSharper_002EPsi_002ECSharp_002ECodeStyle_002ESettingsUpgrade_002EMigrateBlankLinesAroundFieldToBlankLinesAroundProperty/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>

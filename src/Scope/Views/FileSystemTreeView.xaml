@@ -76,17 +76,35 @@
       DataType="{x:Type vm:FileViewModel}"
       ItemsSource="{Binding Children}">
 
-      <StackPanel
-        Orientation="Horizontal">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="Icon"/>
+          <ColumnDefinition Width="*"    SharedSizeGroup="Name"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="Compressed"/>
+          <ColumnDefinition Width="Auto" SharedSizeGroup="Uncompressed"/>
+        </Grid.ColumnDefinitions>
 
         <Path
           Data="{StaticResource FileIcon}"
-          Style="{StaticResource FileSystemEntryIcon}" />
+          Style="{StaticResource FileSystemEntryIcon}"
+          Grid.Column="0"/>
 
         <TextBlock
-          Text="{Binding Name}" />
+          Text="{Binding Name}"
+          Margin="0 0 6 0"
+          Grid.Column="1"/>
 
-      </StackPanel>
+        <TextBlock
+          Text="{Binding CompressedSizeValue}"
+          Margin="0 0 6 0"
+          Grid.Column="2"/>
+
+        <TextBlock
+          Text="{Binding UncompressedSizeValue}"
+          Margin="0 0 6 0"
+          Grid.Column="3"/>
+      
+      </Grid>
 
     </HierarchicalDataTemplate>
 
@@ -466,14 +484,14 @@
       </Style.Triggers>
     </Style>
 
-
   </UserControl.Resources>
 
   <TreeView
     ItemsSource="{Binding RootItems}"
     b:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding SetCurrentItemCommand}"
     Style="{StaticResource TreeViewStyle}"
-    HorizontalContentAlignment="Stretch">
+    HorizontalContentAlignment="Stretch"
+    Grid.IsSharedSizeScope="True">
 
     <TreeView.Resources>
       <!-- Use a proxy to bind items to root properties of this collection -->
