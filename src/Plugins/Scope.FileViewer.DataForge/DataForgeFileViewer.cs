@@ -1,7 +1,7 @@
 ﻿using System;
 using Scope.Interfaces;
 
-namespace Scope.FileViewer.DDS
+namespace Scope.FileViewer.DataForge
 {
   public class DataForgeFileViewer : IFileViewer
   {

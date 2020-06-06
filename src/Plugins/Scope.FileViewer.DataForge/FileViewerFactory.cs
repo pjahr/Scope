@@ -2,7 +2,7 @@
 using System.Linq;
 using Scope.Interfaces;
 
-namespace Scope.FileViewer.DDS
+namespace Scope.FileViewer.DataForge
 {
   [Export]
   public class FileViewerFactory : IFileViewerFactory

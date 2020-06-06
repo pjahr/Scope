@@ -104,6 +104,7 @@
     <ProjectReference Include="..\..\Scope.PluginApi\Scope.Interfaces.csproj">
       <Project>{2754b0bb-5940-4fd7-bf44-3cd427e56174}</Project>
       <Name>Scope.Interfaces</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
