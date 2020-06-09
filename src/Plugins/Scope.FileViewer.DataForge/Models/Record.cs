@@ -1,12 +1,16 @@
 ﻿using System;
 using System.IO;
 
-namespace Scope.FileViewer.DataForge
+namespace Scope.FileViewer.DataForge.Models
 {
-  internal class DataForgeRecord
+  internal class Record
   {
-    public DataForgeRecord(BinaryReader r)
+    private readonly Func<uint, string> _valueOf;
+
+    public Record(BinaryReader r, Func<uint, string> valueOf)
     {
+      _valueOf = valueOf;
+
       NameOffset     = r.ReadUInt32();
       FileNameOffset = r.ReadUInt32();
       StructIndex    = r.ReadUInt32();
@@ -22,8 +26,8 @@ namespace Scope.FileViewer.DataForge
     public ushort VariantIndex { get; set; }
     public ushort OtherIndex { get; set; }
 
-    //public String Name { get { return DocumentRoot.ValueMap[NameOffset]; } }
-    //public String FileName { get { return DocumentRoot.ValueMap[FileNameOffset]; } }
+    public string Name => _valueOf(NameOffset);
+    public string FileName => _valueOf(FileNameOffset);
     //public String __structIndex { get { return String.Format("{0:X4}", StructIndex); } }
     //public String __variantIndex { get { return String.Format("{0:X4}", VariantIndex); } }
     //public String __otherIndex { get { return String.Format("{0:X4}", OtherIndex); } }

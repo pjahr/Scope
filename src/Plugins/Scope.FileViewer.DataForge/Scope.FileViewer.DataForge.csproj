@@ -59,26 +59,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ClassMapping.cs" />
-    <Compile Include="DataForgeDataMapping.cs" />
-    <Compile Include="DataForgeEnumDefinition.cs" />
-    <Compile Include="DataForgeFile.cs" />
-    <Compile Include="DataForgeFileViewer.cs" />
-    <Compile Include="DataForgePointer.cs" />
-    <Compile Include="DataForgePropertyDefinition.cs" />
-    <Compile Include="DataForgeRecord.cs" />
-    <Compile Include="DataForgeReference.cs" />
-    <Compile Include="DataForgeString.cs" />
-    <Compile Include="DataForgeStringLookup.cs" />
-    <Compile Include="DataForgeStructDefinition.cs" />
-    <Compile Include="EConversionType.cs" />
-    <Compile Include="EDataType.cs" />
+    <Compile Include="Models\ClassMapping.cs" />
+    <Compile Include="Models\DataMapping.cs" />
+    <Compile Include="Models\EnumDefinition.cs" />
+    <Compile Include="Models\DataForgeFile.cs" />
+    <Compile Include="ViewModels\DataForgeFileViewer.cs" />
+    <Compile Include="Models\Pointer.cs" />
+    <Compile Include="Models\PropertyDefinition.cs" />
+    <Compile Include="Models\Record.cs" />
+    <Compile Include="Models\Reference.cs" />
+    <Compile Include="Models\NullTerminatedString.cs" />
+    <Compile Include="Models\StringLookup.cs" />
+    <Compile Include="Models\StructDefinition.cs" />
+    <Compile Include="Models\ConversionType.cs" />
+    <Compile Include="Models\DataType.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileViewerFactory.cs" />
     <Compile Include="PluginResources.xaml.cs">
       <DependentUpon>PluginResources.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StringSizeEnum.cs" />
+    <Compile Include="Models\StringSizeEnum.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
       <SubType>Code</SubType>

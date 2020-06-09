@@ -1,11 +1,16 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
-namespace Scope.FileViewer.DataForge
+namespace Scope.FileViewer.DataForge.Models
 {
-  internal class DataForgeStructDefinition
+  internal class StructDefinition
   {
-    public DataForgeStructDefinition(BinaryReader r)
+    private readonly Func<uint, string> _valueOf;
+
+    public StructDefinition(BinaryReader r, Func<uint, string> valueOf)
     {
+      _valueOf = valueOf;
+
       NameOffset = r.ReadUInt32();
       ParentTypeIndex = r.ReadUInt32();
       AttributeCount = r.ReadUInt16();
@@ -19,11 +24,10 @@ namespace Scope.FileViewer.DataForge
     public ushort FirstAttributeIndex { get; set; }
     public uint NodeType { get; set; }
 
-    //public String Name { get { return DocumentRoot.ValueMap[NameOffset]; } }
+    public string Name => _valueOf(NameOffset);
     //public String __parentTypeIndex { get { return String.Format("{0:X4}", ParentTypeIndex); } }
     //public String __attributeCount { get { return String.Format("{0:X4}", AttributeCount); } }
     //public String __firstAttributeIndex { get { return String.Format("{0:X4}", FirstAttributeIndex); } }
     //public String __nodeType { get { return String.Format("{0:X4}", NodeType); } }
-
   }
 }

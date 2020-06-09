@@ -1,4 +1,4 @@
-﻿namespace Scope.FileViewer.DataForge
+﻿namespace Scope.FileViewer.DataForge.Models
 {
   public class ClassMapping
   {

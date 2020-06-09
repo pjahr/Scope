@@ -1,10 +1,10 @@
 ﻿using System.IO;
 
-namespace Scope.FileViewer.DataForge
+namespace Scope.FileViewer.DataForge.Models
 {
-  internal class DataForgePointer
+  internal class Pointer
   {
-    public DataForgePointer(BinaryReader r)
+    public Pointer(BinaryReader r)
     {
       StructType = r.ReadUInt32();
       Index = r.ReadUInt32();

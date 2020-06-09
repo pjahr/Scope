@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
 
-namespace Scope.FileViewer.DataForge
+namespace Scope.FileViewer.DataForge.Models
 {
-  internal class DataForgeReference
+  internal class Reference
   {
-    public DataForgeReference(BinaryReader r)
+    public Reference(BinaryReader r)
     {
       Item = r.ReadInt32();
       Value = r.ReadGuid();

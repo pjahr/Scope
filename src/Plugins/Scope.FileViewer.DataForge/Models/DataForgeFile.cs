@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Scope.FileViewer.DataForge
+namespace Scope.FileViewer.DataForge.Models
 {
   internal class DataForgeFile
   {
     private bool IsLegacy { get; }
     private int FileVersion { get; }
 
-    private DataForgeStructDefinition[] StructDefinitionTable { get; }
-    private DataForgePropertyDefinition[] PropertyDefinitionTable { get; }
-    private DataForgeEnumDefinition[] EnumDefinitionTable { get; }
-    private DataForgeDataMapping[] DataMappingTable { get; }
-    private DataForgeRecord[] RecordDefinitionTable { get; }
-    private uint[] EnumOptionTable { get; }
+    private StructDefinition[] StructDefinitionTable { get; }
+    private PropertyDefinition[] PropertyDefinitionTable { get; }
+    private EnumDefinition[] EnumDefinitionTable { get; }
+    private DataMapping[] DataMappingTable { get; }
+    private Record[] RecordDefinitionTable { get; }
+    private StringLookup[] EnumOptionTable { get; }
     private string[] ValueTable { get; }
     public Dictionary<string, string> Files { get; }
-    private DataForgeReference[] ReferenceValues { get; }
+    private Reference[] ReferenceValues { get; }
     private Guid[] GuidValues { get; }
-    private uint[] StringValues { get; }
+    private StringLookup[] StringValues { get; }
     private uint[] LocaleValues { get; }
     private uint[] EnumValues { get; }
     private sbyte[] Int8Values { get; }
@@ -33,8 +33,8 @@ namespace Scope.FileViewer.DataForge
     private bool[] BooleanValues { get; }
     private float[] SingleValues { get; }
     private double[] DoubleValues { get; }
-    private DataForgePointer[] StrongValues { get; }
-    private DataForgePointer[] WeakValues { get; }
+    private Pointer[] StrongValues { get; }
+    private Pointer[] WeakValues { get; }
 
     private Dictionary<uint, string> ValueMap { get; }
 
@@ -95,11 +95,15 @@ namespace Scope.FileViewer.DataForge
       var textLength = r.ReadUInt32();
       var unknown = (IsLegacy) ? 0 : r.ReadUInt32();
 
-      StructDefinitionTable = structDefinitionCount.ToArray(() => new DataForgeStructDefinition(r));
-      PropertyDefinitionTable = propertyDefinitionCount.ToArray(() => new DataForgePropertyDefinition(r));
-      EnumDefinitionTable = enumDefinitionCount.ToArray(() => new DataForgeEnumDefinition(r));
-      DataMappingTable = dataMappingCount.ToArray(() => new DataForgeDataMapping(r));
-      RecordDefinitionTable = recordDefinitionCount.ToArray(() => new DataForgeRecord(r));
+      StructDefinitionTable = structDefinitionCount.ToArray(() => new StructDefinition(r, V));
+      
+      PropertyDefinitionTable = propertyDefinitionCount.ToArray(() => new PropertyDefinition(r, V));
+      
+      EnumDefinitionTable = enumDefinitionCount.ToArray(() => new EnumDefinition(r, V));
+      
+      DataMappingTable = dataMappingCount.ToArray(() => new DataMapping(r, V));
+      
+      RecordDefinitionTable = recordDefinitionCount.ToArray(() => new Record(r, V));
 
       Int8Values = int8ValueCount.ToArray(r.ReadSByte);
       Int16Values = int16ValueCount.ToArray(r.ReadInt16);
@@ -114,14 +118,14 @@ namespace Scope.FileViewer.DataForge
       DoubleValues = doubleValueCount.ToArray(r.ReadDouble);
 
       GuidValues = guidValueCount.ToArray(r.ReadGuid);
-      StringValues = stringValueCount.ToArray(r.ReadUInt32);
+      StringValues = stringValueCount.ToArray(()=>new StringLookup(r,V));
       LocaleValues = localeValueCount.ToArray(r.ReadUInt32);
       EnumValues = enumValueCount.ToArray(r.ReadUInt32);
-      StrongValues = strongValueCount.ToArray(() => new DataForgePointer(r));
-      WeakValues = weakValueCount.ToArray(() => new DataForgePointer(r));
+      StrongValues = strongValueCount.ToArray(() => new Pointer(r));
+      WeakValues = weakValueCount.ToArray(() => new Pointer(r));
 
-      ReferenceValues = referenceValueCount.ToArray(() => new DataForgeReference(r));
-      EnumOptionTable = enumOptionCount.ToArray(r.ReadUInt32);
+      ReferenceValues = referenceValueCount.ToArray(() => new Reference(r));
+      EnumOptionTable = enumOptionCount.ToArray(() => new StringLookup(r, V));
 
       var values = new List<string>();
 
@@ -142,7 +146,21 @@ namespace Scope.FileViewer.DataForge
 
       Files = new Dictionary<string, string>();
 
-
+      foreach (var record in RecordDefinitionTable)
+      {
+        var filename = ValueMap[record.FileNameOffset];
+        var name = ValueMap[record.NameOffset];
+        if (Files.ContainsKey(filename))
+        {
+          Console.WriteLine($"{filename} {name} {record.OtherIndex} {record.StructIndex} {record.VariantIndex}");
+        }
+        else
+        {
+          Files.Add(filename, name);
+        }
+      }
     }
+
+    private string V(uint id) => ValueMap[id];
   }
 }

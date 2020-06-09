@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Linq;
+using Scope.FileViewer.DataForge.ViewModels;
 using Scope.Interfaces;
 
 namespace Scope.FileViewer.DataForge

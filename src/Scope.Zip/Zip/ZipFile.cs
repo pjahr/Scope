@@ -25,8 +25,6 @@ namespace Scope.Zip.Zip
 
     private const int DefaultBufferSize = 4096;
 
-    private string md5_;
-
     private bool isDisposed_;
 
     private string name_;
