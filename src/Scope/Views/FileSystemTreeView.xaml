@@ -76,35 +76,56 @@
       DataType="{x:Type vm:FileViewModel}"
       ItemsSource="{Binding Children}">
 
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" SharedSizeGroup="Icon"/>
-          <ColumnDefinition Width="*"    SharedSizeGroup="Name"/>
-          <ColumnDefinition Width="Auto" SharedSizeGroup="Compressed"/>
-          <ColumnDefinition Width="Auto" SharedSizeGroup="Uncompressed"/>
-        </Grid.ColumnDefinitions>
-
+      <DockPanel>
+        
         <Path
           Data="{StaticResource FileIcon}"
           Style="{StaticResource FileSystemEntryIcon}"
-          Grid.Column="0"/>
+          DockPanel.Dock="Left"
+          />
 
+        <!-- file size parts docked rightlast item in DockPanel takes remaining space
+             from rightmost inwards -->
         <TextBlock
-          Text="{Binding Name}"
+          Text="{Binding UncompressedSizeUnit}"
           Margin="0 0 6 0"
-          Grid.Column="1"/>
-
-        <TextBlock
-          Text="{Binding CompressedSizeValue}"
-          Margin="0 0 6 0"
-          Grid.Column="2"/>
-
+          Width="18"
+          TextAlignment="Left"
+          DockPanel.Dock="Right"
+          VerticalAlignment="Center"/>
+        
         <TextBlock
           Text="{Binding UncompressedSizeValue}"
           Margin="0 0 6 0"
-          Grid.Column="3"/>
-      
-      </Grid>
+          Width="30"
+          TextAlignment="Right"
+          DockPanel.Dock="Right"
+          VerticalAlignment="Center"/>
+
+        <TextBlock
+          Text="{Binding CompressedSizeUnit}"
+          Margin="0 0 6 0"
+          Width="18"
+          TextAlignment="Left"
+          DockPanel.Dock="Right"          
+          VerticalAlignment="Center"/>
+        
+        <TextBlock
+          Text="{Binding CompressedSizeValue}"
+          Margin="0 0 6 0"
+          Width="30"
+          TextAlignment="Right"
+          DockPanel.Dock="Right"
+          VerticalAlignment="Center"/>
+
+        <!--last item in DockPanel takes remaining space-->
+        <TextBlock
+          Text="{Binding Name}"
+          Margin="0 0 6 0"
+          DockPanel.Dock="Left"
+          VerticalAlignment="Center"/>
+        
+      </DockPanel>
 
     </HierarchicalDataTemplate>
 
