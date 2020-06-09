@@ -51,6 +51,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PluginResources.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControl1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,6 +75,9 @@
     <Compile Include="EDataType.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FileViewerFactory.cs" />
+    <Compile Include="PluginResources.xaml.cs">
+      <DependentUpon>PluginResources.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StringSizeEnum.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
