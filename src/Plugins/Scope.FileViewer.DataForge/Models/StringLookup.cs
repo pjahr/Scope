@@ -14,6 +14,6 @@ namespace Scope.FileViewer.DataForge.Models
       _valueOf = valueOf;
     }
 
-    string Value => _valueOf(_value);
+    internal string Value => _valueOf(_value);
   }
 }

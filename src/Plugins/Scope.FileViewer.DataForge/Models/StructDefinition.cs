@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Scope.FileViewer.DataForge.Models
@@ -16,6 +17,15 @@ namespace Scope.FileViewer.DataForge.Models
       AttributeCount = r.ReadUInt16();
       FirstAttributeIndex = r.ReadUInt16();
       NodeType = r.ReadUInt32();
+
+
+      var properties = new List<PropertyDefinition> { };
+
+      if (false)
+      {
+        var arrayCount = r.ReadUInt32();
+        var firstIndex = r.ReadUInt32();
+      }
     }
 
     public uint NameOffset { get; set; }
@@ -23,6 +33,8 @@ namespace Scope.FileViewer.DataForge.Models
     public ushort AttributeCount { get; set; }
     public ushort FirstAttributeIndex { get; set; }
     public uint NodeType { get; set; }
+
+    public PropertyDefinition[] Properties { get; }
 
     public string Name => _valueOf(NameOffset);
     //public String __parentTypeIndex { get { return String.Format("{0:X4}", ParentTypeIndex); } }

@@ -99,7 +99,7 @@ namespace Scope.FileViewer.DataForge.Models
       
       PropertyDefinitionTable = propertyDefinitionCount.ToArray(() => new PropertyDefinition(r, V));
       
-      EnumDefinitionTable = enumDefinitionCount.ToArray(() => new EnumDefinition(r, V));
+      EnumDefinitionTable = enumDefinitionCount.ToArray(() => new EnumDefinition(r, V, i=>EnumOptionTable[i].Value));
       
       DataMappingTable = dataMappingCount.ToArray(() => new DataMapping(r, V));
       
