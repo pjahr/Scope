@@ -16,7 +16,7 @@ namespace Scope.FileViewer.DataForge
     private DataForgeRecord[] RecordDefinitionTable { get; }
     private uint[] EnumOptionTable { get; }
     private string[] ValueTable { get; }
-
+    public Dictionary<string, string> Files { get; }
     private DataForgeReference[] ReferenceValues { get; }
     private Guid[] GuidValues { get; }
     private uint[] StringValues { get; }
@@ -139,6 +139,10 @@ namespace Scope.FileViewer.DataForge
       }
 
       ValueTable = values.ToArray();
+
+      Files = new Dictionary<string, string>();
+
+
     }
   }
 }
