@@ -6,44 +6,44 @@ namespace Scope.FileViewer.DataForge
 {
   internal class DataForgeFile
   {
-    internal bool IsLegacy { get; set; }
-    internal int FileVersion { get; set; }
+    private bool IsLegacy { get; }
+    private int FileVersion { get; }
 
-    internal DataForgeStructDefinition[] StructDefinitionTable { get; set; }
-    internal DataForgePropertyDefinition[] PropertyDefinitionTable { get; set; }
-    internal DataForgeEnumDefinition[] EnumDefinitionTable { get; set; }
-    internal DataForgeDataMapping[] DataMappingTable { get; set; }
-    internal DataForgeRecord[] RecordDefinitionTable { get; set; }
-    internal uint[] EnumOptionTable { get; set; }
-    internal string[] ValueTable { get; set; }
+    private DataForgeStructDefinition[] StructDefinitionTable { get; }
+    private DataForgePropertyDefinition[] PropertyDefinitionTable { get; }
+    private DataForgeEnumDefinition[] EnumDefinitionTable { get; }
+    private DataForgeDataMapping[] DataMappingTable { get; }
+    private DataForgeRecord[] RecordDefinitionTable { get; }
+    private uint[] EnumOptionTable { get; }
+    private string[] ValueTable { get; }
 
-    internal DataForgeReference[] Array_ReferenceValues { get; set; }
-    internal Guid[] Array_GuidValues { get; set; }
-    internal uint[] Array_StringValues { get; set; }
-    internal uint[] Array_LocaleValues { get; set; }
-    internal uint[] Array_EnumValues { get; set; }
-    internal sbyte[] Array_Int8Values { get; set; }
-    internal short[] Array_Int16Values { get; set; }
-    internal int[] Array_Int32Values { get; set; }
-    internal long[] Array_Int64Values { get; set; }
-    internal byte[] Array_UInt8Values { get; set; }
-    internal ushort[] Array_UInt16Values { get; set; }
-    internal uint[] Array_UInt32Values { get; set; }
-    internal ulong[] Array_UInt64Values { get; set; }
-    internal bool[] Array_BooleanValues { get; set; }
-    internal float[] Array_SingleValues { get; set; }
-    internal double[] Array_DoubleValues { get; set; }
-    internal DataForgePointer[] Array_StrongValues { get; set; }
-    internal DataForgePointer[] Array_WeakValues { get; set; }
+    private DataForgeReference[] ReferenceValues { get; }
+    private Guid[] GuidValues { get; }
+    private uint[] StringValues { get; }
+    private uint[] LocaleValues { get; }
+    private uint[] EnumValues { get; }
+    private sbyte[] Int8Values { get; }
+    private short[] Int16Values { get; }
+    private int[] Int32Values { get; }
+    private long[] Int64Values { get; }
+    private byte[] UInt8Values { get; }
+    private ushort[] UInt16Values { get; }
+    private uint[] UInt32Values { get; }
+    private ulong[] UInt64Values { get; }
+    private bool[] BooleanValues { get; }
+    private float[] SingleValues { get; }
+    private double[] DoubleValues { get; }
+    private DataForgePointer[] StrongValues { get; }
+    private DataForgePointer[] WeakValues { get; }
 
-    internal Dictionary<uint, string> ValueMap { get; set; }
+    private Dictionary<uint, string> ValueMap { get; }
 
-    internal List<ClassMapping> ClassMappings { get; set; }
-    internal List<ClassMapping> StrongMappings { get; set; }
-    internal List<ClassMapping> WeakMappings1 { get; set; }
-    internal List<ClassMapping> WeakMappings2 { get; set; }
+    private List<ClassMapping> ClassMappings { get; }
+    private List<ClassMapping> StrongMappings { get; }
+    private List<ClassMapping> WeakMappings1 { get; }
+    private List<ClassMapping> WeakMappings2 { get; }
 
-    public DataForgeFile(BinaryReader r, Boolean legacy = false)
+    public DataForgeFile(BinaryReader r, bool legacy = false)
     {
       IsLegacy = legacy;
 
@@ -101,26 +101,26 @@ namespace Scope.FileViewer.DataForge
       DataMappingTable = dataMappingCount.ToArray(() => new DataForgeDataMapping(r));
       RecordDefinitionTable = recordDefinitionCount.ToArray(() => new DataForgeRecord(r));
 
-      Array_Int8Values = int8ValueCount.ToArray(r.ReadSByte);
-      Array_Int16Values = int16ValueCount.ToArray(r.ReadInt16);
-      Array_Int32Values = int32ValueCount.ToArray(r.ReadInt32);
-      Array_Int64Values = int64ValueCount.ToArray(r.ReadInt64);
-      Array_UInt8Values = uint8ValueCount.ToArray(r.ReadByte);
-      Array_UInt16Values = uint16ValueCount.ToArray(r.ReadUInt16);
-      Array_UInt32Values = uint32ValueCount.ToArray(r.ReadUInt32);
-      Array_UInt64Values = uint64ValueCount.ToArray(r.ReadUInt64);
-      Array_BooleanValues = booleanValueCount.ToArray(r.ReadBoolean);
-      Array_SingleValues = singleValueCount.ToArray(r.ReadSingle);
-      Array_DoubleValues = doubleValueCount.ToArray(r.ReadDouble);
+      Int8Values = int8ValueCount.ToArray(r.ReadSByte);
+      Int16Values = int16ValueCount.ToArray(r.ReadInt16);
+      Int32Values = int32ValueCount.ToArray(r.ReadInt32);
+      Int64Values = int64ValueCount.ToArray(r.ReadInt64);
+      UInt8Values = uint8ValueCount.ToArray(r.ReadByte);
+      UInt16Values = uint16ValueCount.ToArray(r.ReadUInt16);
+      UInt32Values = uint32ValueCount.ToArray(r.ReadUInt32);
+      UInt64Values = uint64ValueCount.ToArray(r.ReadUInt64);
+      BooleanValues = booleanValueCount.ToArray(r.ReadBoolean);
+      SingleValues = singleValueCount.ToArray(r.ReadSingle);
+      DoubleValues = doubleValueCount.ToArray(r.ReadDouble);
 
-      Array_GuidValues = guidValueCount.ToArray(r.ReadGuid);
-      Array_StringValues = stringValueCount.ToArray(r.ReadUInt32);
-      Array_LocaleValues = localeValueCount.ToArray(r.ReadUInt32);
-      Array_EnumValues = enumValueCount.ToArray(r.ReadUInt32);
-      Array_StrongValues = strongValueCount.ToArray(() => new DataForgePointer(r));
-      Array_WeakValues = weakValueCount.ToArray(() => new DataForgePointer(r));
+      GuidValues = guidValueCount.ToArray(r.ReadGuid);
+      StringValues = stringValueCount.ToArray(r.ReadUInt32);
+      LocaleValues = localeValueCount.ToArray(r.ReadUInt32);
+      EnumValues = enumValueCount.ToArray(r.ReadUInt32);
+      StrongValues = strongValueCount.ToArray(() => new DataForgePointer(r));
+      WeakValues = weakValueCount.ToArray(() => new DataForgePointer(r));
 
-      Array_ReferenceValues = referenceValueCount.ToArray(() => new DataForgeReference(r));
+      ReferenceValues = referenceValueCount.ToArray(() => new DataForgeReference(r));
       EnumOptionTable = enumOptionCount.ToArray(r.ReadUInt32);
 
       var values = new List<string>();
@@ -128,7 +128,7 @@ namespace Scope.FileViewer.DataForge
       var maxPosition = r.BaseStream.Position + textLength;
       var startPosition = r.BaseStream.Position;
 
-      ValueMap = new Dictionary<uint, string> { };
+      ValueMap = new Dictionary<uint, string>();
 
       while (r.BaseStream.Position < maxPosition)
       {

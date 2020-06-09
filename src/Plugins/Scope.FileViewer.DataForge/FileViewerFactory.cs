@@ -7,16 +7,12 @@ namespace Scope.FileViewer.DataForge
   [Export]
   public class FileViewerFactory : IFileViewerFactory
   {
-    private static readonly string[] _extensions;
+    private static readonly string[] Extensions = { ".dcb" };
 
-    static FileViewerFactory()
-    {
-      _extensions = new[] {".dcb"};
-    }
 
     public bool CanHandle(IFile file)
     {
-      return _extensions.Any(e => file.Name.EndsWith(e));
+      return Extensions.Any(e => file.Name.EndsWith(e));
     }
 
     public IFileViewer Create(IFile file)
