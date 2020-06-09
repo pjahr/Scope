@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scope.FileViewer.DataForge
 {
@@ -105,27 +101,27 @@ namespace Scope.FileViewer.DataForge
       DataMappingTable = dataMappingCount.ToArray(() => new DataForgeDataMapping(r));
       RecordDefinitionTable = recordDefinitionCount.ToArray(() => new DataForgeRecord(r));
 
-      Array_Int8Values = int8ValueCount.ToArray(() => r.ReadSByte());
-      Array_Int16Values = int16ValueCount.ToArray(() => r.ReadInt16());
-      Array_Int32Values = int32ValueCount.ToArray(() => r.ReadInt32());
-      Array_Int64Values = int64ValueCount.ToArray(() => r.ReadInt64());
-      Array_UInt8Values = uint8ValueCount.ToArray(() => r.ReadByte());
-      Array_UInt16Values = uint16ValueCount.ToArray(() => r.ReadUInt16());
-      Array_UInt32Values = uint32ValueCount.ToArray(() => r.ReadUInt32());
-      Array_UInt64Values = uint64ValueCount.ToArray(() => r.ReadUInt64());
-      Array_BooleanValues = booleanValueCount.ToArray(() => r.ReadBoolean());
-      Array_SingleValues = singleValueCount.ToArray(() => r.ReadSingle());
-      Array_DoubleValues = doubleValueCount.ToArray(() => r.ReadDouble());
+      Array_Int8Values = int8ValueCount.ToArray(r.ReadSByte);
+      Array_Int16Values = int16ValueCount.ToArray(r.ReadInt16);
+      Array_Int32Values = int32ValueCount.ToArray(r.ReadInt32);
+      Array_Int64Values = int64ValueCount.ToArray(r.ReadInt64);
+      Array_UInt8Values = uint8ValueCount.ToArray(r.ReadByte);
+      Array_UInt16Values = uint16ValueCount.ToArray(r.ReadUInt16);
+      Array_UInt32Values = uint32ValueCount.ToArray(r.ReadUInt32);
+      Array_UInt64Values = uint64ValueCount.ToArray(r.ReadUInt64);
+      Array_BooleanValues = booleanValueCount.ToArray(r.ReadBoolean);
+      Array_SingleValues = singleValueCount.ToArray(r.ReadSingle);
+      Array_DoubleValues = doubleValueCount.ToArray(r.ReadDouble);
 
-      Array_GuidValues = guidValueCount.ToArray(() => r.ReadGuid());
-      Array_StringValues = stringValueCount.ToArray(() => r.ReadUInt32());
-      Array_LocaleValues = localeValueCount.ToArray(() => r.ReadUInt32());
-      Array_EnumValues = enumValueCount.ToArray(() => r.ReadUInt32());
+      Array_GuidValues = guidValueCount.ToArray(r.ReadGuid);
+      Array_StringValues = stringValueCount.ToArray(r.ReadUInt32);
+      Array_LocaleValues = localeValueCount.ToArray(r.ReadUInt32);
+      Array_EnumValues = enumValueCount.ToArray(r.ReadUInt32);
       Array_StrongValues = strongValueCount.ToArray(() => new DataForgePointer(r));
       Array_WeakValues = weakValueCount.ToArray(() => new DataForgePointer(r));
 
       Array_ReferenceValues = referenceValueCount.ToArray(() => new DataForgeReference(r));
-      EnumOptionTable = enumOptionCount.ToArray(() => r.ReadUInt32());
+      EnumOptionTable = enumOptionCount.ToArray(r.ReadUInt32);
 
       var values = new List<string>();
 
