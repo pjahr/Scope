@@ -9,39 +9,40 @@ namespace Scope.FileViewer.DataForge.Models
     private bool IsLegacy { get; }
     private int FileVersion { get; }
 
-    private StructDefinition[] StructDefinitionTable { get; }
-    private PropertyDefinition[] PropertyDefinitionTable { get; }
-    private EnumDefinition[] EnumDefinitionTable { get; }
+    public StructDefinition[] StructDefinitionTable { get; }
+    public PropertyDefinition[] PropertyDefinitionTable { get; }
+    public EnumDefinition[] EnumDefinitionTable { get; }
     private DataMapping[] DataMappingTable { get; }
     private Record[] RecordDefinitionTable { get; }
     private StringLookup[] EnumOptionTable { get; }
+
     private string[] ValueTable { get; }
     public Dictionary<string, string> Files { get; }
-    private Reference[] ReferenceValues { get; }
-    private Guid[] GuidValues { get; }
-    private StringLookup[] StringValues { get; }
-    private uint[] LocaleValues { get; }
-    private uint[] EnumValues { get; }
-    private sbyte[] Int8Values { get; }
-    private short[] Int16Values { get; }
-    private int[] Int32Values { get; }
-    private long[] Int64Values { get; }
-    private byte[] UInt8Values { get; }
-    private ushort[] UInt16Values { get; }
-    private uint[] UInt32Values { get; }
-    private ulong[] UInt64Values { get; }
-    private bool[] BooleanValues { get; }
-    private float[] SingleValues { get; }
-    private double[] DoubleValues { get; }
-    private Pointer[] StrongValues { get; }
-    private Pointer[] WeakValues { get; }
+    public Reference[] ReferenceValues { get; }
+    public Guid[] GuidValues { get; }
+    public StringLookup[] StringValues { get; }
+    public uint[] LocaleValues { get; }
+    public uint[] EnumValues { get; }
+    public sbyte[] Int8Values { get; }
+    public short[] Int16Values { get; }
+    public int[] Int32Values { get; }
+    public long[] Int64Values { get; }
+    public byte[] UInt8Values { get; }
+    public ushort[] UInt16Values { get; }
+    public uint[] UInt32Values { get; }
+    public ulong[] UInt64Values { get; }
+    public bool[] BooleanValues { get; }
+    public float[] SingleValues { get; }
+    public double[] DoubleValues { get; }
+    public Pointer[] StrongValues { get; }
+    public Pointer[] WeakValues { get; }
 
-    private Dictionary<uint, string> ValueMap { get; }
+    public Dictionary<uint, string> ValueMap { get; }
 
-    private List<ClassMapping> ClassMappings { get; }
-    private List<ClassMapping> StrongMappings { get; }
-    private List<ClassMapping> WeakMappings1 { get; }
-    private List<ClassMapping> WeakMappings2 { get; }
+    public List<ClassMapping> ClassMappings { get; }
+    public List<ClassMapping> StrongMappings { get; }
+    public List<ClassMapping> WeakMappings1 { get; }
+    public List<ClassMapping> WeakMappings2 { get; }
 
     public DataForgeFile(BinaryReader r, bool legacy = false)
     {
@@ -142,13 +143,14 @@ namespace Scope.FileViewer.DataForge.Models
         ValueMap[(uint)offset] = value;
       }
 
-      foreach (var dataMapping in this.DataMappingTable)
+      for (var i1 = 0; i1 < DataMappingTable.Length; i1++)
       {
+        var dataMapping = this.DataMappingTable[i1];
         var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
         for (var i = 0; i < dataMapping.StructCount; i++)
         {
-          dataStruct.Read(dataMapping.Name);
+          dataStruct.Read(r, dataMapping.Name, this);
         }
       }
 
