@@ -142,6 +142,16 @@ namespace Scope.FileViewer.DataForge.Models
         ValueMap[(uint)offset] = value;
       }
 
+      foreach (var dataMapping in this.DataMappingTable)
+      {
+        var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
+
+        for (var i = 0; i < dataMapping.StructCount; i++)
+        {
+          dataStruct.Read(dataMapping.Name);
+        }
+      }
+
       ValueTable = values.ToArray();
 
       Files = new Dictionary<string, string>();
