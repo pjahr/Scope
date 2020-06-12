@@ -18,6 +18,8 @@ namespace Scope.FileViewer.DataForge.Models
       AttributeCount = r.ReadUInt16();
       FirstAttributeIndex = r.ReadUInt16();
       NodeType = r.ReadUInt32();
+
+      Console.WriteLine($"Created Struct: {NameOffset}");
     }
 
     public uint NameOffset { get; set; }
@@ -34,10 +36,9 @@ namespace Scope.FileViewer.DataForge.Models
     //public String __firstAttributeIndex { get { return String.Format("{0:X4}", FirstAttributeIndex); } }
     //public String __nodeType { get { return String.Format("{0:X4}", NodeType); } }
 
-    public void Read(BinaryReader r,
-                     string name,
-                     DataForgeFile df)
+    public void Read(BinaryReader r, string name, DataForgeFile df)
     {
+      Console.WriteLine($"Reading Struct: {Name}");
       var baseStruct = this;
       var properties = new List<PropertyDefinition>();
 
@@ -45,19 +46,21 @@ namespace Scope.FileViewer.DataForge.Models
 
       // TODO: Include 1st call in while loop (same call inside)?
       properties.AddRange(Enumerable.Range(FirstAttributeIndex, AttributeCount)
-                                   .Select(i => df.PropertyDefinitionTable[i]));
+                                    .Select(i => df.PropertyDefinitionTable[i]));
 
       while (baseStruct.ParentTypeIndex != 0xFFFFFFFF)
       {
         baseStruct = df.StructDefinitionTable[Convert.ToInt32(baseStruct.ParentTypeIndex)];
+        Console.WriteLine($"Adding properties of: {baseStruct.Name}");
 
         properties.AddRange(Enumerable.Range(FirstAttributeIndex, AttributeCount)
-                                    .Select(i => df.PropertyDefinitionTable[i]));
+                                      .Select(i => df.PropertyDefinitionTable[i]));
       }
 
       foreach (var propertyDefinition in properties)
       {
-        propertyDefinition.ConversionType = (ConversionType)((int)propertyDefinition.ConversionType & 0xFF);
+        propertyDefinition.ConversionType =
+          (ConversionType) ((int) propertyDefinition.ConversionType & 0xFF);
 
         if (propertyDefinition.ConversionType == ConversionType.Attribute)
         {
@@ -75,15 +78,15 @@ namespace Scope.FileViewer.DataForge.Models
             //parentSP.AppendChild(emptySP);
             //element.AppendChild(parentSP);
 
-            var structIndex = (ushort)r.ReadUInt32();
-            var recordIndex = (int)r.ReadUInt32();
+            var structIndex = (ushort) r.ReadUInt32();
+            var recordIndex = (int) r.ReadUInt32();
 
             //Console.WriteLine($"Require ClassMapping for struct {df.StructDefinitionTable[structIndex].Name}");
             df.ClassMappings.Add(new ClassMapping
-            {
-              StructIndex = (ushort)r.ReadUInt32(),
-              RecordIndex = (int)r.ReadUInt32()
-            });
+                                 {
+                                   StructIndex = (ushort) r.ReadUInt32(),
+                                   RecordIndex = (int) r.ReadUInt32()
+                                 });
           }
           else
           {
@@ -192,13 +195,13 @@ namespace Scope.FileViewer.DataForge.Models
                 break;
 
               case DataType.StrongPointer:
-                                
-                                df.StrongMappings.Add(new ClassMapping
-                                {
-                                    StructIndex = propertyDefinition.StructIndex,
-                                    RecordIndex = Convert.ToInt32(firstIndex + i)
-                                });
-                                break;
+
+                df.StrongMappings.Add(new ClassMapping
+                                      {
+                                        StructIndex = propertyDefinition.StructIndex,
+                                        RecordIndex = Convert.ToInt32(firstIndex + i)
+                                      });
+                break;
 
               case DataType.WeakPointer:
 
@@ -212,15 +215,15 @@ namespace Scope.FileViewer.DataForge.Models
               default:
                 throw new NotImplementedException();
 
-                // var tempe = this.DocumentRoot.CreateElement(String.Format("{0}", node.DataType));
-                // var tempa = this.DocumentRoot.CreateAttribute("__child");
-                // tempa.Value = (firstIndex + i).ToString();
-                // tempe.Attributes.Append(tempa);
-                // var tempb = this.DocumentRoot.CreateAttribute("__parent");
-                // tempb.Value = node.StructIndex.ToString();
-                // tempe.Attributes.Append(tempb);
-                // child.AppendChild(tempe);
-                // break;
+              // var tempe = this.DocumentRoot.CreateElement(String.Format("{0}", node.DataType));
+              // var tempa = this.DocumentRoot.CreateAttribute("__child");
+              // tempa.Value = (firstIndex + i).ToString();
+              // tempe.Attributes.Append(tempa);
+              // var tempb = this.DocumentRoot.CreateAttribute("__parent");
+              // tempb.Value = node.StructIndex.ToString();
+              // tempe.Attributes.Append(tempb);
+              // child.AppendChild(tempe);
+              // break;
             }
           }
         }

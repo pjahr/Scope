@@ -13,8 +13,8 @@ namespace Scope.FileViewer.DataForge.Models
 
       NameOffset = r.ReadUInt32();
       StructIndex = r.ReadUInt16();
-      DataType = (DataType)r.ReadUInt16();
-      ConversionType = (ConversionType)r.ReadUInt16();
+      DataType = (DataType) r.ReadUInt16();
+      ConversionType = (ConversionType) r.ReadUInt16();
       Padding = r.ReadUInt16();
     }
 
@@ -28,6 +28,8 @@ namespace Scope.FileViewer.DataForge.Models
 
     public void Read(BinaryReader r, DataForgeFile df)
     {
+      Console.Write($"Reading Property: {Name} ({ConversionType}, {DataType}): ");
+
       switch (DataType)
       {
         case DataType.Reference:
@@ -48,7 +50,10 @@ namespace Scope.FileViewer.DataForge.Models
         case DataType.WeakPointer:
           var structIndex = r.ReadUInt32();
           var itemIndex = r.ReadUInt32();
-          df.WeakMappings2.Add(new ClassMapping { StructIndex = (UInt16)structIndex, RecordIndex = (Int32)itemIndex });
+          df.WeakMappings2.Add(new ClassMapping
+                               {
+                                 StructIndex = (ushort) structIndex, RecordIndex = (int) itemIndex
+                               });
           break;
 
         case DataType.String:
@@ -112,6 +117,8 @@ namespace Scope.FileViewer.DataForge.Models
         default:
           throw new NotImplementedException();
       }
+
+      Console.Write($"{Value}\r\n");
     }
   }
 }
