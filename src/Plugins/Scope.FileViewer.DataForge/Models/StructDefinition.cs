@@ -26,7 +26,7 @@ namespace Scope.FileViewer.DataForge.Models
     public ushort FirstAttributeIndex { get; set; }
     public uint NodeType { get; set; }
 
-    public PropertyDefinition[] Properties { get; }
+    public PropertyDefinition[] Properties { get; private set; }
 
     public string Name => _valueOf(NameOffset);
     //public String __parentTypeIndex { get { return String.Format("{0:X4}", ParentTypeIndex); } }
@@ -113,7 +113,7 @@ namespace Scope.FileViewer.DataForge.Models
 
                 break;
 
-              case DataType.Enum:
+              case DataType.Enum: //TODO uint, value is retrieved from ValueMap
                 elements.Add(df.EnumValues[firstIndex + i]);
 
                 break;
@@ -184,40 +184,29 @@ namespace Scope.FileViewer.DataForge.Models
                 break;
 
               case DataType.Class:
-                //var emptyC = this.DocumentRoot.CreateElement(string.Format("{0}", propertyDefinition.DataType));
-                //child.AppendChild(emptyC);
-                //this.DocumentRoot.Require_ClassMapping.Add(new ClassMapping
-                //{
-                //  Node = emptyC,
-                //  StructIndex = propertyDefinition.StructIndex,
-                //  RecordIndex = firstIndex + i
-                //});
+                df.ClassMappings.Add(new ClassMapping
+                                     {
+                                       StructIndex = propertyDefinition.StructIndex,
+                                       RecordIndex = Convert.ToInt32(firstIndex + i)
+                                     });
                 break;
 
               case DataType.StrongPointer:
-                //var emptySP = this.DocumentRoot.CreateElement(string.Format("{0}", propertyDefinition.DataType));
-                //child.AppendChild(emptySP);
-                //this.DocumentRoot.Require_StrongMapping.Add(new ClassMapping
-                //{
-                //  Node = emptySP,
-                //  StructIndex = propertyDefinition.StructIndex,
-                //  RecordIndex = firstIndex + i
-                //});
-                break;
+                                
+                                df.StrongMappings.Add(new ClassMapping
+                                {
+                                    StructIndex = propertyDefinition.StructIndex,
+                                    RecordIndex = Convert.ToInt32(firstIndex + i)
+                                });
+                                break;
 
               case DataType.WeakPointer:
-                //var weakPointerElement = this.DocumentRoot.CreateElement("WeakPointer");
-                //var weakPointerAttribute = this.DocumentRoot.CreateAttribute(propertyDefinition.Name);
 
-                //weakPointerElement.Attributes.Append(weakPointerAttribute);
-                //child.AppendChild(weakPointerElement);
-
-                //this.DocumentRoot.Require_WeakMapping1.Add(new ClassMapping
-                //{
-                //  Node = weakPointerAttribute,
-                //  StructIndex = propertyDefinition.StructIndex,
-                //  RecordIndex = firstIndex + i
-                //});
+                df.WeakMappings1.Add(new ClassMapping
+                                     {
+                                       StructIndex = propertyDefinition.StructIndex,
+                                       RecordIndex = Convert.ToInt32(firstIndex + i)
+                                     });
                 break;
 
               default:
@@ -235,7 +224,9 @@ namespace Scope.FileViewer.DataForge.Models
             }
           }
         }
-      }      
+      }
+
+      Properties = properties.ToArray();
     }
   }
 }
