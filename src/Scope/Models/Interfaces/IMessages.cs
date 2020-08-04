@@ -7,8 +7,6 @@ namespace Scope.Models.Interfaces
   {
     IReadOnlyCollection<IMessage> Items { get; }
 
-    void Add(string text);
-
     event Action MessageReceived;
   }
 }

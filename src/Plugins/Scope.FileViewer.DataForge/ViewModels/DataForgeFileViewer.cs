@@ -12,9 +12,9 @@ namespace Scope.FileViewer.DataForge.ViewModels
     public DataForgeFileViewer(IFile file)
     {
 
-      if (_df!=null)
+      if (_df != null)
       {
-        // HACK(PJ): load only once for now. Caching 
+        // HACK(PJ): load only once for now. Caching for open p4k most likely. 
         return;
       }
 

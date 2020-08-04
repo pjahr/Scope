@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Nito.Mvvm;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 using IFileSystem = System.IO.Abstractions.IFileSystem;
@@ -16,13 +17,13 @@ namespace Scope.ViewModels.Commands
   {
     private readonly ICurrentP4k _currentP4K;
     private readonly IFileSystem _fileSystem;
-    private readonly IMessages _messages;
+    private readonly IMessageQueue _messages;
     private readonly IProgress _progress;
     private readonly AsyncCommand _command;
 
     public OpenP4kFileCommand(ICurrentP4k currentP4k,
                               IFileSystem fileSystem,
-                              IMessages messages,
+                              IMessageQueue messages,
                               IProgress progress)
     {
       _currentP4K = currentP4k;

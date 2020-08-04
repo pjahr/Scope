@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 
 namespace Scope.Models
 {
   [Export]
-  internal class Messages : IMessages
+  internal class Messages : IMessages, IMessageQueue
   {
     private readonly Queue<IMessage> _messages = new Queue<IMessage>();
 

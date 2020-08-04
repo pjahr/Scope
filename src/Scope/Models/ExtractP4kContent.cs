@@ -12,11 +12,11 @@ namespace Scope.Models
   {
     private readonly IFileSystem _fileSystem;
     private readonly IOutputDirectory _outputDirectory;
-    private readonly IMessages _messages;
+    private readonly IMessageQueue _messages;
 
     public ExtractP4kContent(IFileSystem fileSystem, 
                              IOutputDirectory outputDirectory,
-                             IMessages messages)
+                             IMessageQueue messages)
     {
       _fileSystem = fileSystem;
       _outputDirectory = outputDirectory;
@@ -26,7 +26,7 @@ namespace Scope.Models
     public void Extract(IFile file,
                         string outputDirectoryPath)
     {
-      if (outputDirectoryPath == "")
+      if (string.IsNullOrEmpty(outputDirectoryPath))
       {
         outputDirectoryPath = _outputDirectory.Path;
       }
