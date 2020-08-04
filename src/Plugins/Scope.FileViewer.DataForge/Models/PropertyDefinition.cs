@@ -25,15 +25,16 @@ namespace Scope.FileViewer.DataForge.Models
     public ushort Padding { get; set; }
     public string Name => _valueOf(NameOffset);
     public object Value { get; private set; }
+    public object Unknown { get; private set; }
 
     public void Read(BinaryReader r, DataForgeFile df)
     {
-      Console.Write($"Reading Property: {Name} ({ConversionType}, {DataType}): ");
+      //Console.Write($"Reading Property: {Name} ({ConversionType}, {DataType}): ");
 
       switch (DataType)
       {
         case DataType.Reference:
-          r.ReadUInt32(); // ?
+          Unknown=r.ReadUInt32(); // ?
           Value = r.ReadGuid();
           break;
 
@@ -117,8 +118,11 @@ namespace Scope.FileViewer.DataForge.Models
         default:
           throw new NotImplementedException();
       }
+    }
 
-      Console.Write($"{Value}\r\n");
+    public override string ToString()
+    {
+      return $"Prop: {Name} ({ConversionType}, {DataType}):{Value}";
     }
   }
 }

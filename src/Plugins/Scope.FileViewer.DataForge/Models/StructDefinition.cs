@@ -18,8 +18,6 @@ namespace Scope.FileViewer.DataForge.Models
       AttributeCount = r.ReadUInt16();
       FirstAttributeIndex = r.ReadUInt16();
       NodeType = r.ReadUInt32();
-
-      Console.WriteLine($"Created Struct: {NameOffset}");
     }
 
     public uint NameOffset { get; set; }
@@ -38,29 +36,37 @@ namespace Scope.FileViewer.DataForge.Models
 
     public void Read(BinaryReader r, string name, DataForgeFile df)
     {
-      Console.WriteLine($"Reading Struct: {Name}");
       var baseStruct = this;
       var properties = new List<PropertyDefinition>();
 
+     
       // TODO: Do we need to handle property overrides (original comment, investigate)
 
       // TODO: Include 1st call in while loop (same call inside)?
-      properties.AddRange(Enumerable.Range(FirstAttributeIndex, AttributeCount)
-                                    .Select(i => df.PropertyDefinitionTable[i]));
+
+      var propertyDefinitions = Enumerable.Range(FirstAttributeIndex, AttributeCount)
+                                          .Select(i => df.PropertyDefinitionTable[i])
+                                          .ToArray();
+
+      properties.InsertRange(0, propertyDefinitions);
 
       while (baseStruct.ParentTypeIndex != 0xFFFFFFFF)
       {
         baseStruct = df.StructDefinitionTable[Convert.ToInt32(baseStruct.ParentTypeIndex)];
-        Console.WriteLine($"Adding properties of: {baseStruct.Name}");
 
-        properties.AddRange(Enumerable.Range(FirstAttributeIndex, AttributeCount)
-                                      .Select(i => df.PropertyDefinitionTable[i]));
+        var attributes = Enumerable.Range(baseStruct.FirstAttributeIndex, baseStruct.AttributeCount)
+                                   .Select(i => df.PropertyDefinitionTable[i])
+                                   .ToArray();
+        properties.InsertRange(0,
+                               attributes);
       }
+
+      //Console.WriteLine($"Reading Struct: {Name} (Prop: {properties.Count})");
 
       foreach (var propertyDefinition in properties)
       {
         propertyDefinition.ConversionType =
-          (ConversionType) ((int) propertyDefinition.ConversionType & 0xFF);
+          (ConversionType)((int)propertyDefinition.ConversionType & 0xFF);
 
         if (propertyDefinition.ConversionType == ConversionType.Attribute)
         {
@@ -68,28 +74,27 @@ namespace Scope.FileViewer.DataForge.Models
 
           if (propertyDefinition.DataType == DataType.Class)
           {
+            Console.WriteLine($"Class:");
             var dataStruct = df.StructDefinitionTable[propertyDefinition.StructIndex];
             dataStruct.Read(r, propertyDefinition.Name, df);
           }
           else if (propertyDefinition.DataType == DataType.StrongPointer)
           {
-            //var parentSP = this.DocumentRoot.CreateElement(node.Name);
-            //var emptySP = this.DocumentRoot.CreateElement(string.Format("{0}", node.DataType));
-            //parentSP.AppendChild(emptySP);
-            //element.AppendChild(parentSP);
+            Console.WriteLine($"Pointer:");
 
-            var structIndex = (ushort) r.ReadUInt32();
-            var recordIndex = (int) r.ReadUInt32();
+            var structIndex = (ushort)r.ReadUInt32();
+            var recordIndex = (int)r.ReadUInt32();
 
             //Console.WriteLine($"Require ClassMapping for struct {df.StructDefinitionTable[structIndex].Name}");
             df.ClassMappings.Add(new ClassMapping
-                                 {
-                                   StructIndex = (ushort) r.ReadUInt32(),
-                                   RecordIndex = (int) r.ReadUInt32()
-                                 });
+            {
+              StructIndex = structIndex,
+              RecordIndex = recordIndex
+            });
           }
           else
           {
+            Console.WriteLine($"Simple:");
             propertyDefinition.Read(r, df);
           }
         }
@@ -98,8 +103,8 @@ namespace Scope.FileViewer.DataForge.Models
           // ConversionType seems only used to differentiate between arrays and single values
           var arrayCount = r.ReadUInt32();
           var firstIndex = r.ReadUInt32();
+          Console.WriteLine($"Array of {propertyDefinition.DataType} ({arrayCount}, {firstIndex}):");
 
-          //var child = this.DocumentRoot.CreateElement(propertyDefinition.Name);
 
           var elements = new List<object>();
 
@@ -188,48 +193,53 @@ namespace Scope.FileViewer.DataForge.Models
 
               case DataType.Class:
                 df.ClassMappings.Add(new ClassMapping
-                                     {
-                                       StructIndex = propertyDefinition.StructIndex,
-                                       RecordIndex = Convert.ToInt32(firstIndex + i)
-                                     });
+                {
+                  StructIndex = propertyDefinition.StructIndex,
+                  RecordIndex = (int)(firstIndex + i)
+                });
                 break;
 
               case DataType.StrongPointer:
 
                 df.StrongMappings.Add(new ClassMapping
-                                      {
-                                        StructIndex = propertyDefinition.StructIndex,
-                                        RecordIndex = Convert.ToInt32(firstIndex + i)
-                                      });
+                {
+                  StructIndex = propertyDefinition.StructIndex,
+                  RecordIndex = (int)(firstIndex + i)
+                });
                 break;
 
               case DataType.WeakPointer:
 
                 df.WeakMappings1.Add(new ClassMapping
-                                     {
-                                       StructIndex = propertyDefinition.StructIndex,
-                                       RecordIndex = Convert.ToInt32(firstIndex + i)
-                                     });
+                {
+                  StructIndex = propertyDefinition.StructIndex,
+                  RecordIndex = (int)(firstIndex + i)
+                });
                 break;
 
               default:
                 throw new NotImplementedException();
 
-              // var tempe = this.DocumentRoot.CreateElement(String.Format("{0}", node.DataType));
-              // var tempa = this.DocumentRoot.CreateAttribute("__child");
-              // tempa.Value = (firstIndex + i).ToString();
-              // tempe.Attributes.Append(tempa);
-              // var tempb = this.DocumentRoot.CreateAttribute("__parent");
-              // tempb.Value = node.StructIndex.ToString();
-              // tempe.Attributes.Append(tempb);
-              // child.AppendChild(tempe);
-              // break;
+                // var tempe = this.DocumentRoot.CreateElement(String.Format("{0}", node.DataType));
+                // var tempa = this.DocumentRoot.CreateAttribute("__child");
+                // tempa.Value = (firstIndex + i).ToString();
+                // tempe.Attributes.Append(tempa);
+                // var tempb = this.DocumentRoot.CreateAttribute("__parent");
+                // tempb.Value = node.StructIndex.ToString();
+                // tempe.Attributes.Append(tempb);
+                // child.AppendChild(tempe);
+                // break;
             }
           }
         }
       }
 
       Properties = properties.ToArray();
+    }
+
+    public override string ToString()
+    {
+      return $"{Name} ({AttributeCount}, {FirstAttributeIndex} ,{NodeType}, {ParentTypeIndex})";
     }
   }
 }

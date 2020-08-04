@@ -19,7 +19,11 @@ namespace Scope.FileViewer.DataForge.Models
     public ushort StructCount { get; }
     public uint NameOffset { get; }
 
-    //NameOffset = documentRoot.StructDefinitionTable[StructIndex].NameOffset;
-    public string Name => _valueOf(NameOffset);
+    public string Name => _valueOf(StructIndex);
+
+    public override string ToString()
+    {
+      return $"{Name} I{StructIndex} C{StructCount}";
+    }
   }
 }

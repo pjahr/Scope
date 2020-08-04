@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Scope.FileViewer.DataForge.Models
@@ -102,7 +103,7 @@ namespace Scope.FileViewer.DataForge.Models
       
       EnumDefinitionTable = enumDefinitionCount.ToArray(() => new EnumDefinition(r, V, i=>EnumOptionTable[i].Value));
       
-      DataMappingTable = dataMappingCount.ToArray(() => new DataMapping(r, V));
+      DataMappingTable = dataMappingCount.ToArray(() => new DataMapping(r, VS));
       
       RecordDefinitionTable = recordDefinitionCount.ToArray(() => new Record(r, V));
 
@@ -143,11 +144,16 @@ namespace Scope.FileViewer.DataForge.Models
         ValueMap[(uint)offset] = value;
       }
 
-      for (var i1 = 0; i1 < DataMappingTable.Length; i1++)
+      ///////////////////////////////////////////////////////////////////////////
+
+      //r.EnableLog();
+
+      foreach (var dataMapping in DataMappingTable)
       {
-        var dataMapping = this.DataMappingTable[i1];
         var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
+        Console.WriteLine($"Map {dataMapping.Name}->{dataStruct.Name} ({dataMapping.StructCount})");
+        
         for (var i = 0; i < dataMapping.StructCount; i++)
         {
           dataStruct.Read(r, dataMapping.Name, this);
@@ -173,6 +179,173 @@ namespace Scope.FileViewer.DataForge.Models
       }
     }
 
+
+    // TODO: Explain Shortcuts
     private string V(uint id) => ValueMap[id];
+    private string VS(uint id) => ValueMap[StructDefinitionTable[id].NameOffset];
   }
+
+  public class SpyBinaryReader : BinaryReader
+  {
+    private List<Tuple<string, ReadType>> _acess = new List<Tuple<string, ReadType>>();
+
+    private Action<ReadType> _log = (_) => { };
+
+    public SpyBinaryReader(Stream input) : base(input) { }
+
+    public void EnableLog()
+    {
+      //_log = (accessType) => _acess.Add(new Tuple<string, ReadType>(new StackFrame(4).GetMethod().DeclaringType.Name, accessType));
+      _log = (accessType) =>
+      {
+        Console.WriteLine($"{accessType} [{BaseStream.Position}]");
+        if (BaseStream.Position == 12537565)
+        {
+          // debug stop
+
+        }
+      };
+    }
+
+    public override int Read()
+    {
+      _log(ReadType.None);
+      return base.Read();
+    }
+
+
+    public override bool ReadBoolean()
+    {
+      _log(ReadType.Bool);
+      return base.ReadBoolean();
+    }
+
+    public override byte ReadByte()
+    {
+      _log(ReadType.Byte);
+      return base.ReadByte();
+    }
+
+    public override int Read(byte[] buffer, int index, int count)
+    {
+      _log(ReadType.ByteBuffer);
+      return base.Read(buffer, index, count);
+    }
+
+    public override int Read(char[] buffer, int index, int count)
+    {
+      _log(ReadType.CharBuffer);
+      return base.Read(buffer, index, count);
+    }
+
+    public override byte[] ReadBytes(int count)
+    {
+      _log(ReadType.Bytes);
+      return base.ReadBytes(count);
+    }
+
+    public override char ReadChar()
+    {
+      _log(ReadType.Char);
+      return base.ReadChar();
+    }
+
+    public override char[] ReadChars(int count)
+    {
+      _log(ReadType.Chars);
+      return base.ReadChars(count);
+    }
+
+    public override decimal ReadDecimal()
+    {
+      _log(ReadType.Decimal);
+      return base.ReadDecimal();
+    }
+
+    public override double ReadDouble()
+    {
+      _log(ReadType.Double);
+      return base.ReadDouble();
+    }
+
+    public override short ReadInt16()
+    {
+      _log(ReadType.Int16);
+      return base.ReadInt16();
+    }
+
+    public override int ReadInt32()
+    {
+      _log(ReadType.Int32);
+      return base.ReadInt32();
+    }
+
+    public override long ReadInt64()
+    {
+      _log(ReadType.Int64);
+      return base.ReadInt64();
+    }
+
+    public override sbyte ReadSByte()
+    {
+      _log(ReadType.Sbyte);
+      return base.ReadSByte();
+    }
+
+    public override float ReadSingle()
+    {
+      _log(ReadType.Single);
+      return base.ReadSingle();
+    }
+
+    public override string ReadString()
+    {
+      _log(ReadType.String);
+      return base.ReadString();
+    }
+
+    public override ushort ReadUInt16()
+    {
+      _log(ReadType.UInt16);
+      return base.ReadUInt16();
+    }
+
+    public override uint ReadUInt32()
+    {
+      _log(ReadType.UInt32);
+      return base.ReadUInt32();
+    }
+
+    public override ulong ReadUInt64()
+    {
+      _log(ReadType.UInt64);
+      return base.ReadUInt64();
+    }
+
+  }
+
+  public enum ReadType
+  {
+    None,
+    Bool,
+    Byte,
+    ByteBuffer,
+    CharBuffer,
+    Bytes,
+    Char,
+    Chars,
+    Decimal,
+    Double,
+    Int16,
+    Int32,
+    Int64,
+    Sbyte,
+    Single,
+    String,
+    UInt16,
+    UInt32,
+    UInt64
+
+  }
+
 }

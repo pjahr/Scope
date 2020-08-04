@@ -7,10 +7,17 @@ namespace Scope.FileViewer.DataForge.ViewModels
 {
   public class DataForgeFileViewer : IFileViewer
   {
-    private DataForgeFile _df;
+    private static DataForgeFile _df;
 
     public DataForgeFileViewer(IFile file)
     {
+
+      if (_df!=null)
+      {
+        // HACK(PJ): load only once for now. Caching 
+        return;
+      }
+
       try
       {
         using (var s = file.Read())

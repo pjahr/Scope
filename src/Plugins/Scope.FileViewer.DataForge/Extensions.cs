@@ -42,17 +42,19 @@ namespace Scope.FileViewer.DataForge
 
     public static Guid ReadGuid(this BinaryReader reader)
     {
-      return new Guid(reader.ReadInt32(),
-                      reader.ReadInt16(),
-                      reader.ReadInt16(),
-                      reader.ReadByte(),                      
-                      reader.ReadByte(),
-                      reader.ReadByte(),
-                      reader.ReadByte(),
-                      reader.ReadByte(),
-                      reader.ReadByte(),
-                      reader.ReadByte(),
-                      reader.ReadByte());
+      var c = reader.ReadInt16();
+      var b = reader.ReadInt16();
+      var a = reader.ReadInt32();
+      var k = reader.ReadByte();
+      var j = reader.ReadByte();
+      var i = reader.ReadByte();
+      var h = reader.ReadByte();
+      var g = reader.ReadByte();
+      var f = reader.ReadByte();
+      var e = reader.ReadByte();
+      var d = reader.ReadByte();
+
+      return new Guid(a, b, c, d, e, f, g, h, i, j, k);
     }
 
     public static void Times(this int n, Action action)
