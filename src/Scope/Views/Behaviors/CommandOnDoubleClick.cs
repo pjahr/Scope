@@ -26,8 +26,6 @@ namespace Scope.Views.Behaviors
 
     private void CallCommandOnDoubleClick(object sender, MouseButtonEventArgs e)
     {
-      Console.WriteLine($"{e.ClickCount}");
-
       if (e.ClickCount != 2)
       {
         return;

@@ -61,8 +61,6 @@ namespace Scope.FileViewer.DataForge.Models
                                attributes);
       }
 
-      //Console.WriteLine($"Reading Struct: {Name} (Prop: {properties.Count})");
-
       foreach (var propertyDefinition in properties)
       {
         propertyDefinition.ConversionType =
@@ -74,18 +72,14 @@ namespace Scope.FileViewer.DataForge.Models
 
           if (propertyDefinition.DataType == DataType.Class)
           {
-            Console.WriteLine($"Class:");
             var dataStruct = df.StructDefinitionTable[propertyDefinition.StructIndex];
             dataStruct.Read(r, propertyDefinition.Name, df);
           }
           else if (propertyDefinition.DataType == DataType.StrongPointer)
           {
-            Console.WriteLine($"Pointer:");
-
             var structIndex = (ushort)r.ReadUInt32();
             var recordIndex = (int)r.ReadUInt32();
 
-            //Console.WriteLine($"Require ClassMapping for struct {df.StructDefinitionTable[structIndex].Name}");
             df.ClassMappings.Add(new ClassMapping
             {
               StructIndex = structIndex,
@@ -94,7 +88,6 @@ namespace Scope.FileViewer.DataForge.Models
           }
           else
           {
-            Console.WriteLine($"Simple:");
             propertyDefinition.Read(r, df);
           }
         }
@@ -103,9 +96,7 @@ namespace Scope.FileViewer.DataForge.Models
           // ConversionType seems only used to differentiate between arrays and single values
           var arrayCount = r.ReadUInt32();
           var firstIndex = r.ReadUInt32();
-          Console.WriteLine($"Array of {propertyDefinition.DataType} ({arrayCount}, {firstIndex}):");
-
-
+          
           var elements = new List<object>();
 
           for (var i = 0; i < arrayCount; i++)

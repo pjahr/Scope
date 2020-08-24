@@ -9,7 +9,12 @@ namespace Scope.FileViewer.DataForge
   public class FileViewerFactory : IFileViewerFactory
   {
     private static readonly string[] Extensions = { ".dcb" };
+    private readonly IMessageQueue _messages;
 
+    public FileViewerFactory(IMessageQueue messages)
+    {
+      _messages = messages;
+    }
 
     public bool CanHandle(IFile file)
     {
@@ -18,7 +23,7 @@ namespace Scope.FileViewer.DataForge
 
     public IFileViewer Create(IFile file)
     {
-      return new DataForgeFileViewer(file);
+      return new DataForgeFileViewer(file, _messages);
     }
   }
 }

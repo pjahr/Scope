@@ -63,6 +63,8 @@
     <Compile Include="Models\DataMapping.cs" />
     <Compile Include="Models\EnumDefinition.cs" />
     <Compile Include="Models\DataForgeFile.cs" />
+    <Compile Include="Models\ReadType.cs" />
+    <Compile Include="Models\SpyBinaryReader.cs" />
     <Compile Include="ViewModels\DataForgeFileViewer.cs" />
     <Compile Include="Models\Pointer.cs" />
     <Compile Include="Models\PropertyDefinition.cs" />
