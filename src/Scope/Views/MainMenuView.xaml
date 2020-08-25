@@ -23,7 +23,8 @@
     <MenuItem
       DataContext="{Binding BuildSearchIndex}"
       Header="{Binding Label}"
-      Command="{Binding Command}"/>
+      Command="{Binding Command}"
+      ToolTip="{Binding ToolTip}"/>
 
     <Separator />
 

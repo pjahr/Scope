@@ -18,7 +18,6 @@ namespace Scope.ViewModels
       _command = new RelayCommand(BuildSearchIndex);
 
       Command = _command;
-      Label = "Build search index";
 
       _currentP4K.Changed += UpdateCommand;
 
@@ -27,7 +26,16 @@ namespace Scope.ViewModels
 
     private void UpdateCommand()
     {
-      _command.IsEnabled = _currentP4K.IsInitialized;
+      var isEnabled = _currentP4K.IsInitialized;
+      _command.IsEnabled = isEnabled;
+
+      Label = isEnabled
+              ?"Build search index"
+              : "Build search index (load P4K first)";
+
+      Tooltip = isEnabled
+                ? "Scans all known text files and generates an index of all containing words to increase search speed."
+                : "Please load a P4K file first.";
     }
 
     private void BuildSearchIndex()

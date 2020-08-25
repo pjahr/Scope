@@ -9,8 +9,9 @@
   ResizeMode="CanResizeWithGrip"
   FontFamily="Tahoma"
   WindowStartupLocation="CenterScreen"
-  Height="720"
   Width="1280"
+  Height="720"
+  WindowState="Maximized"
   Title="{Binding Title}">
 
   <Window.InputBindings>
