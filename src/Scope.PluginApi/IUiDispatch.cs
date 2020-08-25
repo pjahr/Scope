@@ -14,7 +14,9 @@ namespace Scope.Interfaces
   /// 
   /// <code>
   /// 
+  /// IUiDispatch _uiDispatch; // initialized during ctor
   /// 
+  /// _someService.EventOnAnotherThread += _uiDispatch.Do( () => UpdateSomeUiElement );  // this will safely cross-thread-access your control
   /// 
   /// </code>
   /// 
@@ -22,7 +24,7 @@ namespace Scope.Interfaces
   public interface IUiDispatch
   {
     /// <summary>
-    /// Takes care, that the provided code is called on the UI thread to avoid cross-thread access to UI controls. 
+    /// Takes care that the provided code is called on the UI thread to avoid cross-thread access to UI controls. 
     /// </summary>
     void Do(Action action);
   }
