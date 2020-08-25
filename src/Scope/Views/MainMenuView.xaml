@@ -20,6 +20,11 @@
       Command="{Binding Command}"
       InputGestureText="{Binding Shortcut}" />
 
+    <MenuItem
+      DataContext="{Binding BuildSearchIndex}"
+      Header="{Binding Label}"
+      Command="{Binding Command}"/>
+
     <Separator />
 
     <MenuItem

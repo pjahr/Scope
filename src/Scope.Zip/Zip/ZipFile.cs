@@ -25,54 +25,54 @@ namespace Scope.Zip.Zip
 
     private const int DefaultBufferSize = 4096;
 
-    private bool isDisposed_;
+    private bool _isDisposed;
 
-    private string name_;
+    private string _name;
 
-    private string comment_;
+    private string _comment;
 
-    private string rawPassword_;
+    private string _rawPassword;
 
-    private Stream baseStream_;
+    private Stream _baseStream;
 
-    private bool isStreamOwner;
+    private bool _isStreamOwner;
 
-    private long offsetOfFirstEntry;
+    private long _offsetOfFirstEntry;
 
-    private ZipEntry[] entries_;
+    private ZipEntry[] _entries;
 
-    private byte[] key;
+    private byte[] _key;
 
-    private bool isNewArchive_;
+    private bool _isNewArchive;
 
     // Default is dynamic which is not backwards compatible and can cause problems
     // with XP's built in compression which cant read Zip64 archives.
     // However it does avoid the situation were a large file is added and cannot be completed correctly.
     // Hint: Set always ZipEntry size before they are added to an archive and this setting isnt needed.
-    private UseZip64 useZip64_ = UseZip64.Dynamic;
+    private UseZip64 _useZip64 = UseZip64.Dynamic;
 
-    private List<ZipUpdate> updates_;
+    private List<ZipUpdate> _updates;
 
-    private long updateCount_;
+    private long _updateCount;
 
     // Count is managed manually as updates_ can contain nulls!
-    private Dictionary<string, int> updateIndex_;
+    private Dictionary<string, int> _updateIndex;
 
-    private IArchiveStorage archiveStorage_;
+    private IArchiveStorage _archiveStorage;
 
-    private IDynamicDataSource updateDataSource_;
+    private IDynamicDataSource _updateDataSource;
 
-    private bool contentsEdited_;
+    private bool _contentsEdited;
 
-    private int bufferSize_ = DefaultBufferSize;
+    private int _bufferSize = DefaultBufferSize;
 
-    private byte[] copyBuffer_;
+    private byte[] _copyBuffer;
 
-    private ZipString newComment_;
+    private ZipString _newComment;
 
-    private bool commentEdited_;
+    private bool _commentEdited;
 
-    private IEntryFactory updateEntryFactory_ = new ZipEntryFactory();
+    private IEntryFactory _updateEntryFactory = new ZipEntryFactory();
 
     public ZipFile(string name)
     {
@@ -81,10 +81,10 @@ namespace Scope.Zip.Zip
         throw new ArgumentNullException(nameof(name));
       }
 
-      name_ = name;
+      _name = name;
 
-      baseStream_ = File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read);
-      isStreamOwner = true;
+      _baseStream = File.Open(name, FileMode.Open, FileAccess.Read, FileShare.Read);
+      _isStreamOwner = true;
 
       try
       {
@@ -109,9 +109,9 @@ namespace Scope.Zip.Zip
         throw new ArgumentException("Stream is not seekable", nameof(file));
       }
 
-      baseStream_ = file;
-      name_ = file.Name;
-      isStreamOwner = true;
+      _baseStream = file;
+      _name = file.Name;
+      _isStreamOwner = true;
 
       try
       {
@@ -152,10 +152,10 @@ namespace Scope.Zip.Zip
         throw new ArgumentException("Stream is not seekable", nameof(stream));
       }
 
-      baseStream_ = stream;
-      isStreamOwner = true;
+      _baseStream = stream;
+      _isStreamOwner = true;
 
-      if (baseStream_.Length > 0)
+      if (_baseStream.Length > 0)
       {
         try
         {
@@ -169,8 +169,8 @@ namespace Scope.Zip.Zip
       }
       else
       {
-        entries_ = new ZipEntry[0];
-        isNewArchive_ = true;
+        _entries = new ZipEntry[0];
+        _isNewArchive = true;
       }
     }
 
@@ -179,8 +179,8 @@ namespace Scope.Zip.Zip
     /// </summary>
     internal ZipFile()
     {
-      entries_ = new ZipEntry[0];
-      isNewArchive_ = true;
+      _entries = new ZipEntry[0];
+      _isNewArchive = true;
     }
 
     /// <summary>
@@ -216,7 +216,7 @@ namespace Scope.Zip.Zip
     /// <summary>
     /// Get/set the encryption key value.
     /// </summary>
-    public byte[] Key { private get { return key; } set { key = value; } }
+    public byte[] Key { private get { return _key; } set { _key = value; } }
 
     /// <summary>
     /// Password to be used for encrypting/decrypting files.
@@ -228,12 +228,12 @@ namespace Scope.Zip.Zip
       {
         if (string.IsNullOrEmpty(value))
         {
-          key = null;
+          _key = null;
         }
         else
         {
-          rawPassword_ = value;
-          key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(value));
+          _rawPassword = value;
+          _key = PkzipClassic.GenerateKeys(ZipConstants.ConvertToArray(value));
         }
       }
     }
@@ -245,29 +245,29 @@ namespace Scope.Zip.Zip
     /// <remarks>
     /// The default value is true in all cases.
     /// </remarks>
-    public bool IsStreamOwner { get => isStreamOwner; set => isStreamOwner = value; }
+    public bool IsStreamOwner { get => _isStreamOwner; set => _isStreamOwner = value; }
 
     /// <summary>
     /// Get a value indicating wether
     /// this archive is embedded in another file or not.
     /// </summary>
     // Not strictly correct in all circumstances currently
-    public bool IsEmbeddedArchive => offsetOfFirstEntry > 0;
+    public bool IsEmbeddedArchive => _offsetOfFirstEntry > 0;
 
     /// <summary>
     /// Get a value indicating that this archive is a new one.
     /// </summary>
-    public bool IsNewArchive => isNewArchive_;
+    public bool IsNewArchive => _isNewArchive;
 
     /// <summary>
     /// Gets the comment for the zip file.
     /// </summary>
-    public string ZipFileComment => comment_;
+    public string ZipFileComment => _comment;
 
     /// <summary>
     /// Gets the name of this zip file.
     /// </summary>
-    public string Name => name_;
+    public string Name => _name;
 
     /// <summary>
     /// Gets the number of entries in this zip file.
@@ -276,20 +276,20 @@ namespace Scope.Zip.Zip
     /// The Zip file has been closed.
     /// </exception>
     [Obsolete("Use the Count property instead")]
-    public int Size => entries_.Length;
+    public int Size => _entries.Length;
 
     /// <summary>
     /// Get the number of entries contained in this <see cref="ZipFile"/>.
     /// </summary>
-    public long Count => entries_.Length;
+    public long Count => _entries.Length;
 
     /// <summary>
     /// Get / set the <see cref="INameTransform"/> to apply to names when updating.
     /// </summary>
     public INameTransform NameTransform
     {
-      get => updateEntryFactory_.NameTransform;
-      set => updateEntryFactory_.NameTransform = value;
+      get => _updateEntryFactory.NameTransform;
+      set => _updateEntryFactory.NameTransform = value;
     }
 
     /// <summary>
@@ -298,16 +298,16 @@ namespace Scope.Zip.Zip
     /// </summary>
     public IEntryFactory EntryFactory
     {
-      get => updateEntryFactory_;
+      get => _updateEntryFactory;
       set
       {
         if (value == null)
         {
-          updateEntryFactory_ = new ZipEntryFactory();
+          _updateEntryFactory = new ZipEntryFactory();
         }
         else
         {
-          updateEntryFactory_ = value;
+          _updateEntryFactory = value;
         }
       }
     }
@@ -317,7 +317,7 @@ namespace Scope.Zip.Zip
     /// </summary>
     public int BufferSize
     {
-      get => bufferSize_;
+      get => _bufferSize;
       set
       {
         if (value < 1024)
@@ -325,10 +325,10 @@ namespace Scope.Zip.Zip
           throw new ArgumentOutOfRangeException(nameof(value), "cannot be below 1024");
         }
 
-        if (bufferSize_ != value)
+        if (_bufferSize != value)
         {
-          bufferSize_ = value;
-          copyBuffer_ = null;
+          _bufferSize = value;
+          _copyBuffer = null;
         }
       }
     }
@@ -336,24 +336,24 @@ namespace Scope.Zip.Zip
     /// <summary>
     /// Get a value indicating an update has <see cref="BeginUpdate()">been started</see>.
     /// </summary>
-    public bool IsUpdating => updates_ != null;
+    public bool IsUpdating => _updates != null;
 
     /// <summary>
     /// Get / set a value indicating how Zip64 Extension usage is determined when adding entries.
     /// </summary>
-    public UseZip64 UseZip64 { get => useZip64_; set => useZip64_ = value; }
+    public UseZip64 UseZip64 { get => _useZip64; set => _useZip64 = value; }
 
     /// <summary>
     /// Get a value indicating wether encryption keys are currently available.
     /// </summary>
-    private bool HaveKeys => key != null;
+    private bool HaveKeys => _key != null;
 
     /// <summary>
     /// Indexer property for ZipEntries
     /// </summary>
     [IndexerName("EntryByIndex")]
     public ZipEntry this[int index] =>
-      (ZipEntry) entries_[index]
+      (ZipEntry)_entries[index]
        .Clone();
 
     /// <summary>
@@ -372,9 +372,9 @@ namespace Scope.Zip.Zip
       FileStream fs = File.Create(fileName);
 
       var result = new ZipFile();
-      result.name_ = fileName;
-      result.baseStream_ = fs;
-      result.isStreamOwner = true;
+      result._name = fileName;
+      result._baseStream = fs;
+      result._isStreamOwner = true;
       return result;
     }
 
@@ -403,7 +403,7 @@ namespace Scope.Zip.Zip
       }
 
       var result = new ZipFile();
-      result.baseStream_ = outStream;
+      result._baseStream = outStream;
       return result;
     }
 
@@ -443,12 +443,12 @@ namespace Scope.Zip.Zip
     /// </exception>
     public IEnumerator GetEnumerator()
     {
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
 
-      return new ZipEntryEnumerator(entries_);
+      return new ZipEntryEnumerator(_entries);
     }
 
     /// <summary>
@@ -462,16 +462,16 @@ namespace Scope.Zip.Zip
     /// </exception>
     public int FindEntry(string name, bool ignoreCase)
     {
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
 
       // TODO: This will be slow as the next ice age for huge archives!
-      for (int i = 0; i < entries_.Length; i++)
+      for (int i = 0; i < _entries.Length; i++)
       {
         if (string.Compare(name,
-                           entries_[i]
+                           _entries[i]
                             .Name,
                            ignoreCase
                              ? StringComparison.OrdinalIgnoreCase
@@ -500,14 +500,14 @@ namespace Scope.Zip.Zip
     /// </exception>
     public ZipEntry GetEntry(string name)
     {
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
 
       int index = FindEntry(name, true);
       return index >= 0
-               ? (ZipEntry) entries_[index]
+               ? (ZipEntry)_entries[index]
                 .Clone()
                : null;
     }
@@ -534,15 +534,15 @@ namespace Scope.Zip.Zip
         throw new ArgumentNullException(nameof(entry));
       }
 
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
 
       long index = entry.ZipFileIndex;
       if (index < 0
-          || index >= entries_.Length
-          || entries_[index]
+          || index >= _entries.Length
+          || _entries[index]
            .Name
           != entry.Name)
       {
@@ -574,33 +574,33 @@ namespace Scope.Zip.Zip
     /// </exception>
     public Stream GetInputStream(long entryIndex)
     {
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
 
-      long start = LocateEntry(entries_[entryIndex]);
-      CompressionMethod method = entries_[entryIndex]
+      long start = LocateEntry(_entries[entryIndex]);
+      CompressionMethod method = _entries[entryIndex]
        .CompressionMethod;
       Stream result = new PartialInputStream(this,
                                              start,
-                                             entries_[entryIndex]
+                                             _entries[entryIndex]
                                               .CompressedSize);
 
-      if (entries_[entryIndex]
+      if (_entries[entryIndex]
        .IsAesCrypted)
       {
-        result = CreateAndInitAesDecryptionStream(result, entries_[entryIndex]);
+        result = CreateAndInitAesDecryptionStream(result, _entries[entryIndex]);
         if (result == null)
         {
           throw new ZipException("Unable to decrypt this entry");
         }
       }
 
-      if (entries_[entryIndex]
+      if (_entries[entryIndex]
        .IsCrypted)
       {
-        result = CreateAndInitDecryptionStream(result, entries_[entryIndex]);
+        result = CreateAndInitDecryptionStream(result, _entries[entryIndex]);
         if (result == null)
         {
           throw new ZipException("Unable to decrypt this entry");
@@ -660,7 +660,7 @@ namespace Scope.Zip.Zip
         throw new ArgumentNullException(nameof(dataSource));
       }
 
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
@@ -670,44 +670,44 @@ namespace Scope.Zip.Zip
         throw new ZipException("Cannot update embedded/SFX archives");
       }
 
-      archiveStorage_ = archiveStorage;
-      updateDataSource_ = dataSource;
+      _archiveStorage = archiveStorage;
+      _updateDataSource = dataSource;
 
       // NOTE: the baseStream_ may not currently support writing or seeking.
 
-      updateIndex_ = new Dictionary<string, int>();
+      _updateIndex = new Dictionary<string, int>();
 
-      updates_ = new List<ZipUpdate>(entries_.Length);
-      foreach (ZipEntry entry in entries_)
+      _updates = new List<ZipUpdate>(_entries.Length);
+      foreach (ZipEntry entry in _entries)
       {
-        int index = updates_.Count;
-        updates_.Add(new ZipUpdate(entry));
-        updateIndex_.Add(entry.Name, index);
+        int index = _updates.Count;
+        _updates.Add(new ZipUpdate(entry));
+        _updateIndex.Add(entry.Name, index);
       }
 
       // We must sort by offset before using offset's calculated sizes
-      updates_.Sort(new UpdateComparer());
+      _updates.Sort(new UpdateComparer());
 
       int idx = 0;
-      foreach (ZipUpdate update in updates_)
+      foreach (ZipUpdate update in _updates)
       {
         //If last entry, there is no next entry offset to use
-        if (idx == updates_.Count - 1)
+        if (idx == _updates.Count - 1)
         {
           break;
         }
 
-        update.OffsetBasedSize = updates_[idx + 1]
+        update.OffsetBasedSize = _updates[idx + 1]
                                 .Entry.Offset
                                  - update.Entry.Offset;
         idx++;
       }
 
-      updateCount_ = updates_.Count;
+      _updateCount = _updates.Count;
 
-      contentsEdited_ = false;
-      commentEdited_ = false;
-      newComment_ = null;
+      _contentsEdited = false;
+      _commentEdited = false;
+      _newComment = null;
     }
 
     /// <summary>
@@ -745,7 +745,7 @@ namespace Scope.Zip.Zip
     /// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
     public void CommitUpdate()
     {
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
@@ -754,26 +754,26 @@ namespace Scope.Zip.Zip
 
       try
       {
-        updateIndex_.Clear();
-        updateIndex_ = null;
+        _updateIndex.Clear();
+        _updateIndex = null;
 
-        if (contentsEdited_)
+        if (_contentsEdited)
         {
           RunUpdates();
         }
-        else if (commentEdited_)
+        else if (_commentEdited)
         {
           UpdateCommentOnly();
         }
         else
         {
           // Create an empty archive if none existed originally.
-          if (entries_.Length == 0)
+          if (_entries.Length == 0)
           {
-            byte[] theComment = newComment_ != null
-                                  ? newComment_.RawComment
-                                  : ZipConstants.ConvertToArray(comment_);
-            using (ZipHelperStream zhs = new ZipHelperStream(baseStream_))
+            byte[] theComment = _newComment != null
+                                  ? _newComment.RawComment
+                                  : ZipConstants.ConvertToArray(_comment);
+            using (ZipHelperStream zhs = new ZipHelperStream(_baseStream))
             {
               zhs.WriteEndOfCentralDirectory(0, 0, 0, theComment);
             }
@@ -803,24 +803,24 @@ namespace Scope.Zip.Zip
     /// <exception cref="ObjectDisposedException">ZipFile has been closed.</exception>
     public void SetComment(string comment)
     {
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
 
       CheckUpdating();
 
-      newComment_ = new ZipString(comment);
+      _newComment = new ZipString(comment);
 
-      if (newComment_.RawLength > 0xffff)
+      if (_newComment.RawLength > 0xffff)
       {
-        newComment_ = null;
+        _newComment = null;
         throw new ZipException("Comment length exceeds maximum - 65535");
       }
 
       // We dont take account of the original and current comment appearing to be the same
       // as encoding may be different.
-      commentEdited_ = true;
+      _commentEdited = true;
     }
 
     /// <summary>
@@ -839,7 +839,7 @@ namespace Scope.Zip.Zip
         throw new ArgumentNullException(nameof(fileName));
       }
 
-      if (isDisposed_)
+      if (_isDisposed)
       {
         throw new ObjectDisposedException("ZipFile");
       }
@@ -850,7 +850,7 @@ namespace Scope.Zip.Zip
       }
 
       CheckUpdating();
-      contentsEdited_ = true;
+      _contentsEdited = true;
 
       ZipEntry entry = EntryFactory.MakeFileEntry(fileName);
       entry.IsUnicodeText = useUnicodeText;
@@ -879,7 +879,7 @@ namespace Scope.Zip.Zip
       }
 
       CheckUpdating();
-      contentsEdited_ = true;
+      _contentsEdited = true;
 
       ZipEntry entry = EntryFactory.MakeFileEntry(fileName);
       entry.CompressionMethod = compressionMethod;
@@ -1059,12 +1059,12 @@ namespace Scope.Zip.Zip
 
       bool result = false;
       int index = FindExistingUpdate(fileName);
-      if (index >= 0 && updates_[index] != null)
+      if (index >= 0 && _updates[index] != null)
       {
         result = true;
-        contentsEdited_ = true;
-        updates_[index] = null;
-        updateCount_ -= 1;
+        _contentsEdited = true;
+        _updates[index] = null;
+        _updateCount -= 1;
       }
       else
       {
@@ -1090,9 +1090,9 @@ namespace Scope.Zip.Zip
       int index = FindExistingUpdate(entry);
       if (index >= 0)
       {
-        contentsEdited_ = true;
-        updates_[index] = null;
-        updateCount_ -= 1;
+        _contentsEdited = true;
+        _updates[index] = null;
+        _updateCount -= 1;
       }
       else
       {
@@ -1130,7 +1130,7 @@ namespace Scope.Zip.Zip
       byte[] cryptBuffer = new byte[ZipConstants.CryptoHeaderSize];
       var rnd = new Random();
       rnd.NextBytes(cryptBuffer);
-      cryptBuffer[11] = (byte) (crcValue >> 24);
+      cryptBuffer[11] = (byte)(crcValue >> 24);
       stream.Write(cryptBuffer, 0, cryptBuffer.Length);
     }
 
@@ -1142,9 +1142,9 @@ namespace Scope.Zip.Zip
     {
       if (KeysRequired != null)
       {
-        var krea = new KeysRequiredEventArgs(fileName, key);
+        var krea = new KeysRequiredEventArgs(fileName, _key);
         KeysRequired(this, krea);
-        key = krea.Key;
+        _key = krea.Key;
       }
     }
 
@@ -1158,25 +1158,25 @@ namespace Scope.Zip.Zip
     /// <returns>The offset of the entries data in the file</returns>
     private long TestLocalHeader(ZipEntry entry, HeaderTest tests)
     {
-      lock (baseStream_)
+      lock (_baseStream)
       {
         bool testHeader = (tests & HeaderTest.Header) != 0;
         bool testData = (tests & HeaderTest.Extract) != 0;
 
-        baseStream_.Seek(offsetOfFirstEntry + entry.Offset, SeekOrigin.Begin);
-        var signature = (int) ReadLEUint();
+        _baseStream.Seek(_offsetOfFirstEntry + entry.Offset, SeekOrigin.Begin);
+        var signature = (int)ReadLEUint();
         if (signature != ZipConstants.LocalHeaderSignature
             && signature != ZipConstants.EncryptedHeaderSignature)
         {
           throw new ZipException(string.Format("Wrong local header signature @{0:X}",
-                                               offsetOfFirstEntry + entry.Offset));
+                                               _offsetOfFirstEntry + entry.Offset));
         }
 
-        var extractVersion = (short) (ReadLEUshort() & 0x00ff);
-        var localFlags = (short) ReadLEUshort();
-        var compressionMethod = (short) ReadLEUshort();
-        var fileTime = (short) ReadLEUshort();
-        var fileDate = (short) ReadLEUshort();
+        var extractVersion = (short)(ReadLEUshort() & 0x00ff);
+        var localFlags = (short)ReadLEUshort();
+        var compressionMethod = (short)ReadLEUshort();
+        var fileTime = (short)ReadLEUshort();
+        var fileDate = (short)ReadLEUshort();
         uint crcValue = ReadLEUint();
         long compressedSize = ReadLEUint();
         long size = ReadLEUint();
@@ -1184,10 +1184,10 @@ namespace Scope.Zip.Zip
         int extraDataLength = ReadLEUshort();
 
         byte[] nameData = new byte[storedNameLength];
-        StreamUtils.ReadFully(baseStream_, nameData);
+        StreamUtils.ReadFully(_baseStream, nameData);
 
         byte[] extraData = new byte[extraDataLength];
-        StreamUtils.ReadFully(baseStream_, extraData);
+        StreamUtils.ReadFully(_baseStream, extraData);
 
         var localExtraData = new ZipExtraData(extraData);
 
@@ -1200,7 +1200,7 @@ namespace Scope.Zip.Zip
           size = localExtraData.ReadLong();
           compressedSize = localExtraData.ReadLong();
 
-          if ((localFlags & (int) GeneralBitFlags.Descriptor) != 0)
+          if ((localFlags & (int)GeneralBitFlags.Descriptor) != 0)
           {
             // These may be valid if patched later
             if (size != -1 && size != entry.Size)
@@ -1218,7 +1218,7 @@ namespace Scope.Zip.Zip
         {
           // No zip64 extra data but entry requires it.
           if (extractVersion >= ZipConstants.VersionZip64
-              && ((uint) size == uint.MaxValue || (uint) compressedSize == uint.MaxValue))
+              && ((uint)size == uint.MaxValue || (uint)compressedSize == uint.MaxValue))
           {
             throw new ZipException("Required Zip64 extended information missing");
           }
@@ -1242,7 +1242,7 @@ namespace Scope.Zip.Zip
             }
 
             if ((localFlags
-                 & (int) (GeneralBitFlags.Patched
+                 & (int)(GeneralBitFlags.Patched
                           | GeneralBitFlags.StrongEncryption
                           | GeneralBitFlags.EnhancedCompress
                           | GeneralBitFlags.HeaderMasked))
@@ -1280,7 +1280,7 @@ namespace Scope.Zip.Zip
 
           // Local entry flags dont have reserved bit set on.
           if ((localFlags
-               & (int) (GeneralBitFlags.ReservedPKware4
+               & (int)(GeneralBitFlags.ReservedPKware4
                         | GeneralBitFlags.ReservedPkware14
                         | GeneralBitFlags.ReservedPkware15))
               != 0)
@@ -1289,7 +1289,7 @@ namespace Scope.Zip.Zip
           }
 
           // Encryption requires extract version >= 20
-          if ((localFlags & (int) GeneralBitFlags.Encrypted) != 0 && extractVersion < 20)
+          if ((localFlags & (int)GeneralBitFlags.Encrypted) != 0 && extractVersion < 20)
           {
             throw new
               ZipException(string.Format("Version required to extract this entry is too low for encryption ({0})",
@@ -1297,9 +1297,9 @@ namespace Scope.Zip.Zip
           }
 
           // Strong encryption requires encryption flag to be set and extract version >= 50.
-          if ((localFlags & (int) GeneralBitFlags.StrongEncryption) != 0)
+          if ((localFlags & (int)GeneralBitFlags.StrongEncryption) != 0)
           {
-            if ((localFlags & (int) GeneralBitFlags.Encrypted) == 0)
+            if ((localFlags & (int)GeneralBitFlags.Encrypted) == 0)
             {
               throw new ZipException("Strong encryption flag set but encryption flag is not set");
             }
@@ -1313,7 +1313,7 @@ namespace Scope.Zip.Zip
           }
 
           // Patched entries require extract version >= 27
-          if ((localFlags & (int) GeneralBitFlags.Patched) != 0 && extractVersion < 27)
+          if ((localFlags & (int)GeneralBitFlags.Patched) != 0 && extractVersion < 27)
           {
             throw new ZipException(string.Format("Patched data requires higher version than ({0})",
                                                  extractVersion));
@@ -1326,7 +1326,7 @@ namespace Scope.Zip.Zip
           }
 
           // Central header compression method matches local entry
-          if (entry.CompressionMethod != (CompressionMethod) compressionMethod)
+          if (entry.CompressionMethod != (CompressionMethod)compressionMethod)
           {
             throw new ZipException("Central header/local header compression method mismatch");
           }
@@ -1337,7 +1337,7 @@ namespace Scope.Zip.Zip
           }
 
           // Strong encryption and extract version match
-          if ((localFlags & (int) GeneralBitFlags.StrongEncryption) != 0)
+          if ((localFlags & (int)GeneralBitFlags.StrongEncryption) != 0)
           {
             if (extractVersion < 62)
             {
@@ -1345,7 +1345,7 @@ namespace Scope.Zip.Zip
             }
           }
 
-          if ((localFlags & (int) GeneralBitFlags.HeaderMasked) != 0)
+          if ((localFlags & (int)GeneralBitFlags.HeaderMasked) != 0)
           {
             if (fileTime != 0 || fileDate != 0)
             {
@@ -1353,9 +1353,9 @@ namespace Scope.Zip.Zip
             }
           }
 
-          if ((localFlags & (int) GeneralBitFlags.Descriptor) == 0)
+          if ((localFlags & (int)GeneralBitFlags.Descriptor) == 0)
           {
-            if (crcValue != (uint) entry.Crc)
+            if (crcValue != (uint)entry.Crc)
             {
               throw new ZipException("Central header/local header crc mismatch");
             }
@@ -1423,7 +1423,7 @@ namespace Scope.Zip.Zip
 
         // Size can be verified only if it is known in the local header.
         // it will always be known in the central header.
-        if ((localFlags & (int) GeneralBitFlags.Descriptor) == 0
+        if ((localFlags & (int)GeneralBitFlags.Descriptor) == 0
             || (size > 0 || compressedSize > 0) && entry.Size > 0)
         {
           if (size != 0 && size != entry.Size)
@@ -1447,32 +1447,32 @@ namespace Scope.Zip.Zip
         }
 
         int extraLength = storedNameLength + extraDataLength;
-        return offsetOfFirstEntry + entry.Offset + ZipConstants.LocalHeaderBaseSize + extraLength;
+        return _offsetOfFirstEntry + entry.Offset + ZipConstants.LocalHeaderBaseSize + extraLength;
       }
     }
 
     private void AddUpdate(ZipUpdate update)
     {
-      contentsEdited_ = true;
+      _contentsEdited = true;
 
       int index = FindExistingUpdate(update.Entry.Name);
 
       if (index >= 0)
       {
-        if (updates_[index] == null)
+        if (_updates[index] == null)
         {
-          updateCount_ += 1;
+          _updateCount += 1;
         }
 
         // Direct replacement is faster than delete and add.
-        updates_[index] = update;
+        _updates[index] = update;
       }
       else
       {
-        index = updates_.Count;
-        updates_.Add(update);
-        updateCount_ += 1;
-        updateIndex_.Add(update.Entry.Name, index);
+        index = _updates.Count;
+        _updates.Add(update);
+        _updateCount += 1;
+        _updateIndex.Add(update.Entry.Name, index);
       }
     }
 
@@ -1496,8 +1496,8 @@ namespace Scope.Zip.Zip
 		*/
     private void WriteLEShort(int value)
     {
-      baseStream_.WriteByte((byte) (value & 0xff));
-      baseStream_.WriteByte((byte) ((value >> 8) & 0xff));
+      _baseStream.WriteByte((byte)(value & 0xff));
+      _baseStream.WriteByte((byte)((value >> 8) & 0xff));
     }
 
     /// <summary>
@@ -1505,8 +1505,8 @@ namespace Scope.Zip.Zip
     /// </summary>
     private void WriteLEUshort(ushort value)
     {
-      baseStream_.WriteByte((byte) (value & 0xff));
-      baseStream_.WriteByte((byte) (value >> 8));
+      _baseStream.WriteByte((byte)(value & 0xff));
+      _baseStream.WriteByte((byte)(value >> 8));
     }
 
     /// <summary>
@@ -1523,8 +1523,8 @@ namespace Scope.Zip.Zip
     /// </summary>
     private void WriteLEUint(uint value)
     {
-      WriteLEUshort((ushort) (value & 0xffff));
-      WriteLEUshort((ushort) (value >> 16));
+      WriteLEUshort((ushort)(value & 0xffff));
+      WriteLEUshort((ushort)(value >> 16));
     }
 
     /// <summary>
@@ -1532,8 +1532,8 @@ namespace Scope.Zip.Zip
     /// </summary>
     private void WriteLeLong(long value)
     {
-      WriteLEInt((int) (value & 0xffffffff));
-      WriteLEInt((int) (value >> 32));
+      WriteLEInt((int)(value & 0xffffffff));
+      WriteLEInt((int)(value >> 32));
     }
 
     private void WriteLocalEntryHeader(ZipUpdate update)
@@ -1541,7 +1541,7 @@ namespace Scope.Zip.Zip
       ZipEntry entry = update.OutEntry;
 
       // TODO: Local offset will require adjusting for multi-disk zip files.
-      entry.Offset = baseStream_.Position;
+      entry.Offset = _baseStream.Position;
 
       // TODO: Need to clear any entry flags that dont make sense or throw an exception here.
       if (update.Command != UpdateCommand.Copy)
@@ -1559,7 +1559,7 @@ namespace Scope.Zip.Zip
         }
         else if (entry.CompressionMethod == CompressionMethod.Stored)
         {
-          entry.Flags &= ~(int) GeneralBitFlags.Descriptor;
+          entry.Flags &= ~(int)GeneralBitFlags.Descriptor;
         }
 
         if (HaveKeys)
@@ -1567,7 +1567,7 @@ namespace Scope.Zip.Zip
           entry.IsCrypted = true;
           if (entry.Crc < 0)
           {
-            entry.Flags |= (int) GeneralBitFlags.Descriptor;
+            entry.Flags |= (int)GeneralBitFlags.Descriptor;
           }
         }
         else
@@ -1575,7 +1575,7 @@ namespace Scope.Zip.Zip
           entry.IsCrypted = false;
         }
 
-        switch (useZip64_)
+        switch (_useZip64)
         {
           case UseZip64.Dynamic:
             if (entry.Size < 0)
@@ -1601,18 +1601,18 @@ namespace Scope.Zip.Zip
       WriteLEShort(entry.Version);
       WriteLEShort(entry.Flags);
 
-      WriteLEShort((byte) entry.CompressionMethod);
-      WriteLEInt((int) entry.DosTime);
+      WriteLEShort((byte)entry.CompressionMethod);
+      WriteLEInt((int)entry.DosTime);
 
       if (!entry.HasCrc)
       {
         // Note patch address for updating CRC later.
-        update.CrcPatchOffset = baseStream_.Position;
+        update.CrcPatchOffset = _baseStream.Position;
         WriteLEInt(0);
       }
       else
       {
-        WriteLEInt(unchecked((int) entry.Crc));
+        WriteLEInt(unchecked((int)entry.Crc));
       }
 
       if (entry.LocalHeaderRequiresZip64)
@@ -1624,11 +1624,11 @@ namespace Scope.Zip.Zip
       {
         if (entry.CompressedSize < 0 || entry.Size < 0)
         {
-          update.SizePatchOffset = baseStream_.Position;
+          update.SizePatchOffset = _baseStream.Position;
         }
 
-        WriteLEInt((int) entry.CompressedSize);
-        WriteLEInt((int) entry.Size);
+        WriteLEInt((int)entry.CompressedSize);
+        WriteLEInt((int)entry.Size);
       }
 
       byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
@@ -1662,7 +1662,7 @@ namespace Scope.Zip.Zip
 
       if (name.Length > 0)
       {
-        baseStream_.Write(name, 0, name.Length);
+        _baseStream.Write(name, 0, name.Length);
       }
 
       if (entry.LocalHeaderRequiresZip64)
@@ -1672,12 +1672,12 @@ namespace Scope.Zip.Zip
           throw new ZipException("Internal error cannot find extra data");
         }
 
-        update.SizePatchOffset = baseStream_.Position + ed.CurrentReadIndex;
+        update.SizePatchOffset = _baseStream.Position + ed.CurrentReadIndex;
       }
 
       if (entry.ExtraData.Length > 0)
       {
-        baseStream_.Write(entry.ExtraData, 0, entry.ExtraData.Length);
+        _baseStream.Write(entry.ExtraData, 0, entry.ExtraData.Length);
       }
     }
 
@@ -1711,9 +1711,9 @@ namespace Scope.Zip.Zip
 
       unchecked
       {
-        WriteLEShort((byte) entry.CompressionMethod);
-        WriteLEInt((int) entry.DosTime);
-        WriteLEInt((int) entry.Crc);
+        WriteLEShort((byte)entry.CompressionMethod);
+        WriteLEInt((int)entry.DosTime);
+        WriteLEInt((int)entry.Crc);
       }
 
       if (entry.IsZip64Forced() || entry.CompressedSize >= 0xffffffff)
@@ -1722,7 +1722,7 @@ namespace Scope.Zip.Zip
       }
       else
       {
-        WriteLEInt((int) (entry.CompressedSize & 0xffffffff));
+        WriteLEInt((int)(entry.CompressedSize & 0xffffffff));
       }
 
       if (entry.IsZip64Forced() || entry.Size >= 0xffffffff)
@@ -1731,7 +1731,7 @@ namespace Scope.Zip.Zip
       }
       else
       {
-        WriteLEInt((int) entry.Size);
+        WriteLEInt((int)entry.Size);
       }
 
       byte[] name = ZipConstants.ConvertToArray(entry.Flags, entry.Name);
@@ -1750,12 +1750,12 @@ namespace Scope.Zip.Zip
       {
         ed.StartNewEntry();
 
-        if (entry.Size >= 0xffffffff || useZip64_ == UseZip64.On)
+        if (entry.Size >= 0xffffffff || _useZip64 == UseZip64.On)
         {
           ed.AddLeLong(entry.Size);
         }
 
-        if (entry.CompressedSize >= 0xffffffff || useZip64_ == UseZip64.On)
+        if (entry.CompressedSize >= 0xffffffff || _useZip64 == UseZip64.On)
         {
           ed.AddLeLong(entry.CompressedSize);
         }
@@ -1807,17 +1807,17 @@ namespace Scope.Zip.Zip
       }
       else
       {
-        WriteLEUint((uint) (int) entry.Offset);
+        WriteLEUint((uint)(int)entry.Offset);
       }
 
       if (name.Length > 0)
       {
-        baseStream_.Write(name, 0, name.Length);
+        _baseStream.Write(name, 0, name.Length);
       }
 
       if (centralExtraData.Length > 0)
       {
-        baseStream_.Write(centralExtraData, 0, centralExtraData.Length);
+        _baseStream.Write(centralExtraData, 0, centralExtraData.Length);
       }
 
       byte[] rawComment = entry.Comment != null
@@ -1826,7 +1826,7 @@ namespace Scope.Zip.Zip
 
       if (rawComment.Length > 0)
       {
-        baseStream_.Write(rawComment, 0, rawComment.Length);
+        _baseStream.Write(rawComment, 0, rawComment.Length);
       }
 
       return ZipConstants.CentralHeaderBaseSize
@@ -1837,14 +1837,14 @@ namespace Scope.Zip.Zip
 
     private void PostUpdateCleanup()
     {
-      updateDataSource_ = null;
-      updates_ = null;
-      updateIndex_ = null;
+      _updateDataSource = null;
+      _updates = null;
+      _updateIndex = null;
 
-      if (archiveStorage_ != null)
+      if (_archiveStorage != null)
       {
-        archiveStorage_.Dispose();
-        archiveStorage_ = null;
+        _archiveStorage.Dispose();
+        _archiveStorage = null;
       }
     }
 
@@ -1862,12 +1862,12 @@ namespace Scope.Zip.Zip
     /// <returns>Returns a raw memory buffer.</returns>
     private byte[] GetBuffer()
     {
-      if (copyBuffer_ == null)
+      if (_copyBuffer == null)
       {
-        copyBuffer_ = new byte[bufferSize_];
+        _copyBuffer = new byte[_bufferSize];
       }
 
-      return copyBuffer_;
+      return _copyBuffer;
     }
 
     private void CopyDescriptorBytes(ZipUpdate update, Stream dest, Stream source)
@@ -1921,7 +1921,7 @@ namespace Scope.Zip.Zip
 
         if (bytesToCopy < readSize)
         {
-          readSize = (int) bytesToCopy;
+          readSize = (int)bytesToCopy;
         }
 
         bytesRead = source.Read(buffer, 0, readSize);
@@ -1959,7 +1959,7 @@ namespace Scope.Zip.Zip
     private int GetDescriptorSize(ZipUpdate update)
     {
       int result = 0;
-      if ((update.Entry.Flags & (int) GeneralBitFlags.Descriptor) != 0)
+      if ((update.Entry.Flags & (int)GeneralBitFlags.Descriptor) != 0)
       {
         result = ZipConstants.DataDescriptorSize - 4;
         if (update.Entry.LocalHeaderRequiresZip64)
@@ -2022,7 +2022,7 @@ namespace Scope.Zip.Zip
 
         if (bytesToCopy < readSize)
         {
-          readSize = (int) bytesToCopy;
+          readSize = (int)bytesToCopy;
         }
 
         stream.Position = sourcePosition;
@@ -2062,9 +2062,9 @@ namespace Scope.Zip.Zip
       int result = -1;
       string convertedName = GetTransformedFileName(entry.Name);
 
-      if (updateIndex_.ContainsKey(convertedName))
+      if (_updateIndex.ContainsKey(convertedName))
       {
-        result = updateIndex_[convertedName];
+        result = _updateIndex[convertedName];
       }
 
       /*
@@ -2089,9 +2089,9 @@ namespace Scope.Zip.Zip
 
       string convertedName = GetTransformedFileName(fileName);
 
-      if (updateIndex_.ContainsKey(convertedName))
+      if (_updateIndex.ContainsKey(convertedName))
       {
-        result = updateIndex_[convertedName];
+        result = _updateIndex[convertedName];
       }
 
       /*
@@ -2116,7 +2116,7 @@ namespace Scope.Zip.Zip
     /// <returns>The output stream obtained for the entry.</returns>
     private Stream GetOutputStream(ZipEntry entry)
     {
-      Stream result = baseStream_;
+      Stream result = _baseStream;
 
       if (entry.IsCrypted)
       {
@@ -2155,7 +2155,7 @@ namespace Scope.Zip.Zip
 
         if (source == null)
         {
-          source = updateDataSource_.GetSource(update.Entry, update.Filename);
+          source = _updateDataSource.GetSource(update.Entry, update.Filename);
         }
       }
 
@@ -2179,20 +2179,20 @@ namespace Scope.Zip.Zip
 
           workFile.WriteLocalEntryHeader(update);
 
-          long dataStart = workFile.baseStream_.Position;
+          long dataStart = workFile._baseStream.Position;
 
           using (Stream output = workFile.GetOutputStream(update.OutEntry))
           {
             CopyBytes(update, output, source, sourceStreamLength, true);
           }
 
-          long dataEnd = workFile.baseStream_.Position;
+          long dataEnd = workFile._baseStream.Position;
           update.OutEntry.CompressedSize = dataEnd - dataStart;
 
-          if ((update.OutEntry.Flags & (int) GeneralBitFlags.Descriptor)
-              == (int) GeneralBitFlags.Descriptor)
+          if ((update.OutEntry.Flags & (int)GeneralBitFlags.Descriptor)
+              == (int)GeneralBitFlags.Descriptor)
           {
-            var helper = new ZipHelperStream(workFile.baseStream_);
+            var helper = new ZipHelperStream(workFile._baseStream);
             helper.WriteDataDescriptor(update.OutEntry);
           }
         }
@@ -2207,7 +2207,7 @@ namespace Scope.Zip.Zip
     private void ModifyEntry(ZipFile workFile, ZipUpdate update)
     {
       workFile.WriteLocalEntryHeader(update);
-      long dataStart = workFile.baseStream_.Position;
+      long dataStart = workFile._baseStream.Position;
 
       // TODO: This is slow if the changes don't effect the data!!
       if (update.Entry.IsFile && update.Filename != null)
@@ -2221,7 +2221,7 @@ namespace Scope.Zip.Zip
         }
       }
 
-      long dataEnd = workFile.baseStream_.Position;
+      long dataEnd = workFile._baseStream.Position;
       update.Entry.CompressedSize = dataEnd - dataStart;
     }
 
@@ -2231,9 +2231,9 @@ namespace Scope.Zip.Zip
 
       if (!skipOver)
       {
-        baseStream_.Position = destinationPosition;
+        _baseStream.Position = destinationPosition;
         workFile.WriteLocalEntryHeader(update);
-        destinationPosition = baseStream_.Position;
+        destinationPosition = _baseStream.Position;
       }
 
       long sourcePosition = 0;
@@ -2243,14 +2243,14 @@ namespace Scope.Zip.Zip
       // TODO: Add base for SFX friendly handling
       long entryDataOffset = update.Entry.Offset + NameLengthOffset;
 
-      baseStream_.Seek(entryDataOffset, SeekOrigin.Begin);
+      _baseStream.Seek(entryDataOffset, SeekOrigin.Begin);
 
       // Clumsy way of handling retrieving the original name and extra data length for now.
       // TODO: Stop re-reading name and data length in CopyEntryDirect.
       uint nameLength = ReadLEUshort();
       uint extraLength = ReadLEUshort();
 
-      sourcePosition = baseStream_.Position + nameLength + extraLength;
+      sourcePosition = _baseStream.Position + nameLength + extraLength;
 
       if (skipOver)
       {
@@ -2259,9 +2259,9 @@ namespace Scope.Zip.Zip
           destinationPosition += update.OffsetBasedSize;
         }
         else
-          // TODO: Find out why this calculation comes up 4 bytes short on some entries in ODT (Office Document Text) archives.
-          // WinZip produces a warning on these entries:
-          // "caution: value of lrec.csize (compressed size) changed from ..."
+        // TODO: Find out why this calculation comes up 4 bytes short on some entries in ODT (Office Document Text) archives.
+        // WinZip produces a warning on these entries:
+        // "caution: value of lrec.csize (compressed size) changed from ..."
         {
           destinationPosition += sourcePosition
                                  - entryDataOffset
@@ -2276,13 +2276,13 @@ namespace Scope.Zip.Zip
         if (update.Entry.CompressedSize > 0)
         {
           CopyEntryDataDirect(update,
-                              baseStream_,
+                              _baseStream,
                               false,
                               ref destinationPosition,
                               ref sourcePosition);
         }
 
-        CopyDescriptorBytesDirect(update, baseStream_, ref destinationPosition, sourcePosition);
+        CopyDescriptorBytesDirect(update, _baseStream, ref destinationPosition, sourcePosition);
       }
     }
 
@@ -2297,17 +2297,17 @@ namespace Scope.Zip.Zip
         long entryDataOffset = update.Entry.Offset + NameLengthOffset;
 
         // TODO: This wont work for SFX files!
-        baseStream_.Seek(entryDataOffset, SeekOrigin.Begin);
+        _baseStream.Seek(entryDataOffset, SeekOrigin.Begin);
 
         uint nameLength = ReadLEUshort();
         uint extraLength = ReadLEUshort();
 
-        baseStream_.Seek(nameLength + extraLength, SeekOrigin.Current);
+        _baseStream.Seek(nameLength + extraLength, SeekOrigin.Current);
 
-        CopyBytes(update, workFile.baseStream_, baseStream_, update.Entry.CompressedSize, false);
+        CopyBytes(update, workFile._baseStream, _baseStream, update.Entry.CompressedSize, false);
       }
 
-      CopyDescriptorBytes(update, workFile.baseStream_, baseStream_);
+      CopyDescriptorBytes(update, workFile._baseStream, _baseStream);
     }
 
     private void Reopen(Stream source)
@@ -2317,29 +2317,29 @@ namespace Scope.Zip.Zip
         throw new ZipException("Failed to reopen archive - no source");
       }
 
-      isNewArchive_ = false;
-      baseStream_ = source;
+      _isNewArchive = false;
+      _baseStream = source;
       ReadEntries();
     }
 
     private void UpdateCommentOnly()
     {
-      long baseLength = baseStream_.Length;
+      long baseLength = _baseStream.Length;
 
       ZipHelperStream updateFile = null;
 
-      if (archiveStorage_.UpdateMode == FileUpdateMode.Safe)
+      if (_archiveStorage.UpdateMode == FileUpdateMode.Safe)
       {
-        Stream copyStream = archiveStorage_.MakeTemporaryCopy(baseStream_);
+        Stream copyStream = _archiveStorage.MakeTemporaryCopy(_baseStream);
         updateFile = new ZipHelperStream(copyStream);
         updateFile.IsStreamOwner = true;
 
-        baseStream_.Dispose();
-        baseStream_ = null;
+        _baseStream.Dispose();
+        _baseStream = null;
       }
       else
       {
-        if (archiveStorage_.UpdateMode == FileUpdateMode.Direct)
+        if (_archiveStorage.UpdateMode == FileUpdateMode.Direct)
         {
           // TODO: archiveStorage wasnt originally intended for this use.
           // Need to revisit this to tidy up handling as archive storage currently doesnt
@@ -2348,13 +2348,13 @@ namespace Scope.Zip.Zip
           // The open stream wont support writing but the memory storage should open the same file not an in memory one.
 
           // Need to tidy up the archive storage interface and contract basically.
-          baseStream_ = archiveStorage_.OpenForDirectUpdate(baseStream_);
-          updateFile = new ZipHelperStream(baseStream_);
+          _baseStream = _archiveStorage.OpenForDirectUpdate(_baseStream);
+          updateFile = new ZipHelperStream(_baseStream);
         }
         else
         {
-          baseStream_.Dispose();
-          baseStream_ = null;
+          _baseStream.Dispose();
+          _baseStream = null;
           updateFile = new ZipHelperStream(Name);
         }
       }
@@ -2374,16 +2374,16 @@ namespace Scope.Zip.Zip
         const int CentralHeaderCommentSizeOffset = 16;
         updateFile.Position += CentralHeaderCommentSizeOffset;
 
-        byte[] rawComment = newComment_.RawComment;
+        byte[] rawComment = _newComment.RawComment;
 
         updateFile.WriteLEShort(rawComment.Length);
         updateFile.Write(rawComment, 0, rawComment.Length);
         updateFile.SetLength(updateFile.Position);
       }
 
-      if (archiveStorage_.UpdateMode == FileUpdateMode.Safe)
+      if (_archiveStorage.UpdateMode == FileUpdateMode.Safe)
       {
-        Reopen(archiveStorage_.ConvertTemporaryToFinal());
+        Reopen(_archiveStorage.ConvertTemporaryToFinal());
       }
       else
       {
@@ -2403,33 +2403,33 @@ namespace Scope.Zip.Zip
       if (IsNewArchive)
       {
         workFile = this;
-        workFile.baseStream_.Position = 0;
+        workFile._baseStream.Position = 0;
         directUpdate = true;
       }
-      else if (archiveStorage_.UpdateMode == FileUpdateMode.Direct)
+      else if (_archiveStorage.UpdateMode == FileUpdateMode.Direct)
       {
         workFile = this;
-        workFile.baseStream_.Position = 0;
+        workFile._baseStream.Position = 0;
         directUpdate = true;
 
         // Sort the updates by offset within copies/modifies, then adds.
         // This ensures that data required by copies will not be overwritten.
-        updates_.Sort(new UpdateComparer());
+        _updates.Sort(new UpdateComparer());
       }
       else
       {
-        workFile = Create(archiveStorage_.GetTemporaryOutput());
+        workFile = Create(_archiveStorage.GetTemporaryOutput());
         workFile.UseZip64 = UseZip64;
 
-        if (key != null)
+        if (_key != null)
         {
-          workFile.key = (byte[]) key.Clone();
+          workFile._key = (byte[])_key.Clone();
         }
       }
 
       try
       {
-        foreach (ZipUpdate update in updates_)
+        foreach (ZipUpdate update in _updates)
         {
           if (update != null)
           {
@@ -2455,14 +2455,14 @@ namespace Scope.Zip.Zip
               case UpdateCommand.Add:
                 if (!IsNewArchive && directUpdate)
                 {
-                  workFile.baseStream_.Position = destinationPosition;
+                  workFile._baseStream.Position = destinationPosition;
                 }
 
                 AddEntry(workFile, update);
 
                 if (directUpdate)
                 {
-                  destinationPosition = workFile.baseStream_.Position;
+                  destinationPosition = workFile._baseStream.Position;
                 }
 
                 break;
@@ -2472,12 +2472,12 @@ namespace Scope.Zip.Zip
 
         if (!IsNewArchive && directUpdate)
         {
-          workFile.baseStream_.Position = destinationPosition;
+          workFile._baseStream.Position = destinationPosition;
         }
 
-        long centralDirOffset = workFile.baseStream_.Position;
+        long centralDirOffset = workFile._baseStream.Position;
 
-        foreach (ZipUpdate update in updates_)
+        foreach (ZipUpdate update in _updates)
         {
           if (update != null)
           {
@@ -2485,18 +2485,18 @@ namespace Scope.Zip.Zip
           }
         }
 
-        byte[] theComment = newComment_ != null
-                              ? newComment_.RawComment
-                              : ZipConstants.ConvertToArray(comment_);
-        using (ZipHelperStream zhs = new ZipHelperStream(workFile.baseStream_))
+        byte[] theComment = _newComment != null
+                              ? _newComment.RawComment
+                              : ZipConstants.ConvertToArray(_comment);
+        using (ZipHelperStream zhs = new ZipHelperStream(workFile._baseStream))
         {
-          zhs.WriteEndOfCentralDirectory(updateCount_, sizeEntries, centralDirOffset, theComment);
+          zhs.WriteEndOfCentralDirectory(_updateCount, sizeEntries, centralDirOffset, theComment);
         }
 
-        endOfStream = workFile.baseStream_.Position;
+        endOfStream = workFile._baseStream.Position;
 
         // And now patch entries...
-        foreach (ZipUpdate update in updates_)
+        foreach (ZipUpdate update in _updates)
         {
           if (update != null)
           {
@@ -2504,13 +2504,13 @@ namespace Scope.Zip.Zip
             // The calculated crc will be all bits on...
             if (update.CrcPatchOffset > 0 && update.OutEntry.CompressedSize > 0)
             {
-              workFile.baseStream_.Position = update.CrcPatchOffset;
-              workFile.WriteLEInt((int) update.OutEntry.Crc);
+              workFile._baseStream.Position = update.CrcPatchOffset;
+              workFile.WriteLEInt((int)update.OutEntry.Crc);
             }
 
             if (update.SizePatchOffset > 0)
             {
-              workFile.baseStream_.Position = update.SizePatchOffset;
+              workFile._baseStream.Position = update.SizePatchOffset;
               if (update.OutEntry.LocalHeaderRequiresZip64)
               {
                 workFile.WriteLeLong(update.OutEntry.Size);
@@ -2518,8 +2518,8 @@ namespace Scope.Zip.Zip
               }
               else
               {
-                workFile.WriteLEInt((int) update.OutEntry.CompressedSize);
-                workFile.WriteLEInt((int) update.OutEntry.Size);
+                workFile.WriteLEInt((int)update.OutEntry.CompressedSize);
+                workFile.WriteLEInt((int)update.OutEntry.Size);
               }
             }
           }
@@ -2538,21 +2538,21 @@ namespace Scope.Zip.Zip
 
       if (directUpdate)
       {
-        workFile.baseStream_.SetLength(endOfStream);
-        workFile.baseStream_.Flush();
-        isNewArchive_ = false;
+        workFile._baseStream.SetLength(endOfStream);
+        workFile._baseStream.Flush();
+        _isNewArchive = false;
         ReadEntries();
       }
       else
       {
-        baseStream_.Dispose();
-        Reopen(archiveStorage_.ConvertTemporaryToFinal());
+        _baseStream.Dispose();
+        Reopen(_archiveStorage.ConvertTemporaryToFinal());
       }
     }
 
     private void CheckUpdating()
     {
-      if (updates_ == null)
+      if (_updates == null)
       {
         throw new InvalidOperationException("BeginUpdate has not been called");
       }
@@ -2560,16 +2560,16 @@ namespace Scope.Zip.Zip
 
     private void DisposeInternal(bool disposing)
     {
-      if (!isDisposed_)
+      if (!_isDisposed)
       {
-        isDisposed_ = true;
-        entries_ = new ZipEntry[0];
+        _isDisposed = true;
+        _entries = new ZipEntry[0];
 
-        if (IsStreamOwner && baseStream_ != null)
+        if (IsStreamOwner && _baseStream != null)
         {
-          lock (baseStream_)
+          lock (_baseStream)
           {
-            baseStream_.Dispose();
+            _baseStream.Dispose();
           }
         }
 
@@ -2586,21 +2586,21 @@ namespace Scope.Zip.Zip
     /// </exception>
     private ushort ReadLEUshort()
     {
-      int data1 = baseStream_.ReadByte();
+      int data1 = _baseStream.ReadByte();
 
       if (data1 < 0)
       {
         throw new EndOfStreamException("End of stream");
       }
 
-      int data2 = baseStream_.ReadByte();
+      int data2 = _baseStream.ReadByte();
 
       if (data2 < 0)
       {
         throw new EndOfStreamException("End of stream");
       }
 
-      return unchecked((ushort) ((ushort) data1 | (ushort) (data2 << 8)));
+      return unchecked((ushort)((ushort)data1 | (ushort)(data2 << 8)));
     }
 
     /// <summary>
@@ -2615,12 +2615,12 @@ namespace Scope.Zip.Zip
     /// </exception>
     private uint ReadLEUint()
     {
-      return (uint) (ReadLEUshort() | (ReadLEUshort() << 16));
+      return (uint)(ReadLEUshort() | (ReadLEUshort() << 16));
     }
 
     private ulong ReadLEUlong()
     {
-      return ReadLEUint() | ((ulong) ReadLEUint() << 32);
+      return ReadLEUint() | ((ulong)ReadLEUint() << 32);
     }
 
     // NOTE this returns the offset of the first byte after the signature.
@@ -2629,7 +2629,7 @@ namespace Scope.Zip.Zip
                                           int minimumBlockSize,
                                           int maximumVariableData)
     {
-      using (ZipHelperStream les = new ZipHelperStream(baseStream_))
+      using (ZipHelperStream les = new ZipHelperStream(_baseStream))
       {
         return les.LocateBlockWithSignature(signature,
                                             endLocation,
@@ -2658,14 +2658,14 @@ namespace Scope.Zip.Zip
       // this could be invalid.
       // Could also speed this up by reading memory in larger blocks.
 
-      if (baseStream_.CanSeek == false)
+      if (_baseStream.CanSeek == false)
       {
         throw new ZipException("ZipFile stream must be seekable");
       }
 
       long locatedEndOfCentralDir =
         LocateBlockWithSignature(ZipConstants.EndOfCentralDirectorySignature,
-                                 baseStream_.Length,
+                                 _baseStream.Length,
                                  ZipConstants.EndOfCentralRecordBaseSize,
                                  0xffff);
 
@@ -2687,12 +2687,12 @@ namespace Scope.Zip.Zip
       {
         byte[] comment = new byte[commentSize];
 
-        StreamUtils.ReadFully(baseStream_, comment);
-        comment_ = ZipConstants.ConvertToString(comment);
+        StreamUtils.ReadFully(_baseStream, comment);
+        _comment = ZipConstants.ConvertToString(comment);
       }
       else
       {
-        comment_ = string.Empty;
+        _comment = string.Empty;
       }
 
       bool isZip64 = false;
@@ -2723,7 +2723,7 @@ namespace Scope.Zip.Zip
         ulong offset64 = ReadLEUlong();
         uint totalDisks = ReadLEUint();
 
-        baseStream_.Position = (long) offset64;
+        _baseStream.Position = (long)offset64;
         long sig64 = ReadLEUint();
 
         if (sig64 != ZipConstants.Zip64CentralFileHeaderSignature)
@@ -2741,12 +2741,12 @@ namespace Scope.Zip.Zip
         entriesForThisDisk = ReadLEUlong();
         entriesForWholeCentralDir = ReadLEUlong();
         centralDirSize = ReadLEUlong();
-        offsetOfCentralDir = (long) ReadLEUlong();
+        offsetOfCentralDir = (long)ReadLEUlong();
 
         // NOTE: zip64 extensible data sector (variable size) is ignored.
       }
 
-      entries_ = new ZipEntry[entriesForThisDisk];
+      _entries = new ZipEntry[entriesForThisDisk];
 
       // SFX/embedded support, find the offset of the first entry vis the start of the stream
       // This applies to Zip files that are appended to the end of an SFX stub.
@@ -2754,21 +2754,21 @@ namespace Scope.Zip.Zip
       // Zip files created by some archivers have the offsets altered to reflect the true offsets
       // and so dont require any adjustment here...
       // TODO: Difficulty with Zip64 and SFX offset handling needs resolution - maths?
-      if (!isZip64 && offsetOfCentralDir < locatedEndOfCentralDir - (4 + (long) centralDirSize))
+      if (!isZip64 && offsetOfCentralDir < locatedEndOfCentralDir - (4 + (long)centralDirSize))
       {
-        offsetOfFirstEntry =
-          locatedEndOfCentralDir - (4 + (long) centralDirSize + offsetOfCentralDir);
-        if (offsetOfFirstEntry <= 0)
+        _offsetOfFirstEntry =
+          locatedEndOfCentralDir - (4 + (long)centralDirSize + offsetOfCentralDir);
+        if (_offsetOfFirstEntry <= 0)
         {
           throw new ZipException("Invalid embedded zip archive");
         }
       }
 
-      baseStream_.Seek(offsetOfFirstEntry + offsetOfCentralDir, SeekOrigin.Begin);
+      _baseStream.Seek(_offsetOfFirstEntry + offsetOfCentralDir, SeekOrigin.Begin);
 
       for (ulong i = 0; i < entriesForThisDisk; i++)
       {
-        var headerOffset = baseStream_.Position;
+        var headerOffset = _baseStream.Position;
         if (ReadLEUint() != ZipConstants.CentralHeaderSignature)
         {
           throw new ZipException("Wrong Central Directory signature");
@@ -2780,8 +2780,8 @@ namespace Scope.Zip.Zip
         int method = ReadLEUshort();
         uint dostime = ReadLEUint();
         uint crc = ReadLEUint();
-        var csize = (long) ReadLEUint();
-        var size = (long) ReadLEUint();
+        var csize = (long)ReadLEUint();
+        var size = (long)ReadLEUint();
         int nameLen = ReadLEUshort();
         int extraLen = ReadLEUshort();
         int commentLen = ReadLEUshort();
@@ -2794,33 +2794,33 @@ namespace Scope.Zip.Zip
 
         byte[] buffer = new byte[Math.Max(nameLen, commentLen)];
 
-        StreamUtils.ReadFully(baseStream_, buffer, 0, nameLen);
+        StreamUtils.ReadFully(_baseStream, buffer, 0, nameLen);
         string name = ZipConstants.ConvertToStringExt(bitFlags, buffer, nameLen);
 
-        var entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod) method);
+        var entry = new ZipEntry(name, versionToExtract, versionMadeBy, (CompressionMethod)method);
         entry.HeaderOffset = headerOffset;
         entry.Crc = crc & 0xffffffffL;
         entry.Size = size & 0xffffffffL;
         entry.CompressedSize = csize & 0xffffffffL;
         entry.Flags = bitFlags;
         entry.DosTime = dostime;
-        entry.ZipFileIndex = (long) i;
+        entry.ZipFileIndex = (long)i;
         entry.Offset = offset;
-        entry.ExternalFileAttributes = (int) externalAttributes;
+        entry.ExternalFileAttributes = (int)externalAttributes;
 
         if ((bitFlags & 8) == 0)
         {
-          entry.CryptoCheckValue = (byte) (crc >> 24);
+          entry.CryptoCheckValue = (byte)(crc >> 24);
         }
         else
         {
-          entry.CryptoCheckValue = (byte) ((dostime >> 8) & 0xff);
+          entry.CryptoCheckValue = (byte)((dostime >> 8) & 0xff);
         }
 
         if (extraLen > 0)
         {
           byte[] extra = new byte[extraLen];
-          StreamUtils.ReadFully(baseStream_, extra);
+          StreamUtils.ReadFully(_baseStream, extra);
           entry.ExtraData = extra;
         }
 
@@ -2828,11 +2828,11 @@ namespace Scope.Zip.Zip
 
         if (commentLen > 0)
         {
-          StreamUtils.ReadFully(baseStream_, buffer, 0, commentLen);
+          StreamUtils.ReadFully(_baseStream, buffer, 0, commentLen);
           entry.Comment = ZipConstants.ConvertToStringExt(bitFlags, buffer, commentLen);
         }
 
-        entries_[i] = entry;
+        _entries[i] = entry;
       }
     }
 
@@ -2858,7 +2858,7 @@ namespace Scope.Zip.Zip
     {
       using (Aes aes = new AesManaged())
       {
-        aes.Key = key;
+        aes.Key = _key;
         aes.IV = new byte[16];
         aes.Mode = CipherMode.CBC;
         aes.Padding = PaddingMode.None;
@@ -2890,7 +2890,7 @@ namespace Scope.Zip.Zip
       CryptoStream result = null;
 
       if (entry.Version < ZipConstants.VersionStrongEncryption
-          || (entry.Flags & (int) GeneralBitFlags.StrongEncryption) == 0)
+          || (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
       {
         var classicManaged = new PkzipClassicManaged();
 
@@ -2901,7 +2901,7 @@ namespace Scope.Zip.Zip
         }
 
         result = new CryptoStream(baseStream,
-                                  classicManaged.CreateDecryptor(key, null),
+                                  classicManaged.CreateDecryptor(_key, null),
                                   CryptoStreamMode.Read);
         CheckClassicPassword(result, entry);
       }
@@ -2929,7 +2929,7 @@ namespace Scope.Zip.Zip
           baseStream.Read(pwdVerifyRead, 0, 2);
           int blockSize = entry.AESKeySize / 8; // bits to bytes
 
-          var decryptor = new ZipAESTransform(rawPassword_, saltBytes, blockSize, false);
+          var decryptor = new ZipAESTransform(_rawPassword, saltBytes, blockSize, false);
           byte[] pwdVerifyCalc = decryptor.PwdVerifier;
           if (pwdVerifyCalc[0] != pwdVerifyRead[0] || pwdVerifyCalc[1] != pwdVerifyRead[1])
           {
@@ -2951,7 +2951,7 @@ namespace Scope.Zip.Zip
     {
       CryptoStream result = null;
       if (entry.Version < ZipConstants.VersionStrongEncryption
-          || (entry.Flags & (int) GeneralBitFlags.StrongEncryption) == 0)
+          || (entry.Flags & (int)GeneralBitFlags.StrongEncryption) == 0)
       {
         var classicManaged = new PkzipClassicManaged();
 
@@ -2964,7 +2964,7 @@ namespace Scope.Zip.Zip
         // Closing a CryptoStream will close the base stream as well so wrap it in an UncompressedStream
         // which doesnt do this.
         result = new CryptoStream(new UncompressedStream(baseStream),
-                                  classicManaged.CreateEncryptor(key, null),
+                                  classicManaged.CreateEncryptor(_key, null),
                                   CryptoStreamMode.Write);
 
         if (entry.Crc < 0 || (entry.Flags & 8) != 0)
@@ -3078,7 +3078,7 @@ namespace Scope.Zip.Zip
       public ZipUpdate(UpdateCommand command, ZipEntry entry)
       {
         Command = command;
-        Entry = (ZipEntry) entry.Clone();
+        Entry = (ZipEntry)entry.Clone();
       }
 
       /// <summary>
@@ -3105,7 +3105,7 @@ namespace Scope.Zip.Zip
         {
           if (outEntry_ == null)
           {
-            outEntry_ = (ZipEntry) Entry.Clone();
+            outEntry_ = (ZipEntry)Entry.Clone();
           }
 
           return outEntry_;
@@ -3204,7 +3204,7 @@ namespace Scope.Zip.Zip
         get
         {
           MakeBytesAvailable();
-          return (byte[]) rawComment_.Clone();
+          return (byte[])rawComment_.Clone();
         }
       }
 
@@ -3431,7 +3431,7 @@ namespace Scope.Zip.Zip
         // Stream reader = z.GetInputStream(0);
         // uses reader here....
         zipFile_ = zipFile;
-        baseStream_ = zipFile_.baseStream_;
+        baseStream_ = zipFile_._baseStream;
         readPos_ = start;
         end_ = start + length;
       }
@@ -3542,7 +3542,7 @@ namespace Scope.Zip.Zip
         {
           if (count > end_ - readPos_)
           {
-            count = (int) (end_ - readPos_);
+            count = (int)(end_ - readPos_);
             if (count == 0)
             {
               return 0;

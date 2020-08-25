@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Zip.Zip;
 
@@ -11,14 +14,17 @@ namespace Scope.Models
     public IFileSystem Generate(ZipFile zipFile)
     {
       _root = P4kDirectory.Root();
+      List<IFile> files = new List<IFile>();
       foreach (ZipEntry item in zipFile.Cast<ZipEntry>()
                                        .Where(f => f.IsFile))
       {
         var directory = EnsureDirectoryExists(item.Name);
-        directory.Add(new P4kFile(item, zipFile));
+        var file = new P4kFile(item, zipFile);
+        files.Add(file);
+        directory.Add(file);
       }
 
-      return new P4kFileSystem(_root);
+      return new P4kFileSystem(_root, Convert.ToInt32(zipFile.Count), files);
     }
 
     private P4kDirectory EnsureDirectoryExists(string zipItemName)

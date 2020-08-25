@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 using Scope.Zip.Zip;
@@ -16,24 +17,37 @@ namespace Scope.Models
     {
       94, 122, 32, 2, 48, 46, 235, 26, 59, 182, 23, 195, 15, 222, 30, 71
     };
+
     private readonly IOutputDirectory _outputDirectory;
+    private readonly IUiDispatch _onUiThread; // to marshall Changed event to the UI thread after async P4K file loading
     private ZipFile _p4k;
 
-    public CurrentP4k(IOutputDirectory outputDirectory)
+    public CurrentP4k(IOutputDirectory outputDirectory, 
+                      IUiDispatch onUiThread)
     {
       _outputDirectory = outputDirectory;
+      _onUiThread = onUiThread;
     }
 
+    ///<inheritdoc/>
     public IFileSystem FileSystem { get; private set; }
+    
+    ///<inheritdoc/>
     public string FileName { get; private set; } = "";
+    
+    ///<inheritdoc/>
+    public bool IsInitialized => _p4k != null;
 
+    ///<inheritdoc/>
     public event Action Changed;
 
+    ///<inheritdoc/>
     public void Dispose()
     {
       DisposeCurrentP4k();
     }
 
+    ///<inheritdoc/>
     public Task<OpenP4kFileResult> ChangeAsync(IFileInfo p4kFile)
     {
       DisposeCurrentP4k();
@@ -47,6 +61,7 @@ namespace Scope.Models
       return Task.Run(() => OpenP4kFile(p4kFile));
     }
 
+    ///<inheritdoc/>
     public Task CloseAsync()
     {
       return Task.Run(DisposeCurrentP4k);
@@ -56,8 +71,8 @@ namespace Scope.Models
     {
       try
       {
-        _p4k = new ZipFile(p4kFile.FullName) {Key = _key};
-        
+        _p4k = new ZipFile(p4kFile.FullName) { Key = _key };
+
         FileSystem = new GenerateFileSystem().Generate(_p4k);
         FileName = p4kFile.FullName;
       }
@@ -67,12 +82,12 @@ namespace Scope.Models
         return new OpenP4kFileResult(ex.Message);
       }
 
-      if (_outputDirectory.Path==null)
+      if (_outputDirectory.Path == null)
       {
         _outputDirectory.Path = p4kFile.DirectoryName;
       }
 
-      Changed.Raise();
+      _onUiThread.Do(Changed.Raise);
 
       return new OpenP4kFileResult();
     }
@@ -94,7 +109,7 @@ namespace Scope.Models
       FileSystem = null;
       FileName = "";
 
-      Changed.Raise();
+      _onUiThread.Do(Changed.Raise);
     }
   }
 }

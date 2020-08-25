@@ -11,5 +11,6 @@ namespace Scope.Models.Interfaces
     Task<OpenP4kFileResult> ChangeAsync(IFileInfo p4kFile);
     Task CloseAsync();
     event Action Changed;
+    bool IsInitialized { get; }
   }
 }

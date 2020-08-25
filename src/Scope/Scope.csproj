@@ -146,6 +146,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Composition.cs" />
+    <Compile Include="DispatcherHelper.cs" />
     <Compile Include="Models\CurrentItem.cs" />
     <Compile Include="Models\CurrentP4k.cs" />
     <Compile Include="Models\Dialogs.cs" />
@@ -161,9 +162,9 @@
     <Compile Include="Models\Interfaces\IMessage.cs" />
     <Compile Include="Models\Interfaces\IMessages.cs" />
     <Compile Include="Models\Interfaces\IOutputDirectory.cs" />
-    <Compile Include="Models\Interfaces\IP4kFileSystemFactory.cs" />
     <Compile Include="Models\Interfaces\IProgress.cs" />
     <Compile Include="Models\Interfaces\IPinnedItems.cs" />
+    <Compile Include="Models\Interfaces\ISearchIndex.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\OpenP4kFileResult.cs" />
@@ -171,10 +172,12 @@
     <Compile Include="Models\P4kDirectory.cs" />
     <Compile Include="Models\P4kFile.cs" />
     <Compile Include="Models\P4kFileSystem.cs" />
-    <Compile Include="Models\P4kFileSystemFactory.cs" />
     <Compile Include="Models\Progress.cs" />
     <Compile Include="Models\PinnedItems.cs" />
+    <Compile Include="Models\SearchIndex.cs" />
+    <Compile Include="Models\UiDispatch.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
+    <Compile Include="ViewModels\BuildSearchIndexMenuItemViewModel.cs" />
     <Compile Include="ViewModels\CloseCurrentP4kFileMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Commands\OpenP4kFileCommand.cs" />
     <Compile Include="ViewModels\CurrentP4kFileSystemViewModel.cs" />
