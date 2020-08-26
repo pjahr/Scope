@@ -1,12 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Scope.Models.Interfaces
 {
   public interface ISearchIndex
   {
-    Task<int> AllOff(IReadOnlyCollection<string> searchTerms);
-    Task<int> Either(IReadOnlyCollection<string> searchTerms);
+    IEnumerable<Match> Results { get; }
+
+    void Either(params string[] searchTerms);
+
+    event Action ResultsCleared;
+    event Action<Match> MatchFound;
+
     void BuildUp();
   }
 }

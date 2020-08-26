@@ -165,6 +165,7 @@
     <Compile Include="Models\Interfaces\IProgress.cs" />
     <Compile Include="Models\Interfaces\IPinnedItems.cs" />
     <Compile Include="Models\Interfaces\ISearchIndex.cs" />
+    <Compile Include="Models\Interfaces\Match.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\OpenP4kFileResult.cs" />

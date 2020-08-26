@@ -12,30 +12,26 @@ namespace Scope.Models
   {
     private readonly ICurrentP4k _currentP4K;
 
+    public event System.Action ResultsCleared;
+    public event System.Action<Match> MatchFound;
+
+    public IEnumerable<Match> Results { get; }
+
     public SearchIndex(ICurrentP4k currentP4K)
     {
       _currentP4K = currentP4K;
     }
-
-    public Task<int> AllOff(IReadOnlyCollection<string> searchTerms)
+    
+    public void Either(params string[] searchTerms)
     {
-      throw new System.NotImplementedException();
-    }
-
-    public Task<int> Either(IReadOnlyCollection<string> searchTerms)
-    {
-      throw new System.NotImplementedException();
-    }
-
-    public void BuildUp()
-    {
-      if (_currentP4K.FileSystem==null)
+      if (_currentP4K.FileSystem == null)
       {
         return;
       }
 
       var c = _currentP4K.FileSystem.TotalNumberOfFiles;
 
+      ResultsCleared.Raise();
 
       for (int i = 0; i < c; i++)
       {
@@ -50,9 +46,22 @@ namespace Scope.Models
         using (var s = f.Read())
         {
           text = Encoding.UTF8.GetString(s.ReadAllBytes());
+          foreach (var term in searchTerms)
+          {
+            if (text.ToLowerInvariant().Contains(term.ToLowerInvariant()))
+            {
+              var match = new Match("", f, 0);
+              MatchFound.Raise(match);
+            }
+          }
         }
 
       }
+    }
+
+    public void BuildUp()
+    {
+      
     }
   }
 }
