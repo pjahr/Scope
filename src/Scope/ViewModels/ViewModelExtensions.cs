@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Scope.ViewModels
 {
@@ -25,5 +26,6 @@ namespace Scope.ViewModels
       // apply precision and current suffix
       return Math.Round(v, precision) + Suffixes[i];
     }
+
   }
 }

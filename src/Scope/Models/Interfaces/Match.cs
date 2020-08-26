@@ -12,8 +12,8 @@ namespace Scope.Models.Interfaces
       this.Offset = Offset;
     }
 
-    string Term { get; }
-    IFile File { get; }
-    int Offset { get; }
+    public string Term { get; }
+    public IFile File { get; }
+    public int Offset { get; }
   }
 }

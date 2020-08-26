@@ -31,7 +31,13 @@
       <RowDefinition
         Height="5" />
       <RowDefinition
-        Height="2*" />
+        Height="2*"
+        MinHeight="24" />
+      <RowDefinition
+        Height="5" />
+      <RowDefinition
+        Height="2*" 
+        MinHeight="24"  />
       <RowDefinition
         Height="Auto" />
     </Grid.RowDefinitions>
@@ -54,7 +60,7 @@
       Grid.Row="1"
       Grid.Column="0" />
 
-    <!--splits current p4k fs and selected items-->
+    <!--splits current p4k fs and search-->
     <GridSplitter
       Grid.Row="2"
       Grid.Column="0"
@@ -63,16 +69,30 @@
       Background="LightGray"
       Focusable="False" />
 
+    <views:SearchView
+      DataContext="{Binding Search}"
+      Grid.Row="3"
+      Grid.Column="0" />
+
+    <!--splits search and selected items-->
+    <GridSplitter
+      Grid.Row="4"
+      Grid.Column="0"
+      Height="5"
+      HorizontalAlignment="Stretch"
+      Background="LightGray"
+      Focusable="False" />
+
     <views:PinnedItemsView
       DataContext="{Binding SelectedItems}"
-      Grid.Row="3"
+      Grid.Row="5"
       Grid.Column="0" />
 
     <!--splits left and right side-->
     <GridSplitter
       Grid.Row="1"
       Grid.Column="1"
-      Grid.RowSpan="3"
+      Grid.RowSpan="5"
       Width="5"
       HorizontalAlignment="Stretch"
       Background="LightGray"
@@ -86,7 +106,7 @@
 
     <views:StatusBarView
       DataContext="{Binding StatusBar}"
-      Grid.Row="4"
+      Grid.Row="6"
       Grid.Column="0"
       Grid.ColumnSpan="3" />
 

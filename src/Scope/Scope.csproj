@@ -202,6 +202,7 @@
     <Compile Include="ViewModels\PinnedDirectoryViewModel.cs" />
     <Compile Include="ViewModels\PinnedFileViewModel.cs" />
     <Compile Include="ViewModels\PinnedItemsViewModel.cs" />
+    <Compile Include="ViewModels\SearchViewModel.cs" />
     <Compile Include="ViewModels\Separator.cs" />
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\TreeNodeViewModel.cs" />
@@ -244,6 +245,9 @@
     </Compile>
     <Compile Include="Views\PinnedItemsView.xaml.cs">
       <DependentUpon>PinnedItemsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchView.xaml.cs">
+      <DependentUpon>SearchView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusBarView.xaml.cs">
       <DependentUpon>StatusBarView.xaml</DependentUpon>
@@ -302,6 +306,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PinnedItemsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

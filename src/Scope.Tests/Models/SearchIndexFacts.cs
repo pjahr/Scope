@@ -65,8 +65,6 @@ namespace Scope.Tests.Models
 
       Assert.Empty(_sut.Results);
       _eventWasRaised.Mock().Verify(m => m(), Times.Exactly(1));
-
-
     }
   }
 }
