@@ -7,11 +7,11 @@ namespace Scope.ViewModels
   [Export]
   internal class BuildSearchIndexMenuItemViewModel : MenuItemBase
   {
-    private readonly ISearchIndex _searchIndex;
+    private readonly ISearch _searchIndex;
     private readonly ICurrentP4k _currentP4K;
     private readonly RelayCommand _command;
 
-    public BuildSearchIndexMenuItemViewModel(ISearchIndex searchIndex, ICurrentP4k currentP4K)
+    public BuildSearchIndexMenuItemViewModel(ISearch searchIndex, ICurrentP4k currentP4K)
     {
       _searchIndex = searchIndex;
       _currentP4K = currentP4K;

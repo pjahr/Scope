@@ -5,6 +5,8 @@ using Scope.Utils;
 
 namespace Scope.Models
 {
+  //TODO this is not an abstract progress but rather loading-the-p4k-file progress.
+  //TODO either make the concept reusable or rename the class accordingly.
   [Export]
   internal class Progress : IProgress
   {

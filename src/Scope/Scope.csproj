@@ -164,8 +164,9 @@
     <Compile Include="Models\Interfaces\IOutputDirectory.cs" />
     <Compile Include="Models\Interfaces\IProgress.cs" />
     <Compile Include="Models\Interfaces\IPinnedItems.cs" />
-    <Compile Include="Models\Interfaces\ISearchIndex.cs" />
+    <Compile Include="Models\Interfaces\ISearch.cs" />
     <Compile Include="Models\Interfaces\Match.cs" />
+    <Compile Include="Models\Interfaces\MatchType.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Messages.cs" />
     <Compile Include="Models\OpenP4kFileResult.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="ViewModels\BuildSearchIndexMenuItemViewModel.cs" />
     <Compile Include="ViewModels\CloseCurrentP4kFileMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\Commands\InitiateSearchCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenP4kFileCommand.cs" />
     <Compile Include="ViewModels\CurrentP4kFileSystemViewModel.cs" />
     <Compile Include="ViewModels\DirectoryViewModel.cs" />

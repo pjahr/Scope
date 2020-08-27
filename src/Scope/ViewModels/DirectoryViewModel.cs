@@ -17,6 +17,8 @@ namespace Scope.ViewModels
 
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
+      System.Console.WriteLine($"{Model.Name} loads children.");
+
       Children.Clear();
 
       foreach (var nodeVm in GetContents())
@@ -29,6 +31,7 @@ namespace Scope.ViewModels
 
     private List<TreeNodeViewModel> GetContents()
     {
+      System.Console.WriteLine($"{Model.Name} retrieves children.");
       var contents = new List<TreeNodeViewModel>();
 
       foreach (var directory in Model.Directories)

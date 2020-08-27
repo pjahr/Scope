@@ -12,11 +12,11 @@ namespace Scope.ViewModels
   [Export]
   public class SearchViewModel : INotifyPropertyChanged, IDisposable
   {
-    private readonly ISearchIndex _searchIndex;
+    private readonly ISearch _searchIndex;
     private string _searchTerms;
     private RelayCommand _findFilesBySearchTermsCommand;
 
-    public SearchViewModel(ISearchIndex searchIndex)
+    public SearchViewModel(ISearch searchIndex)
     {
       _searchIndex = searchIndex;
 
@@ -64,7 +64,7 @@ namespace Scope.ViewModels
 
     private void FindFilesBySearchTerms()
     {
-      _searchIndex.Either(SearchTerms);
+      _searchIndex.InitiateSearchFor(SearchTerms);
     }
   }
 }
