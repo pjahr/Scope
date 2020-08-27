@@ -57,10 +57,9 @@ namespace Scope.Models
           continue;
         }
 
-        string text;
         using (var s = f.Read())
         {
-          text = Encoding.UTF8.GetString(s.ReadAllBytes()).ToLowerInvariant();
+          string text = Encoding.UTF8.GetString(s.ReadAllBytes()).ToLowerInvariant();
           foreach (var term in searchTerms)
           {
             if (f.Path.Contains(term.ToLowerInvariant()))

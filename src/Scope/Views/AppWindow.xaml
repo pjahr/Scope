@@ -24,29 +24,44 @@
   <Grid>
 
     <Grid.RowDefinitions>
+      <!-- main menu -->
       <RowDefinition
         Height="Auto" />
+
+      <!-- search -->
       <RowDefinition
-        Height="3*" />
+        Height="Auto" />
+
+      <!--p4k fs tree-->
+      <RowDefinition
+        Height="*"/>
+
+      <!--splitter (horizontal)-->
       <RowDefinition
         Height="5" />
-      <RowDefinition
-        Height="2*"
-        MinHeight="24" />
-      <RowDefinition
-        Height="5" />
+
+      <!--pinned items-->
       <RowDefinition
         Height="2*" 
         MinHeight="24"  />
+
+      <!--status bar-->
       <RowDefinition
         Height="Auto" />
+
     </Grid.RowDefinitions>
 
     <Grid.ColumnDefinitions>
+      <!--navigation views-->
       <ColumnDefinition />
+
+      <!--grid splitter (vertical)-->
       <ColumnDefinition
         Width="5" />
+
+      <!--content views-->
       <ColumnDefinition />
+
     </Grid.ColumnDefinitions>
 
     <views:MainMenuView
@@ -55,28 +70,19 @@
       Grid.Column="0"
       Grid.ColumnSpan="3" />
 
-    <views:CurrentP4kFsView
-      DataContext="{Binding CurrentP4kFileSystem}"
+    <views:SearchView
+      DataContext="{Binding Search}"
       Grid.Row="1"
       Grid.Column="0" />
 
-    <!--splits current p4k fs and search-->
-    <GridSplitter
+    <views:CurrentP4kFsView
+      DataContext="{Binding CurrentP4kFileSystem}"
       Grid.Row="2"
-      Grid.Column="0"
-      Height="5"
-      HorizontalAlignment="Stretch"
-      Background="LightGray"
-      Focusable="False" />
-
-    <views:SearchView
-      DataContext="{Binding Search}"
-      Grid.Row="3"
       Grid.Column="0" />
 
-    <!--splits search and selected items-->
+    <!--splits fs tree and pinned items-->
     <GridSplitter
-      Grid.Row="4"
+      Grid.Row="3"
       Grid.Column="0"
       Height="5"
       HorizontalAlignment="Stretch"
@@ -85,7 +91,7 @@
 
     <views:PinnedItemsView
       DataContext="{Binding SelectedItems}"
-      Grid.Row="5"
+      Grid.Row="4"
       Grid.Column="0" />
 
     <!--splits left and right side-->

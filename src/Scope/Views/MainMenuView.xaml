@@ -24,7 +24,7 @@
       DataContext="{Binding BuildSearchIndex}"
       Header="{Binding Label}"
       Command="{Binding Command}"
-      ToolTip="{Binding ToolTip}"/>
+      ToolTip="{Binding Tooltip}"/>
 
     <Separator />
 
