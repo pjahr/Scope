@@ -5,6 +5,8 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:vm="clr-namespace:Scope.ViewModels"
+  xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+  xmlns:b="clr-namespace:Scope.Views.Behaviors"
   mc:Ignorable="d"
   d:DesignHeight="450"
   d:DesignWidth="800"
@@ -63,7 +65,15 @@
           Margin="3"
           Padding="3"
           VerticalContentAlignment="Center"
-          Background="Transparent"/>
+          Background="Transparent">
+
+          <i:Interaction.Behaviors>
+            <b:TextBoxCommitOnChange/>
+            <b:TextBoxCallCommandOnKey Key="Enter" Command="{Binding FindFilesBySearchTermsCommand}"/>
+            <b:TextBoxCallCommandOnKey Key="Escape" Command="{Binding CancelCurrentSearchCommand}"/>
+          </i:Interaction.Behaviors>
+
+        </TextBox>
 
       </Grid>
 

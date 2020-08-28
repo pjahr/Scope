@@ -23,7 +23,7 @@ namespace Scope.Views.Behaviors
       AssociatedObject.MouseLeftButtonUp += CallCommand;
     }
 
-    private void CallCommand(object sender, MouseButtonEventArgs e)
+    private void CallCommand(object _, MouseButtonEventArgs e)
     {
       Command.Execute(null);
     }
