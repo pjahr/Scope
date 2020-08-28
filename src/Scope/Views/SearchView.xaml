@@ -10,206 +10,158 @@
   d:DesignWidth="800"
   d:DataContext="{d:DesignInstance vm:SearchViewModel, IsDesignTimeCreatable=False}">
 
-  <Grid>
+  <StackPanel>
 
-    <Grid.RowDefinitions>
-      <RowDefinition
-        Height="Auto" />
-      <RowDefinition
-        Height="Auto" />
-      <RowDefinition
-        Height="Auto" />
-      <RowDefinition
-        Height="Auto" />
-      <RowDefinition
-        Height="*" />
-      <RowDefinition
-        Height="Auto" />
-    </Grid.RowDefinitions>
+    <DockPanel>
 
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition
-        Width="*" />
-      <ColumnDefinition
-        Width="Auto" />
-      <ColumnDefinition
-        Width="Auto" />
-    </Grid.ColumnDefinitions>
+      <!-- toggle details button -->
+      <Button
+        DockPanel.Dock="Right"
+        Command="{Binding ToggleDetailsVisibilityCommand }"
+        Margin="3 3"
+        Style="{StaticResource ActionButton}">
 
-    <TextBox
-      Text="{Binding SearchTerms}"
-      Margin="3"
-      Padding="3" />
+        <Path
+          Data="{StaticResource Filter}"
+          Style="{StaticResource ActionIcon}" />
 
-    <Button
-      Style="{StaticResource ActionButton}"
-      Command="{Binding FindFilesBySearchTermsCommand }"
-      Grid.Row="0"
-      Grid.Column="1"
-      Margin="3">
+      </Button>
 
-      <Path
-        Data="{StaticResource Log}"
-        Style="{StaticResource ActionIcon}" />
-
-    </Button>
-
-    <Button
-      Grid.Column="2"
-      Grid.Row="0"
-      Command="{Binding ToggleDetailsVisibilityCommand }"
-      Padding="2">
-      <Button.Style>
-        <Style
-          TargetType="Button"
-          BasedOn="{StaticResource ActionButton}">
-
-          <Setter
-            Property="Margin"
-            Value="3 6 0 -3" />
-
-          <Style.Triggers>
-            <DataTrigger
-              Binding="{Binding DetailsVisibility}"
-              Value="Collapsed">
-              <Setter
-                Property="Content">
-                <Setter.Value>
-                  <Path
-                    Data="{StaticResource ChevronDown}"
-                    Style="{StaticResource ActionIcon}" />
-                </Setter.Value>
-              </Setter>
-            </DataTrigger>
-
-            <DataTrigger
-              Binding="{Binding DetailsVisibility}"
-              Value="Visible">
-              <Setter
-                Property="Content">
-                <Setter.Value>
-                  <Path
-                    Data="{StaticResource ChevronUp}"
-                    Style="{StaticResource ActionIcon}" />
-                </Setter.Value>
-              </Setter>
-            </DataTrigger>
-
-          </Style.Triggers>
-
-        </Style>
-      </Button.Style>
-    </Button>
-
-    <ProgressBar
-      Grid.Row="1"
-      Grid.Column="0"
-      Margin="3 0"
-      IsIndeterminate="True" />
-
-    <WrapPanel
-      Grid.Row="2"
-      Grid.Column="0"
-      Grid.ColumnSpan="2"
-      Margin="3"
-      Visibility="{Binding DetailsVisibility}">
-
-      <DockPanel
-        Margin="3 3 12 3">
-        <CheckBox
-          x:Name="_checkboxFilename"
-          DockPanel.Dock="Left"
-          VerticalAlignment="Center" />
-        <Label
-          Target="{Binding ElementName =_checkboxFilename}"
-          Content="File name"
-          DockPanel.Dock="Right" />
-      </DockPanel>
-
-      <DockPanel
+      <!-- start search button -->
+      <Button
+        Style="{StaticResource ActionButton}"
+        Command="{Binding FindFilesBySearchTermsCommand }"
+        DockPanel.Dock="Right"
         Margin="3">
-        <CheckBox
-          x:Name="_checkboxCaseSensitive"
-          DockPanel.Dock="Left"
-          VerticalAlignment="Center" />
-        <Label
-          Target="{Binding ElementName=_checkboxCaseSensitive}"
-          Content="Case sensitive"
-          DockPanel.Dock="Right" />
-      </DockPanel>
-    </WrapPanel>
 
-    <TextBlock
-      Text="File types"
-      Grid.Row="3"
-      Grid.Column="0"
-      Margin="6"
-      Visibility="{Binding DetailsVisibility}" />
+        <Path
+          Data="{StaticResource Log}"
+          Style="{StaticResource ActionIcon}" />
 
-    <WrapPanel
-      Grid.Row="4"
-      Grid.Column="0"
-      Grid.ColumnSpan="3"
-      Margin="3 0"
-      Visibility="{Binding DetailsVisibility}">
-      <DockPanel
-        Margin="3 3 12 3">
-        <CheckBox
-          DockPanel.Dock="Left"
-          VerticalAlignment="Center" />
-        <Label
-          Content="JSON"
-          DockPanel.Dock="Right" />
-      </DockPanel>
+      </Button>
 
-      <DockPanel
+      <!-- the search box and a progress bar overlay -->
+      <Grid
+        DockPanel.Dock="Left">
+
+        <ProgressBar
+          VerticalAlignment="Bottom"
+          Height="23"
+          BorderThickness="0"
+          Margin="4 4"
+          IsIndeterminate="True"
+          Background="Transparent"
+          Foreground="WhiteSmoke"
+          Visibility="{Binding SearchIndicatorVisibility}"        
+        />
+        <!--
+        -->
+
+        <TextBox
+          Text="{Binding SearchTerms}"
+          Height="24"
+          Margin="3"
+          Padding="3"
+          VerticalContentAlignment="Center"
+          Background="Transparent"/>
+
+      </Grid>
+
+    </DockPanel>
+
+    <!-- search options panel -->
+    <StackPanel
+      Visibility="{Binding OptionsVisibility}"
+      Background="WhiteSmoke">
+
+      <WrapPanel
         Margin="3">
-        <CheckBox
-          DockPanel.Dock="Left"
-          VerticalAlignment="Center" />
-        <Label
-          Content="XML"
-          DockPanel.Dock="Right" />
-      </DockPanel>
 
-      <DockPanel
-        Margin="3">
-        <CheckBox
-          DockPanel.Dock="Left"
-          VerticalAlignment="Center" />
-        <Label
-          Content="ID"
-          DockPanel.Dock="Right" />
-      </DockPanel>
+        <DockPanel
+          Margin="3 3 12 3">
+          <CheckBox
+            x:Name="_checkboxFilename"
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center" />
+          <Label
+            Target="{Binding ElementName =_checkboxFilename}"
+            Content="File name"
+            DockPanel.Dock="Right" />
+        </DockPanel>
 
-      <DockPanel
-        Margin="3">
-        <CheckBox
-          DockPanel.Dock="Left"
-          VerticalAlignment="Center" />
-        <Label
-          Content="DCB"
-          DockPanel.Dock="Right" />
-      </DockPanel>
+        <DockPanel
+          Margin="3">
+          <CheckBox
+            x:Name="_checkboxCaseSensitive"
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center" />
+          <Label
+            Target="{Binding ElementName=_checkboxCaseSensitive}"
+            Content="Case sensitive"
+            DockPanel.Dock="Right" />
+        </DockPanel>
+      </WrapPanel>
 
-      <DockPanel
-        Margin="3">
-        <CheckBox
-          DockPanel.Dock="Left"
-          VerticalAlignment="Center" />
-        <Label
-          Content="TXT"
-          DockPanel.Dock="Right" />
-      </DockPanel>
+      <TextBlock
+        Text="File types"
+        Margin="6" />
 
-    </WrapPanel>
+      <WrapPanel
+        Margin="3 0">
+        <DockPanel
+          Margin="3 3 12 3">
+          <CheckBox
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center" />
+          <Label
+            Content="JSON"
+            DockPanel.Dock="Right" />
+        </DockPanel>
 
-    <Border Background="LightGray"
-            Grid.Row="5"
-            Grid.Column="0"
-            Grid.ColumnSpan="3"
-            Height="5"/>
+        <DockPanel
+          Margin="3">
+          <CheckBox
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center" />
+          <Label
+            Content="XML"
+            DockPanel.Dock="Right" />
+        </DockPanel>
 
-  </Grid>
+        <DockPanel
+          Margin="3">
+          <CheckBox
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center" />
+          <Label
+            Content="ID"
+            DockPanel.Dock="Right" />
+        </DockPanel>
+
+        <DockPanel
+          Margin="3">
+          <CheckBox
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center" />
+          <Label
+            Content="DCB"
+            DockPanel.Dock="Right" />
+        </DockPanel>
+
+        <DockPanel
+          Margin="3">
+          <CheckBox
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center" />
+          <Label
+            Content="TXT"
+            DockPanel.Dock="Right" />
+        </DockPanel>
+
+      </WrapPanel>
+
+    </StackPanel>
+
+  </StackPanel>
 
 </UserControl>

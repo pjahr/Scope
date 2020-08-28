@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Windows;
 using System.Windows.Input;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 using Scope.ViewModels.Commands;
@@ -13,14 +14,16 @@ namespace Scope.ViewModels
   public class SearchViewModel : INotifyPropertyChanged, IDisposable
   {
     private readonly ISearch _searchIndex;
+    private readonly IUiDispatch _uiDispatch;
 
     private string _searchTerms = string.Empty;
-    private Visibility _detailsVisibility = Visibility.Collapsed;
+    private Visibility _optionsVisibility = Visibility.Collapsed;
     private Visibility _searchIndicatorVisibility = Visibility.Hidden;
 
-    public SearchViewModel(ISearch searchIndex)
+    public SearchViewModel(ISearch searchIndex, IUiDispatch uiDispatch)
     {
       _searchIndex = searchIndex;
+      _uiDispatch = uiDispatch;
 
       _searchIndex.ResultsCleared += ClearResults;
       _searchIndex.MatchFound += AddMatch;
@@ -48,18 +51,18 @@ namespace Scope.ViewModels
       }
     }
 
-    public Visibility DetailsVisibility
+    public Visibility OptionsVisibility
     {
-      get => _detailsVisibility;
+      get => _optionsVisibility;
       set
       {
-        if (_detailsVisibility == value)
+        if (_optionsVisibility == value)
         {
           return;
         }
 
-        _detailsVisibility = value;
-        PropertyChanged.Raise(this, nameof(DetailsVisibility));
+        _optionsVisibility = value;
+        PropertyChanged.Raise(this, nameof(OptionsVisibility));
       }
     }
 
@@ -80,7 +83,7 @@ namespace Scope.ViewModels
 
     public ICommand FindFilesBySearchTermsCommand { get; }
     public ICommand ToggleDetailsVisibilityCommand { get; }
-    
+
     public void Dispose()
     {
       _searchIndex.ResultsCleared -= ClearResults;
@@ -89,17 +92,17 @@ namespace Scope.ViewModels
 
     private void HideSearchIndicator()
     {
-      SearchIndicatorVisibility = Visibility.Hidden;
+      _uiDispatch.Do(() => SearchIndicatorVisibility = Visibility.Hidden);
     }
 
     private void ShowSearchIndicator()
     {
       SearchIndicatorVisibility = Visibility.Visible;
-        }
+    }
 
     private void ToggleDetailsVisibility()
     {
-      DetailsVisibility = DetailsVisibility == Visibility.Visible
+      OptionsVisibility = OptionsVisibility == Visibility.Visible
                             ? Visibility.Collapsed
                             : Visibility.Visible;
     }

@@ -1,11 +1,13 @@
-﻿using Scope.Interfaces;
-using Scope.Models.Interfaces;
-using Scope.Utils;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Scope.Interfaces;
+using Scope.Models.Interfaces;
+using Scope.Utils;
 
 namespace Scope.Models
 {
@@ -15,15 +17,15 @@ namespace Scope.Models
     private readonly ICurrentP4k _currentP4K;
     private readonly IUiDispatch _uiDispatch;
 
-    public event System.Action ResultsCleared;
-    public event System.Action<Match> MatchFound;
-    public event System.Action Began;
-    public event System.Action Finished;
-    public event System.Action<bool> IsSearchingChanged;
+    public event Action ResultsCleared;
+    public event Action<Match> MatchFound;
+    public event Action Began;
+    public event Action Finished;
+    public event Action<bool> IsSearchingChanged;
 
     public IEnumerable<Match> Results { get; }
 
-    private CancellationTokenSource _cts = new CancellationTokenSource();
+    private readonly CancellationTokenSource _cts = new CancellationTokenSource();
     private Task _task;
 
     public SearchIndex(ICurrentP4k currentP4K, IUiDispatch uiDispatch)
@@ -39,57 +41,67 @@ namespace Scope.Models
         return;
       }
 
-      var c = _currentP4K.FileSystem.TotalNumberOfFiles;
-
       ResultsCleared.Raise();
+      Began.Raise();
 
-      _task = Task.Run(() => FindItems(searchTerms, c), _cts.Token);
+      var t = searchTerms.Aggregate((c, n) => $"{c}, {n}");
+      Console.WriteLine($"Started search for {t}.");
+
+      _task = Task.Run(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles),
+                       _cts.Token);
     }
 
-    private void FindItems(string[] searchTerms, int c)
+    private readonly string[] _knownTextFileFormats =
     {
-      for (int i = 0; i < c; i++)
+      ".txt", ".cfg", ".cfgf", ".cfgm", ".ini", ".id"
+    };
+
+    private void FindItems(string[] searchTerms, int numberOfFiles)
+    {
+      for (int i = 0; i < numberOfFiles; i++)
       {
         var f = _currentP4K.FileSystem[i];
 
-        if (!f.Name.EndsWith(".json"))
+        if (!_knownTextFileFormats.Any(ending => f.Name.EndsWith(ending)))
         {
           continue;
         }
 
         using (var s = f.Read())
         {
-          string text = Encoding.UTF8.GetString(s.ReadAllBytes()).ToLowerInvariant();
+          string text = Encoding.UTF8.GetString(s.ReadAllBytes())
+                                .ToLowerInvariant();
           foreach (var term in searchTerms)
           {
             if (f.Path.Contains(term.ToLowerInvariant()))
             {
               var match = new Match(term, f, MatchType.Path);
-              System.Console.WriteLine($"Found '{term}' in '{f.Path}'");
-              _uiDispatch.Do(()=>MatchFound.Raise(match));
+              Console.WriteLine($"Found '{term}' in '{f.Path}'");
+              _uiDispatch.Do(() => MatchFound.Raise(match));
             }
 
             if (f.Name.Contains(term.ToLowerInvariant()))
             {
               var match = new Match(term, f, MatchType.Filename);
-              System.Console.WriteLine($"Found '{term}' in '{f.Name}'");
+              Console.WriteLine($"Found '{term}' in '{f.Name}'");
               _uiDispatch.Do(() => MatchFound.Raise(match));
             }
 
             if (text.Contains(term.ToLowerInvariant()))
             {
               var match = new Match(term, f, MatchType.Content);
-              System.Console.WriteLine($"Found '{term}' in content of {f.Name}");
+              Console.WriteLine($"Found '{term}' in content of {f.Name}");
               _uiDispatch.Do(() => MatchFound.Raise(match));
             }
           }
         }
-
       }
+
+      Finished.Raise();
+      var t = searchTerms.Aggregate((c, n) => $"{c}, {n}");
+      Console.WriteLine($"Finished search for {t}.");
     }
 
-    public void BuildUp()
-    {
-    }
+    public void BuildUp() { }
   }
 }
