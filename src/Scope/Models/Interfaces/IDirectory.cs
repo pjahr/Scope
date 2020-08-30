@@ -9,5 +9,7 @@ namespace Scope.Models.Interfaces
     string Path { get; }
     IReadOnlyCollection<IDirectory> Directories { get; }
     IReadOnlyCollection<IFile> Files { get; }
+
+    bool IsEmpty { get; }
   }
 }

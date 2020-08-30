@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
 
@@ -25,6 +26,7 @@ namespace Scope.Models
     public string Path { get; }
     public IReadOnlyCollection<IDirectory> Directories => _directories;
     public IReadOnlyCollection<IFile> Files => _files;
+    public bool IsEmpty => _directories.Any() || _files.Any();
 
     internal void Add(IDirectory child)
     {

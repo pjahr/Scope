@@ -23,6 +23,11 @@ namespace Scope.ViewModels
       _uiDispatch = uiDispatch;
 
       _search.Finished += FilterContent;
+
+      if (!Model.IsEmpty)
+      {
+        ResetChildren();
+      }
     }
 
     public IDirectory Model { get; }
@@ -49,11 +54,15 @@ namespace Scope.ViewModels
     {
       var contents = new List<TreeNodeViewModel>();
 
-      var directories = Model.Directories
-                             .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)));
+      var directories = _search.Results.Any()
+                                        ? Model.Directories
+                                               .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)))
+                                        : Model.Directories;
 
-      var files = Model.Files
-                       .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)));
+      var files = _search.Results.Any()
+                                  ? Model.Files
+                                         .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)))
+                                  : Model.Files;
 
       foreach (var directory in directories)
       {

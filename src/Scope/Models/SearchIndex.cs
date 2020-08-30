@@ -52,9 +52,6 @@ namespace Scope.Models
         return;
       }
 
-      var t = searchTerms.Aggregate((c, n) => $"{c}, {n}");
-      Console.WriteLine($"Started search for {t}.");
-
       _task = Task.Run(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles),
                        _cts.Token);
     }
@@ -81,18 +78,9 @@ namespace Scope.Models
                                 .ToLowerInvariant();
           foreach (var term in searchTerms)
           {
-            if (f.Path.Contains(term.ToLowerInvariant()))
-            {
-              var match = new Match(term, f, MatchType.Path);
-              Console.WriteLine($"Found '{term}' in '{f.Path}'");
-              _uiDispatch.Do(() => MatchFound.Raise(match));
-              _results.Add(match);
-            }
-
             if (f.Name.Contains(term.ToLowerInvariant()))
             {
               var match = new Match(term, f, MatchType.Filename);
-              Console.WriteLine($"Found '{term}' in '{f.Name}'");
               _uiDispatch.Do(() => MatchFound.Raise(match));
               _results.Add(match);
             }
@@ -100,7 +88,6 @@ namespace Scope.Models
             if (text.Contains(term.ToLowerInvariant()))
             {
               var match = new Match(term, f, MatchType.Content);
-              Console.WriteLine($"Found '{term}' in content of {f.Name}");
               _uiDispatch.Do(() => MatchFound.Raise(match));
               _results.Add(match);
             }
@@ -109,8 +96,6 @@ namespace Scope.Models
       }
 
       Finished.Raise();
-      var t = searchTerms.Aggregate((c, n) => $"{c}, {n}");
-      Console.WriteLine($"Finished search for {t}.");
     }
 
     public void BuildUp() { }
