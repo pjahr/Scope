@@ -108,7 +108,7 @@
       DataContext="{Binding FileViewers}"
       Grid.Row="1"
       Grid.Column="2"
-      Grid.RowSpan="3" />
+      Grid.RowSpan="5" />
 
     <views:StatusBarView
       DataContext="{Binding StatusBar}"

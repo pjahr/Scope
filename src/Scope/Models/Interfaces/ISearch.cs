@@ -13,8 +13,6 @@ namespace Scope.Models.Interfaces
 
     event Action Finished;
 
-    event Action<bool> IsSearchingChanged;
-
     event Action ResultsCleared;
 
     event Action<Match> MatchFound;

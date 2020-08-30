@@ -17,5 +17,10 @@ namespace Scope.Models.Interfaces
     public IFile File { get; }
     public MatchType Type { get; }
     public int Offset { get; }
-  }
+
+    public override string ToString()
+    {
+      return $"{File.Path} : {Offset} ({Type})";
+    }
+  }  
 }

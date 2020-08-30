@@ -18,6 +18,7 @@ namespace Scope.ViewModels
 
       var uncompressed = file.BytesUncompressed.ToFileSize()
                              .Split(' ');
+
       UncompressedSizeValue = uncompressed[0];
       UncompressedSizeUnit = uncompressed[1];
     }

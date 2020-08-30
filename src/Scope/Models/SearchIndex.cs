@@ -22,8 +22,7 @@ namespace Scope.Models
     public event Action<Match> MatchFound;
     public event Action Began;
     public event Action Finished;
-    public event Action<bool> IsSearchingChanged;
-
+    
     public IReadOnlyCollection<Match> Results => _results;
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
     private Task _task;
@@ -41,8 +40,17 @@ namespace Scope.Models
         return;
       }
 
+      _results.Clear();
       ResultsCleared.Raise();
+
       Began.Raise();
+
+      // do not search for nothing or white space
+      if (searchTerms.All(term=>string.IsNullOrWhiteSpace(term)))
+      {
+        Finished.Raise();
+        return;
+      }
 
       var t = searchTerms.Aggregate((c, n) => $"{c}, {n}");
       Console.WriteLine($"Started search for {t}.");
@@ -58,8 +66,6 @@ namespace Scope.Models
 
     private void FindItems(string[] searchTerms, int numberOfFiles)
     {
-      _results.Clear();
-
       for (int i = 0; i < numberOfFiles; i++)
       {
         var f = _currentP4K.FileSystem[i];

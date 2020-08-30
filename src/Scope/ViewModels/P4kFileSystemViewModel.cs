@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using Scope.Interfaces;
@@ -20,7 +22,8 @@ namespace Scope.ViewModels
                                   ICurrentItem currentItem,
                                   IPinnedItems selectedItems,
                                   IExtractP4kContent extractP4KContent,
-                                  ISearch search, IUiDispatch uiDispatch)
+                                  ISearch search,
+                                  IUiDispatch uiDispatch)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;
@@ -29,7 +32,7 @@ namespace Scope.ViewModels
       _search = search;
       _uiDispatch = uiDispatch;
 
-      RootItems = new ObservableCollection<object>();
+      RootItems = new ObservableCollection<TreeNodeViewModel>();
 
       SetCurrentItemCommand = new RelayCommand<object>(SetCurrentItem);
       SetCurrentFileToNothingCommand = new RelayCommand(_currentItem.Clear);
@@ -37,19 +40,55 @@ namespace Scope.ViewModels
       ExtractCommand = new RelayCommand<object>(ExtractItem);
 
       ExpandCommand = new RelayCommand<object>(async p =>
-                                               {
-                                                 if (!(p is DirectoryViewModel directory))
-                                                 {
-                                                   return;
-                                                 }
+      {
+        if (!(p is DirectoryViewModel directory))
+        {
+          return;
+        }
 
-                                                 await directory.LoadChildrenAsync();
-                                               });
-      CreateContainedDirectories();
-      CreateContainedFiles();
+        await directory.LoadChildrenAsync();
+      });
+
+      CreateRootItems();
+
+      _search.Finished += FilterRootItems;
+      _search.ResultsCleared += CreateRootItems;
     }
 
-    public ObservableCollection<object> RootItems { get; private set; }
+    private void CreateRootItems()
+    {
+      foreach (var disposable in RootItems)
+      {
+        disposable.Dispose();
+      }
+
+      _uiDispatch.Do(() =>
+      {
+        RootItems.Clear();
+
+        CreateContainedDirectories();
+        CreateContainedFiles();
+      });
+    }
+
+    private void FilterRootItems()
+    {
+      if (!_search.Results.Any())
+      {
+        return;
+      }
+
+      var hidden = RootItems.Where(i => !_search.Results.Any(r => r.File.Path.StartsWith(i.Path)))
+                            .ToArray();
+
+      foreach (var item in hidden)
+      {
+        _uiDispatch.Do(() => RootItems.Remove(item));
+      }
+    }
+
+    public ObservableCollection<TreeNodeViewModel> RootItems { get; private set; }
+
     public ICommand SetCurrentItemCommand { get; }
     public ICommand SetCurrentFileToNothingCommand { get; }
     public ICommand ToggleSelectionOfCurrentItemCommand { get; }

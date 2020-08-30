@@ -13,17 +13,25 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly IUiDispatch _uiDispatch;
 
-    public DirectoryViewModel(IDirectory directory, TreeNodeViewModel parent, ISearch search, IUiDispatch uiDispatch) :
-      base(parent, directory.Name, directory.Path)
+    public DirectoryViewModel(IDirectory directory,
+                              TreeNodeViewModel parent,
+                              ISearch search,
+                              IUiDispatch uiDispatch) : base(parent, directory.Name, directory.Path)
     {
       Model = directory;
       _search = search;
       _uiDispatch = uiDispatch;
+
       _search.Finished += FilterContent;
     }
 
-
     public IDirectory Model { get; }
+
+    protected override void OnDisposing()
+    {
+      base.OnDisposing();
+      _search.Finished -= FilterContent;
+    }
 
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
@@ -41,12 +49,18 @@ namespace Scope.ViewModels
     {
       var contents = new List<TreeNodeViewModel>();
 
-      foreach (var directory in Model.Directories)
+      var directories = Model.Directories
+                             .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)));
+
+      var files = Model.Files
+                       .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)));
+
+      foreach (var directory in directories)
       {
         contents.Add(new DirectoryViewModel(directory, this, _search, _uiDispatch));
       }
 
-      foreach (var file in Model.Files)
+      foreach (var file in files)
       {
         contents.Add(new FileViewModel(file, this));
       }
@@ -56,18 +70,17 @@ namespace Scope.ViewModels
 
     private void FilterContent()
     {
-      var contentToRemove = new List<TreeNodeViewModel>();
-      foreach (var child in this.Children)
+      if (_search.Results.Any())
       {
-        if (!ContainsOrIsAnySearchResult(child))
-        {
-          contentToRemove.Add(child);
-        }
+        return;
       }
+
+      var contentToRemove = this.Children.Where(c => !ContainsOrIsAnySearchResult(c))
+                                         .ToArray();
 
       foreach (var content in contentToRemove)
       {
-        _uiDispatch.Do(()=>Children.Remove(content));
+        _uiDispatch.Do(() => Children.Remove(content));
       }
     }
 

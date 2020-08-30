@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +8,7 @@ using Scope.Utils;
 
 namespace Scope.ViewModels
 {
-  public class TreeNodeViewModel : INotifyPropertyChanged
+  public class TreeNodeViewModel : INotifyPropertyChanged, IDisposable
   {
     private static readonly TreeNodeViewModel DummyChild = new TreeNodeViewModel();
 
@@ -148,6 +149,10 @@ namespace Scope.ViewModels
 
     protected virtual void LoadChildren() { }
 
+    protected virtual void OnDisposing()
+    {
+    }
+
     public virtual Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
       return Task.FromResult(new List<TreeNodeViewModel>());
@@ -157,6 +162,11 @@ namespace Scope.ViewModels
     {
       return Task.FromResult(LoadChildrenListAsync()
                             .Result.Count);
+    }
+
+    public void Dispose()
+    {
+      OnDisposing();
     }
   }
 }
