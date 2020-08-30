@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.ViewModels.Commands;
 
@@ -12,16 +13,21 @@ namespace Scope.ViewModels
     private readonly ICurrentItem _currentItem;
     private readonly IPinnedItems _selectedItems;
     private readonly IExtractP4kContent _extractP4KContent;
+    private readonly ISearch _search;
+    private readonly IUiDispatch _uiDispatch;
 
     public P4kFileSystemViewModel(IFileSystem fileSystem,
                                   ICurrentItem currentItem,
                                   IPinnedItems selectedItems,
-                                  IExtractP4kContent extractP4KContent)
+                                  IExtractP4kContent extractP4KContent,
+                                  ISearch search, IUiDispatch uiDispatch)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;
       _selectedItems = selectedItems;
       _extractP4KContent = extractP4KContent;
+      _search = search;
+      _uiDispatch = uiDispatch;
 
       RootItems = new ObservableCollection<object>();
 
@@ -104,7 +110,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedDirectories()
     {
-      foreach (var vm in _fileSystem.Root.Directories.Select(d => new DirectoryViewModel(d, null)))
+      foreach (var vm in _fileSystem.Root.Directories.Select(d => new DirectoryViewModel(d, null, _search, _uiDispatch)))
       {
         RootItems.Add(vm);
       }

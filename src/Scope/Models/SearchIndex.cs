@@ -16,6 +16,7 @@ namespace Scope.Models
   {
     private readonly ICurrentP4k _currentP4K;
     private readonly IUiDispatch _uiDispatch;
+    private readonly List<Match> _results = new List<Match>();
 
     public event Action ResultsCleared;
     public event Action<Match> MatchFound;
@@ -23,8 +24,7 @@ namespace Scope.Models
     public event Action Finished;
     public event Action<bool> IsSearchingChanged;
 
-    public IEnumerable<Match> Results { get; }
-
+    public IReadOnlyCollection<Match> Results => _results;
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
     private Task _task;
 
@@ -58,6 +58,8 @@ namespace Scope.Models
 
     private void FindItems(string[] searchTerms, int numberOfFiles)
     {
+      _results.Clear();
+
       for (int i = 0; i < numberOfFiles; i++)
       {
         var f = _currentP4K.FileSystem[i];
@@ -78,6 +80,7 @@ namespace Scope.Models
               var match = new Match(term, f, MatchType.Path);
               Console.WriteLine($"Found '{term}' in '{f.Path}'");
               _uiDispatch.Do(() => MatchFound.Raise(match));
+              _results.Add(match);
             }
 
             if (f.Name.Contains(term.ToLowerInvariant()))
@@ -85,6 +88,7 @@ namespace Scope.Models
               var match = new Match(term, f, MatchType.Filename);
               Console.WriteLine($"Found '{term}' in '{f.Name}'");
               _uiDispatch.Do(() => MatchFound.Raise(match));
+              _results.Add(match);
             }
 
             if (text.Contains(term.ToLowerInvariant()))
@@ -92,6 +96,7 @@ namespace Scope.Models
               var match = new Match(term, f, MatchType.Content);
               Console.WriteLine($"Found '{term}' in content of {f.Name}");
               _uiDispatch.Do(() => MatchFound.Raise(match));
+              _results.Add(match);
             }
           }
         }

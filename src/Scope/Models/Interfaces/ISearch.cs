@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Documents;
 
 namespace Scope.Models.Interfaces
 {
   public interface ISearch
   {
-    IEnumerable<Match> Results { get; }
+    IReadOnlyCollection<Match> Results { get; }
 
     void InitiateSearchFor(params string[] searchTerms);
 
@@ -17,7 +16,7 @@ namespace Scope.Models.Interfaces
     event Action<bool> IsSearchingChanged;
 
     event Action ResultsCleared;
-    
+
     event Action<Match> MatchFound;
 
     void BuildUp();

@@ -18,11 +18,11 @@ namespace Scope.ViewModels
     private bool _isSelected;
     private string _name;
 
-    public TreeNodeViewModel(TreeNodeViewModel parent, string name)
+    public TreeNodeViewModel(TreeNodeViewModel parent, string name, string path)
     {
       _parent = parent;
       _name = name;
-
+      Path = path;
       _children = new ObservableCollection<TreeNodeViewModel>();
 
       ResetChildren();
@@ -114,6 +114,8 @@ namespace Scope.ViewModels
         return Children[0] == DummyChild;
       }
     }
+
+    public string Path { get; } = "";
 
     public TreeNodeViewModel FindChildByName(string name)
     {

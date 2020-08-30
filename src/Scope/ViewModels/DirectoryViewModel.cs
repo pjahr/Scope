@@ -1,24 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Scope.Interfaces;
+using Scope.Models;
 using Scope.Models.Interfaces;
 
 namespace Scope.ViewModels
 {
   internal class DirectoryViewModel : TreeNodeViewModel
   {
-    public DirectoryViewModel(IDirectory directory, TreeNodeViewModel parent) :
-      base(parent, directory.Name)
+    private readonly ISearch _search;
+    private readonly IUiDispatch _uiDispatch;
+
+    public DirectoryViewModel(IDirectory directory, TreeNodeViewModel parent, ISearch search, IUiDispatch uiDispatch) :
+      base(parent, directory.Name, directory.Path)
     {
       Model = directory;
+      _search = search;
+      _uiDispatch = uiDispatch;
+      _search.Finished += FilterContent;
     }
+
 
     public IDirectory Model { get; }
 
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
-      System.Console.WriteLine($"{Model.Name} loads children.");
-
       Children.Clear();
 
       foreach (var nodeVm in GetContents())
@@ -31,12 +39,11 @@ namespace Scope.ViewModels
 
     private List<TreeNodeViewModel> GetContents()
     {
-      System.Console.WriteLine($"{Model.Name} retrieves children.");
       var contents = new List<TreeNodeViewModel>();
 
       foreach (var directory in Model.Directories)
       {
-        contents.Add(new DirectoryViewModel(directory, this));
+        contents.Add(new DirectoryViewModel(directory, this, _search, _uiDispatch));
       }
 
       foreach (var file in Model.Files)
@@ -45,6 +52,28 @@ namespace Scope.ViewModels
       }
 
       return contents;
+    }
+
+    private void FilterContent()
+    {
+      var contentToRemove = new List<TreeNodeViewModel>();
+      foreach (var child in this.Children)
+      {
+        if (!ContainsOrIsAnySearchResult(child))
+        {
+          contentToRemove.Add(child);
+        }
+      }
+
+      foreach (var content in contentToRemove)
+      {
+        _uiDispatch.Do(()=>Children.Remove(content));
+      }
+    }
+
+    private bool ContainsOrIsAnySearchResult(TreeNodeViewModel child)
+    {
+      return _search.Results.Any(m => m.File.Path.StartsWith(child.Path));
     }
   }
 }

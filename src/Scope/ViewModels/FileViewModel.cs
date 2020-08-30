@@ -7,7 +7,7 @@ namespace Scope.ViewModels
 {
   internal class FileViewModel : TreeNodeViewModel
   {
-    public FileViewModel(IFile file, TreeNodeViewModel parent) : base(parent, file.Name)
+    public FileViewModel(IFile file, TreeNodeViewModel parent) : base(parent, file.Name, file.Path)
     {
       Model = file;
 
