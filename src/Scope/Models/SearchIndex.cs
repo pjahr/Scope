@@ -41,14 +41,14 @@ namespace Scope.Models
       }
 
       _results.Clear();
-      ResultsCleared.Raise();
-
+      
       Began.Raise();
 
       // do not search for nothing or white space
       if (searchTerms.All(term=>string.IsNullOrWhiteSpace(term)))
       {
         Finished.Raise();
+        ResultsCleared.Raise();
         return;
       }
 
