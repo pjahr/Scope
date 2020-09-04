@@ -41,7 +41,7 @@ namespace Scope.ViewModels
 
       ExpandCommand = new RelayCommand<object>(async p =>
       {
-        if (!(p is DirectoryViewModel directory))
+        if (!(p is DirectoryTreeNodeViewModel directory))
         {
           return;
         }
@@ -98,13 +98,13 @@ namespace Scope.ViewModels
 
     private void SetCurrentItem(object item)
     {
-      if (item is FileViewModel file)
+      if (item is FileTreeNodeViewModel file)
       {
         _currentItem.ChangeTo(file.Model);
         return;
       }
 
-      if (item is DirectoryViewModel directory)
+      if (item is DirectoryTreeNodeViewModel directory)
       {
         _currentItem.ChangeTo(directory.Model);
       }
@@ -141,7 +141,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedFiles()
     {
-      foreach (var vm in _fileSystem.Root.Files.Select(d => new FileViewModel(d, null)))
+      foreach (var vm in _fileSystem.Root.Files.Select(d => new FileTreeNodeViewModel(d)))
       {
         RootItems.Add(vm);
       }
@@ -149,7 +149,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedDirectories()
     {
-      foreach (var vm in _fileSystem.Root.Directories.Select(d => new DirectoryViewModel(d, null, _search, _uiDispatch)))
+      foreach (var vm in _fileSystem.Root.Directories.Select(d => new DirectoryTreeNodeViewModel(d, _search, _uiDispatch)))
       {
         RootItems.Add(vm);
       }
@@ -159,21 +159,21 @@ namespace Scope.ViewModels
     {
       switch (item)
       {
-        case DirectoryViewModel directory:
+        case DirectoryTreeNodeViewModel directory:
           ExtractDirectory(directory);
           return;
-        case FileViewModel file:
+        case FileTreeNodeViewModel file:
           ExtractFile(file);
           return;
       }
     }
 
-    private void ExtractFile(FileViewModel file)
+    private void ExtractFile(FileTreeNodeViewModel file)
     {
       _extractP4KContent.Extract(file.Model);
     }
 
-    private void ExtractDirectory(DirectoryViewModel directory)
+    private void ExtractDirectory(DirectoryTreeNodeViewModel directory)
     {
       _extractP4KContent.Extract(directory.Model);
     }

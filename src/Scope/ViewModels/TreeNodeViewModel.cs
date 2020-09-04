@@ -13,15 +13,12 @@ namespace Scope.ViewModels
     private static readonly TreeNodeViewModel DummyChild = new TreeNodeViewModel();
 
     private readonly ObservableCollection<TreeNodeViewModel> _children;
-    private readonly TreeNodeViewModel _parent;
-
     private bool _isExpanded;
     private bool _isSelected;
     private string _name;
 
-    public TreeNodeViewModel(TreeNodeViewModel parent, string name, string path)
+    public TreeNodeViewModel(string name, string path)
     {
-      _parent = parent;
       _name = name;
       Path = path;
       _children = new ObservableCollection<TreeNodeViewModel>();
@@ -49,10 +46,6 @@ namespace Scope.ViewModels
 
         _isExpanded = value;
         PropertyChanged.Raise(this, nameof(IsExpanded));
-
-        // Expand all the way up to the root.
-        ////                if (_isExpanded && _parent != null)
-        ////                    _parent.IsExpanded = true;
       }
     }
 
@@ -85,8 +78,6 @@ namespace Scope.ViewModels
         PropertyChanged.Raise(this, nameof(Name));
       }
     }
-
-    public TreeNodeViewModel Parent => _parent;
 
     public void SetExpand(bool isExpanded)
     {

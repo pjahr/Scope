@@ -17,7 +17,23 @@ namespace Scope.Tests.Models
     private IUiDispatch _uiDispatch;
 
     [Fact]
-    public void It_clears_the_search_results_when_a_term_is_searched()
+    public void It_clears_the_search_results_when_the_search_term_is_whitespace()
+    {
+      _currentP4K.ReturnsOn(m => m.IsInitialized, true)
+                 .ReturnsOn(m => m.FileSystem, _fileSystem);
+
+      _sut = new SearchIndex(_currentP4K, _uiDispatch);
+
+      _sut.ResultsCleared += _eventWasRaised;
+
+      _sut.InitiateSearchFor("");
+
+      Assert.Empty(_sut.Results);
+      _eventWasRaised.Mock().Verify(m => m(), Times.Exactly(1));
+    }
+
+    [Fact(Skip ="Implement!")]
+    public void It_finds_()
     {
       _files = new[]
       {
@@ -63,9 +79,8 @@ namespace Scope.Tests.Models
       _sut.ResultsCleared += _eventWasRaised;
 
       _sut.InitiateSearchFor("one");
-
-      Assert.Empty(_sut.Results);
-      _eventWasRaised.Mock().Verify(m => m(), Times.Exactly(1));
     }
+
+
   }
 }

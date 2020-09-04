@@ -5,9 +5,9 @@ using Scope.Interfaces;
 
 namespace Scope.ViewModels
 {
-  internal class FileViewModel : TreeNodeViewModel
+  internal class FileTreeNodeViewModel : TreeNodeViewModel
   {
-    public FileViewModel(IFile file, TreeNodeViewModel parent) : base(parent, file.Name, file.Path)
+    public FileTreeNodeViewModel(IFile file) : base(file.Name, file.Path)
     {
       Model = file;
 

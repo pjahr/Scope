@@ -55,7 +55,7 @@
     </Style>
 
     <HierarchicalDataTemplate
-      DataType="{x:Type vm:DirectoryViewModel}"
+      DataType="{x:Type vm:DirectoryTreeNodeViewModel}"
       ItemsSource="{Binding Children}">
 
       <StackPanel
@@ -73,7 +73,7 @@
     </HierarchicalDataTemplate>
 
     <HierarchicalDataTemplate
-      DataType="{x:Type vm:FileViewModel}"
+      DataType="{x:Type vm:FileTreeNodeViewModel}"
       ItemsSource="{Binding Children}">
 
       <DockPanel>

@@ -1,22 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Scope.Interfaces;
-using Scope.Models;
 using Scope.Models.Interfaces;
 
 namespace Scope.ViewModels
 {
-  internal class DirectoryViewModel : TreeNodeViewModel
+  internal class DirectoryTreeNodeViewModel : TreeNodeViewModel
   {
     private readonly ISearch _search;
     private readonly IUiDispatch _uiDispatch;
 
-    public DirectoryViewModel(IDirectory directory,
-                              TreeNodeViewModel parent,
-                              ISearch search,
-                              IUiDispatch uiDispatch) : base(parent, directory.Name, directory.Path)
+    public DirectoryTreeNodeViewModel(IDirectory directory,
+                                      ISearch search,
+                                      IUiDispatch uiDispatch) : base(directory.Name, directory.Path)
     {
       Model = directory;
       _search = search;
@@ -66,12 +63,12 @@ namespace Scope.ViewModels
 
       foreach (var directory in directories)
       {
-        contents.Add(new DirectoryViewModel(directory, this, _search, _uiDispatch));
+        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _uiDispatch));
       }
 
       foreach (var file in files)
       {
-        contents.Add(new FileViewModel(file, this));
+        contents.Add(new FileTreeNodeViewModel(file));
       }
 
       return contents;
@@ -84,7 +81,7 @@ namespace Scope.ViewModels
         return;
       }
 
-      var contentToRemove = this.Children.Where(c => !ContainsOrIsAnySearchResult(c))
+      var contentToRemove = Children.Where(c => !ContainsOrIsAnySearchResult(c))
                                          .ToArray();
 
       foreach (var content in contentToRemove)
