@@ -109,16 +109,6 @@ namespace Scope.ViewModels
 
     public string Path { get; } = "";
 
-    public TreeNodeViewModel FindChildByName(string name)
-    {
-      if (HasDummyChild || name == null)
-      {
-        return null;
-      }
-
-      return Children.SingleOrDefault(item => name == item.Name);
-    }
-
     public void AddChildren(List<TreeNodeViewModel> children)
     {
       if (children == null)

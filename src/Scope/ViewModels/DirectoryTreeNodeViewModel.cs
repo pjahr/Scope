@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
 
@@ -20,11 +23,45 @@ namespace Scope.ViewModels
       _uiDispatch = uiDispatch;
 
       _search.Finished += FilterContent;
+      _search.Finished += HighlightSearchTerm;
+      _search.ResultsCleared += ResetName;
 
       if (!Model.IsEmpty)
       {
         ResetChildren();
       }
+    }
+
+    private void ResetName()
+    {
+      Name = Model.Name;
+    }
+
+    private void HighlightSearchTerm()
+    {
+      Name = GetHighlightMarkup(Name, _search.Results.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
+    }
+
+    public static string GetHighlightMarkup(string text, string [] searchTerms)
+    {
+      var terms = searchTerms.Distinct().OrderBy(t => t.Length).ToArray();
+
+      var b = new StringBuilder();
+      foreach (var term in terms.Where(t=>text.Contains(t)))
+      {
+        int i = 0;
+        while (i < text.Length)
+        {
+          var j = text.IndexOf(term,StringComparison.InvariantCultureIgnoreCase);
+          var textBefore = text.Substring(i, j - i);
+          var match = text.Substring(j, term.Length);
+          b.Append(textBefore);
+          b.Append($"[{match}]");
+          i = i + textBefore.Length + match.Length;
+        }
+      }
+
+      return "";
     }
 
     public IDirectory Model { get; }

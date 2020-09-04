@@ -217,6 +217,7 @@
     </Compile>
     <Compile Include="Views\Behaviors\AcquireKeyboardFocusOnClick.cs" />
     <Compile Include="Views\Behaviors\BringVirtualTreeViewItemIntoViewBehavior.cs" />
+    <Compile Include="Views\Behaviors\TextBlockHighlightWordsInSquareBrackets.cs" />
     <Compile Include="Views\Behaviors\TextBoxCallCommandOnKey.cs" />
     <Compile Include="Views\Behaviors\TextBoxCommitOnChange.cs" />
     <Compile Include="Views\Behaviors\TextBoxCommitOnEnter.cs" />
