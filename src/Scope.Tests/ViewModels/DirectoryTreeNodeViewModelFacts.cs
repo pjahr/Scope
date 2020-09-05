@@ -6,12 +6,12 @@ namespace Scope.Tests.ViewModels
   public class DirectoryTreeNodeViewModelFacts
   {
     [Theory]
-    [InlineData("","","")]
-    [InlineData("a","a","[a]")]
-    [InlineData("a","b","b")]
-    [InlineData("a b","a","[a]")]
-    [InlineData("a b","ab","[a][b]")]
-    [InlineData("a","a a","[a] [a]")]
+    [InlineData("",    "",    "")]
+    [InlineData("a",   "a", "├a┤")]
+    [InlineData("a",   "b",   "b")]
+    [InlineData("a b", "a", "├a┤")]
+    [InlineData("a b", "ab", "├a┤├b┤")]
+    [InlineData("a",   "a a", "├a┤ ├a┤")]
     public void It_can_build_the_search_term_markup(string searchTerms, string name, string expected)
     {
       var terms = searchTerms.Split(' ');

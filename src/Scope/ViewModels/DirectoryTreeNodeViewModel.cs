@@ -42,26 +42,26 @@ namespace Scope.ViewModels
       Name = GetHighlightMarkup(Name, _search.Results.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
     }
 
-    public static string GetHighlightMarkup(string text, string [] searchTerms)
+    public static string GetHighlightMarkup(string text, string[] searchTerms)
     {
       var terms = searchTerms.Distinct().OrderBy(t => t.Length).ToArray();
 
       var b = new StringBuilder();
-      foreach (var term in terms.Where(t=>text.Contains(t)))
+      foreach (var term in terms.Where(t => text.Contains(t)))
       {
-        int i = 0;
-        while (i < text.Length)
+        while (text.Length > 0)
         {
-          var j = text.IndexOf(term,StringComparison.InvariantCultureIgnoreCase);
-          var textBefore = text.Substring(i, j - i);
+          var i = text.IndexOf(term, StringComparison.InvariantCultureIgnoreCase);
+          var textBefore = text.Substring(0, i);
           var match = text.Substring(j, term.Length);
           b.Append(textBefore);
-          b.Append($"[{match}]");
+          b.Append($"├{match}┤");
           i = i + textBefore.Length + match.Length;
+          remainingText = remainingText.Substring(i, )
         }
       }
 
-      return "";
+      return b.ToString();
     }
 
     public IDirectory Model { get; }
