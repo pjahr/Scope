@@ -44,21 +44,41 @@ namespace Scope.ViewModels
 
     public static string GetHighlightMarkup(string text, string[] searchTerms)
     {
-      var terms = searchTerms.Distinct().OrderBy(t => t.Length).ToArray();
+      var allSpans
+  = searchTerms
+  .SelectMany(term => FindOccurrences(text, term))
+  .OrderBy(span => span.Begin).ToList();
+
+      var distinctSpans = new List<Span>();
+
+      while (allSpans.Any())
+      {
+        var start = allSpans[0];
+        allSpans.Remove(start);
+
+        var begin = start.Begin;
+        var end = start.End;
+
+        while (allSpans.Any() && allSpans[0].Begin < end)
+        {
+          if (allSpans[0].End > end)
+          {
+            end = allSpans[0].End;
+          }
+          allSpans.Remove(allSpans[0]);
+        }
+        distinctSpans.Add(new Span(begin, end));
+      }
 
       var b = new StringBuilder();
-      foreach (var term in terms.Where(t => text.Contains(t)))
+      int i = 0;
+      foreach (var span in distinctSpans)
       {
-        while (text.Length > 0)
-        {
-          var i = text.IndexOf(term, StringComparison.InvariantCultureIgnoreCase);
-          var textBefore = text.Substring(0, i);
-          var match = text.Substring(j, term.Length);
-          b.Append(textBefore);
-          b.Append($"├{match}┤");
-          i = i + textBefore.Length + match.Length;
-          remainingText = remainingText.Substring(i, )
-        }
+        b.Append(text.Substring(i, span.Begin - i));
+        b.Append("├");
+        b.Append(text.Substring(span.Begin, span.End - span.Begin + 1));
+        b.Append("┤");
+        i = span.End + 1;
       }
 
       return b.ToString();
@@ -130,6 +150,41 @@ namespace Scope.ViewModels
     private bool ContainsOrIsAnySearchResult(TreeNodeViewModel child)
     {
       return _search.Results.Any(m => m.File.Path.StartsWith(child.Path));
+    }
+
+    private static IEnumerable<Span> FindOccurrences(string text, string term)
+    {
+      var length = term.Length;
+      var offset = 0;
+      while (text.Length > 0)
+      {
+        var i = text.IndexOf(term);
+
+        if (i < 0)
+        {
+          // no occurrence (anymore)
+          yield break;
+        }
+
+        yield return new Span(offset + i, offset + i + length - 1);
+
+        // move offset to the first character after the last occurrence
+        offset = offset + i + length;
+
+        // cut everything before the end of the last occurrence and try again
+        text = text.Substring(i + length);
+      }
+    }
+
+    private struct Span
+    {
+      public Span(int begin, int end)
+      {
+        Begin = begin;
+        End = end;
+      }
+      public int Begin { get; set; }
+      public int End { get; set; }
     }
   }
 }

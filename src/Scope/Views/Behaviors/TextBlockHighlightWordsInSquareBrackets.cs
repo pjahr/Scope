@@ -52,7 +52,7 @@ namespace Scope.Views.Behaviors
         textBlock.Inlines.Clear();
 
 
-      string[] words = text.Split(new string[] { "╟", "╢" }, StringSplitOptions.None);
+      string[] words = text.Split(new string[] { "├", "┤" }, StringSplitOptions.None);
       List<Run> actual = new List<Run>();
 
       for (int i = 0; i < words.Length; i++)
