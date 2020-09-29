@@ -25,6 +25,7 @@ namespace Scope.ViewModels
       _search.Finished += FilterContent;
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
+      _search.Began += ResetChildren;
 
       if (!Model.IsEmpty)
       {
@@ -186,6 +187,10 @@ namespace Scope.ViewModels
       }
       public int Begin { get; set; }
       public int End { get; set; }
+      public override string ToString()
+      {
+        return $"{Begin}-{End}";
+      }
     }
   }
 }

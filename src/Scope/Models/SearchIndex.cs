@@ -22,7 +22,7 @@ namespace Scope.Models
     public event Action<Match> MatchFound;
     public event Action Began;
     public event Action Finished;
-    
+
     public IReadOnlyCollection<Match> Results => _results;
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
     private Task _task;
@@ -41,11 +41,11 @@ namespace Scope.Models
       }
 
       _results.Clear();
-      
+
       Began.Raise();
 
       // do not search for nothing or white space
-      if (searchTerms.All(term=>string.IsNullOrWhiteSpace(term)))
+      if (searchTerms.All(term => string.IsNullOrWhiteSpace(term)))
       {
         Finished.Raise();
         ResultsCleared.Raise();
@@ -72,30 +72,44 @@ namespace Scope.Models
           continue;
         }
 
-        using (var s = f.Read())
-        {
-          string text = Encoding.UTF8.GetString(s.ReadAllBytes())
-                                .ToLowerInvariant();
-          foreach (var term in searchTerms)
-          {
-            if (f.Name.Contains(term.ToLowerInvariant()))
-            {
-              var match = new Match(term, f, MatchType.Filename);
-              _uiDispatch.Do(() => MatchFound.Raise(match));
-              _results.Add(match);
-            }
 
-            if (text.Contains(term.ToLowerInvariant()))
-            {
-              var match = new Match(term, f, MatchType.Content);
-              _uiDispatch.Do(() => MatchFound.Raise(match));
-              _results.Add(match);
-            }
-          }
+        foreach (var term in searchTerms)
+        {
+          FindMatchInFileName(f, term);
+          FindMatchInContent(f, term);
         }
+
       }
 
       Finished.Raise();
+    }
+
+    private void FindMatchInContent(IFile f, string term)
+    {
+      string text;
+      using (var s = f.Read())
+      {
+        //TODO: this will prevent case-sensitive search
+        text = Encoding.UTF8.GetString(s.ReadAllBytes())
+                              .ToLowerInvariant();
+      }
+
+      if (text.Contains(term.ToLowerInvariant()))
+      {
+        var match = new Match(term, f, MatchType.Content);
+        _uiDispatch.Do(() => MatchFound.Raise(match));
+        _results.Add(match);
+      }
+    }
+
+    private void FindMatchInFileName(IFile f, string term)
+    {
+      if (f.Name.Contains(term.ToLowerInvariant()))
+      {
+        var match = new Match(term, f, MatchType.Filename);
+        _uiDispatch.Do(() => MatchFound.Raise(match));
+        _results.Add(match);
+      }
     }
 
     public void BuildUp() { }
