@@ -54,7 +54,7 @@
       </Setter>
     </Style>
 
-    <Style x:Key="SeachResultHighlight" TargetType="Run">
+    <Style x:Key="SearchResultHighlight" TargetType="Run">
       <Setter Property="Background" Value="Yellow" />
     </Style>
 

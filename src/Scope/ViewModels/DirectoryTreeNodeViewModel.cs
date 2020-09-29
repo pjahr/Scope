@@ -44,10 +44,9 @@ namespace Scope.ViewModels
 
     public static string GetHighlightMarkup(string text, string[] searchTerms)
     {
-      var allSpans
-  = searchTerms
-  .SelectMany(term => FindOccurrences(text, term))
-  .OrderBy(span => span.Begin).ToList();
+      var allSpans = searchTerms
+                     .SelectMany(term => FindOccurrences(text, term))
+                     .OrderBy(span => span.Begin).ToList();
 
       var distinctSpans = new List<Span>();
 
@@ -80,6 +79,7 @@ namespace Scope.ViewModels
         b.Append("┤");
         i = span.End + 1;
       }
+      b.Append(text.Substring(i, text.Length - i));
 
       return b.ToString();
     }
@@ -158,7 +158,7 @@ namespace Scope.ViewModels
       var offset = 0;
       while (text.Length > 0)
       {
-        var i = text.IndexOf(term);
+        var i = text.IndexOf(term, StringComparison.InvariantCultureIgnoreCase);
 
         if (i < 0)
         {

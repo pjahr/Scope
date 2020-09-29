@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace Scope.Views.Behaviors
 {
@@ -57,7 +58,10 @@ namespace Scope.Views.Behaviors
 
       for (int i = 0; i < words.Length; i++)
       {
-        var run = new Run(words[i]) { Style = i % 2 == 1 ? null:behavior.FormattedTextStyle};
+        var run = new Run(words[i])
+        {
+          Style = i % 2 == 1 ? (Style)o.GetValue(FormattedTextStyleProperty) : null
+        };
 
         textBlock.Inlines.Add(run);
       }
