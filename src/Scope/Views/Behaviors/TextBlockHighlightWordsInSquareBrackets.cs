@@ -12,7 +12,7 @@ namespace Scope.Views.Behaviors
   /// This TextBox behavior looks for text between square brackets in the bound text
   /// property and highlights those words with a specified text style.
   /// </summary>
-  public class TextBlockHighlightWordsInSquareBrackets: Behavior<System.Windows.Controls.TextBlock>
+  public class TextBlockHighlightWordsInSquareBrackets: Behavior<TextBlock>
   {
     public static readonly DependencyProperty FormattedTextProperty =
         DependencyProperty.Register(

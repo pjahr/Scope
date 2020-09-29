@@ -58,7 +58,8 @@ namespace Scope.ViewModels
         var begin = start.Begin;
         var end = start.End;
 
-        while (allSpans.Any() && allSpans[0].Begin < end)
+        // find all spans that intersect or thouch the last span
+        while (allSpans.Any() && allSpans[0].Begin <= end + 1)
         {
           if (allSpans[0].End > end)
           {
