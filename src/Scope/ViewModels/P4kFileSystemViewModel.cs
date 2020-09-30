@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
+using Scope.Utils;
 using Scope.ViewModels.Commands;
 
 namespace Scope.ViewModels
 {
-  internal class P4kFileSystemViewModel
+  internal class P4kFileSystemViewModel : INotifyPropertyChanged
   {
     private readonly IFileSystem _fileSystem;
     private readonly ICurrentItem _currentItem;
@@ -17,6 +19,7 @@ namespace Scope.ViewModels
     private readonly IExtractP4kContent _extractP4KContent;
     private readonly ISearch _search;
     private readonly IUiDispatch _uiDispatch;
+
 
     public P4kFileSystemViewModel(IFileSystem fileSystem,
                                   ICurrentItem currentItem,
@@ -55,6 +58,14 @@ namespace Scope.ViewModels
       _search.ResultsCleared += CreateRootItems;
     }
 
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    public SearchFoundNoMatchViewModel SearchFoundNoMatch
+    {
+      get;
+      private set;
+    }
+
     private void CreateRootItems()
     {
       foreach (var disposable in RootItems)
@@ -73,10 +84,6 @@ namespace Scope.ViewModels
 
     private void FilterRootItems()
     {
-      if (!_search.Results.Any())
-      {
-        return;
-      }
 
       var hidden = RootItems.Where(i => !_search.Results.Any(r => r.File.Path.StartsWith(i.Path)))
                             .ToArray();
@@ -85,6 +92,10 @@ namespace Scope.ViewModels
       {
         _uiDispatch.Do(() => RootItems.Remove(item));
       }
+
+      // show info if no results
+      SearchFoundNoMatch = _search.Results.Any() ? null : new SearchFoundNoMatchViewModel();
+      PropertyChanged.Raise(this, nameof(SearchFoundNoMatch));
     }
 
     public ObservableCollection<TreeNodeViewModel> RootItems { get; private set; }

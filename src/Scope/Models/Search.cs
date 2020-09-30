@@ -34,6 +34,7 @@ namespace Scope.Models
 
     public Task FindMatches(params string[] searchTerms)
     {
+
       if (_currentP4K.FileSystem == null)
       {
         return Task.CompletedTask;
@@ -42,14 +43,13 @@ namespace Scope.Models
       _results.Clear();
       ResultsCleared.Raise();
 
-      Began.Raise();
-
       // do not search for nothing or white space
       if (searchTerms.All(term => string.IsNullOrWhiteSpace(term)))
       {
-        Finished.Raise();
         return Task.CompletedTask;
       }
+
+      Began.Raise();
 
       return Task.Factory.StartNew(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles),
                                          _cts.Token);

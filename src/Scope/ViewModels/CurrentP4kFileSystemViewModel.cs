@@ -1,8 +1,8 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.Composition;
-using Scope.Interfaces;
+﻿using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
+using System.ComponentModel;
+using System.ComponentModel.Composition;
 
 namespace Scope.ViewModels
 {
@@ -21,7 +21,8 @@ namespace Scope.ViewModels
                                          IPinnedItems selectedItems,
                                          IExtractP4kContent extractP4KContent,
                                          ISearch search,
-                                         IUiDispatch uiDispatch)
+                                         IUiDispatch uiDispatch,
+                                         SearchOptionsViewModel searchOptionsViewModel)
     {
       _currentP4K = currentP4k;
       _currentFile = currentFile;
@@ -29,6 +30,9 @@ namespace Scope.ViewModels
       _extractP4KContent = extractP4KContent;
       _search = search;
       _uiDispatch = uiDispatch;
+
+      SearchOptionsViewModel = searchOptionsViewModel;
+
       Initialize();
 
       _currentP4K.Changed += Initialize;
@@ -49,6 +53,7 @@ namespace Scope.ViewModels
     }
 
     public P4kFileSystemViewModel FileSystem { get; set; }
+    public SearchOptionsViewModel SearchOptionsViewModel { get; }
 
     public event PropertyChangedEventHandler PropertyChanged;
   }
