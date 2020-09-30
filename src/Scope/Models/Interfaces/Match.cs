@@ -10,7 +10,7 @@ namespace Scope.Models.Interfaces
       Term = term;
       File = file;
       Type = type;
-      Offset =offset;
+      Offset = offset;
     }
 
     public string Term { get; }

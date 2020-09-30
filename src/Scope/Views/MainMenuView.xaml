@@ -18,13 +18,7 @@
       DataContext="{Binding CloseP4kFile}"
       Header="{Binding Label}"
       Command="{Binding Command}"
-      InputGestureText="{Binding Shortcut}" />
-
-    <MenuItem
-      DataContext="{Binding BuildSearchIndex}"
-      Header="{Binding Label}"
-      Command="{Binding Command}"
-      ToolTip="{Binding Tooltip}"/>
+      InputGestureText="{Binding Shortcut}" />   
 
     <Separator />
 

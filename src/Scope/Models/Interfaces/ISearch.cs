@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Scope.Models.Interfaces
 {
@@ -7,7 +8,7 @@ namespace Scope.Models.Interfaces
   {
     IReadOnlyCollection<Match> Results { get; }
 
-    void InitiateSearchFor(params string[] searchTerms);
+    Task FindMatches(params string[] searchTerms);
 
     event Action Began;
 
@@ -16,7 +17,5 @@ namespace Scope.Models.Interfaces
     event Action ResultsCleared;
 
     event Action<Match> MatchFound;
-
-    void BuildUp();
   }
 }

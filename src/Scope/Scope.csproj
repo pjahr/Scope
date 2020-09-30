@@ -179,7 +179,6 @@
     <Compile Include="Models\SearchIndex.cs" />
     <Compile Include="Models\UiDispatch.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
-    <Compile Include="ViewModels\BuildSearchIndexMenuItemViewModel.cs" />
     <Compile Include="ViewModels\CloseCurrentP4kFileMenuItemViewModel.cs" />
     <Compile Include="ViewModels\Commands\InitiateSearchCommand.cs" />
     <Compile Include="ViewModels\Commands\OpenP4kFileCommand.cs" />

@@ -113,7 +113,7 @@ namespace Scope.ViewModels
 
     private void FindFilesBySearchTerms()
     {
-      _searchIndex.InitiateSearchFor(SearchTerms);
+      _searchIndex.FindMatches(SearchTerms);
     }
   }
 }

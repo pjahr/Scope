@@ -17,6 +17,7 @@ namespace Scope.Models
     private readonly ICurrentP4k _currentP4K;
     private readonly IUiDispatch _uiDispatch;
     private readonly List<Match> _results = new List<Match>();
+    private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
     public event Action ResultsCleared;
     public event Action<Match> MatchFound;
@@ -24,8 +25,6 @@ namespace Scope.Models
     public event Action Finished;
 
     public IReadOnlyCollection<Match> Results => _results;
-    private readonly CancellationTokenSource _cts = new CancellationTokenSource();
-    private Task _task;
 
     public SearchIndex(ICurrentP4k currentP4K, IUiDispatch uiDispatch)
     {
@@ -33,11 +32,11 @@ namespace Scope.Models
       _uiDispatch = uiDispatch;
     }
 
-    public void InitiateSearchFor(params string[] searchTerms)
+    public Task FindMatches(params string[] searchTerms)
     {
       if (_currentP4K.FileSystem == null)
       {
-        return;
+        return Task.CompletedTask;
       }
 
       _results.Clear();
@@ -49,16 +48,16 @@ namespace Scope.Models
       {
         Finished.Raise();
         ResultsCleared.Raise();
-        return;
+        return Task.CompletedTask;
       }
 
-      _task = Task.Run(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles),
-                       _cts.Token);
+      return Task.Factory.StartNew(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles),
+                                         _cts.Token);
     }
 
     private readonly string[] _knownTextFileFormats =
     {
-      ".txt", ".cfg", ".cfgf", ".cfgm", ".ini", ".id"
+      ".txt", ".cfg", ".cfgf", ".cfgm", ".ini", ".id", "json"
     };
 
     private void FindItems(string[] searchTerms, int numberOfFiles)
@@ -72,16 +71,32 @@ namespace Scope.Models
           continue;
         }
 
-
         foreach (var term in searchTerms)
         {
           FindMatchInFileName(f, term);
           FindMatchInContent(f, term);
         }
-
       }
 
+      Console.WriteLine(_results.Select(m=>$"{m.File.Path}").Aggregate((c,n)=>$"{c}\r\n{n}"));
+
       Finished.Raise();
+    }
+
+    private void FindMatchInFileName(IFile f, string term)
+    {
+      if (_results.Any(match=>match.File==f))
+      {
+        return; // provide only one match if the file name matches multiple terms
+      }
+
+      if (f.Name.Contains(term.ToLowerInvariant()))
+      {
+        var match = new Match(term, f, MatchType.Filename);
+
+        _uiDispatch.Do(() => MatchFound.Raise(match));
+        _results.Add(match);
+      }
     }
 
     private void FindMatchInContent(IFile f, string term)
@@ -101,17 +116,5 @@ namespace Scope.Models
         _results.Add(match);
       }
     }
-
-    private void FindMatchInFileName(IFile f, string term)
-    {
-      if (f.Name.Contains(term.ToLowerInvariant()))
-      {
-        var match = new Match(term, f, MatchType.Filename);
-        _uiDispatch.Do(() => MatchFound.Raise(match));
-        _results.Add(match);
-      }
-    }
-
-    public void BuildUp() { }
   }
 }

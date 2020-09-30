@@ -20,6 +20,6 @@ namespace Scope.Tests
           .Returns(value);
 
       return mock;
-    }
+    }    
   }
 }
