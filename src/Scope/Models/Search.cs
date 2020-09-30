@@ -12,7 +12,7 @@ using Scope.Utils;
 namespace Scope.Models
 {
   [Export]
-  internal class SearchIndex : ISearch
+  internal class Search : ISearch
   {
     private readonly ICurrentP4k _currentP4K;
     private readonly IUiDispatch _uiDispatch;
@@ -26,7 +26,7 @@ namespace Scope.Models
 
     public IReadOnlyCollection<Match> Results => _results;
 
-    public SearchIndex(ICurrentP4k currentP4K, IUiDispatch uiDispatch)
+    public Search(ICurrentP4k currentP4K, IUiDispatch uiDispatch)
     {
       _currentP4K = currentP4K;
       _uiDispatch = uiDispatch;
@@ -40,6 +40,7 @@ namespace Scope.Models
       }
 
       _results.Clear();
+      ResultsCleared.Raise();
 
       Began.Raise();
 
@@ -47,7 +48,6 @@ namespace Scope.Models
       if (searchTerms.All(term => string.IsNullOrWhiteSpace(term)))
       {
         Finished.Raise();
-        ResultsCleared.Raise();
         return Task.CompletedTask;
       }
 
@@ -74,18 +74,21 @@ namespace Scope.Models
         foreach (var term in searchTerms)
         {
           FindMatchInFileName(f, term);
-          FindMatchInContent(f, term);
+          //FindMatchInContent(f, term);
         }
       }
 
-      Console.WriteLine(_results.Select(m=>$"{m.File.Path}").Aggregate((c,n)=>$"{c}\r\n{n}"));
+      if (_results.Any())
+      {
+        Console.WriteLine(_results.Select(m => $"{m.File.Path}").Aggregate((c, n) => $"{c}\r\n{n}"));
+      }
 
       Finished.Raise();
     }
 
     private void FindMatchInFileName(IFile f, string term)
     {
-      if (_results.Any(match=>match.File==f))
+      if (_results.Any(match => match.File == f))
       {
         return; // provide only one match if the file name matches multiple terms
       }
@@ -94,8 +97,8 @@ namespace Scope.Models
       {
         var match = new Match(term, f, MatchType.Filename);
 
-        _uiDispatch.Do(() => MatchFound.Raise(match));
         _results.Add(match);
+        _uiDispatch.Do(() => MatchFound.Raise(match));
       }
     }
 

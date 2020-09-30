@@ -67,7 +67,7 @@ namespace Scope.Tests.Models
 
     private void WhenSutIsCreated()
     {
-      _sut = new SearchIndex(_currentP4K, _uiDispatch);
+      _sut = new Search(_currentP4K, _uiDispatch);
       _sut.ResultsCleared += _resultsClearedWasRaised;
       _sut.MatchFound += _results.Add;
     }

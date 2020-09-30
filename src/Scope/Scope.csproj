@@ -165,6 +165,7 @@
     <Compile Include="Models\Interfaces\IProgress.cs" />
     <Compile Include="Models\Interfaces\IPinnedItems.cs" />
     <Compile Include="Models\Interfaces\ISearch.cs" />
+    <Compile Include="Models\Interfaces\ISearchOptions.cs" />
     <Compile Include="Models\Interfaces\Match.cs" />
     <Compile Include="Models\Interfaces\MatchType.cs" />
     <Compile Include="Models\Message.cs" />
@@ -176,7 +177,8 @@
     <Compile Include="Models\P4kFileSystem.cs" />
     <Compile Include="Models\Progress.cs" />
     <Compile Include="Models\PinnedItems.cs" />
-    <Compile Include="Models\SearchIndex.cs" />
+    <Compile Include="Models\Search.cs" />
+    <Compile Include="Models\SearchOptions.cs" />
     <Compile Include="Models\UiDispatch.cs" />
     <Compile Include="ViewModels\AboutWindowViewModel.cs" />
     <Compile Include="ViewModels\CloseCurrentP4kFileMenuItemViewModel.cs" />
