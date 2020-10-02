@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Scope.Utils;
+using System;
 using System.ComponentModel;
 
 namespace Scope.ViewModels
@@ -19,7 +20,7 @@ namespace Scope.ViewModels
     public bool IsIncluded
     {
       get => _isIncluded;
-      private set
+      set
       {
         if (_isIncluded == value)
         {

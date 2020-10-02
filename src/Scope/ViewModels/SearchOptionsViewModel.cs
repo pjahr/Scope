@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Security.RightsManagement;
 using System.Windows.Input;
 
 namespace Scope.ViewModels
@@ -16,23 +15,16 @@ namespace Scope.ViewModels
   {
     private readonly ISearchOptions _searchOptions;
 
-    public SearchOptionsViewModel(ISearchOptions searchOptions, IKnownFileExtensions knownFileTypes)
+    public SearchOptionsViewModel(ISearchOptions searchOptions,
+                                  IKnownFileExtensions knownFileTypes)
     {
       _searchOptions = searchOptions;
 
-      IncludedExtensions =knownFileTypes.All
+      IncludedExtensions = knownFileTypes.All
                                          .OrderBy(x => x)
-                                         .Select(x => new IncludedExtensionViewModel(x))
+                                         .Select(x => CreateIncludedExtension(x))
                                          .ToList();
       SelectAllFileExtensionsCommand = new RelayCommand(SelectAllFileExtensions);
-    }
-
-    private void SelectAllFileExtensions()
-    {
-      foreach (var item in IncludedExtensions)
-      {
-
-      }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -40,23 +32,23 @@ namespace Scope.ViewModels
     public IReadOnlyCollection<IncludedExtensionViewModel> IncludedExtensions { get; private set; }
     public ICommand SelectAllFileExtensionsCommand { get; }
     
-    public bool FindDirectories
+    public SearchMode SearchMode
     {
-      get => _searchOptions.FindDirectories;
-      private set
+      get => _searchOptions.Mode;
+      set
       {
-        if (_searchOptions.FindDirectories == value)
+        if (_searchOptions.Mode == value)
         {
           return;
         }
-        _searchOptions.FindDirectories = value;
-        PropertyChanged.Raise(this, nameof(FindDirectories));
+        _searchOptions.Mode = value;
+        PropertyChanged.Raise(this, nameof(SearchMode));
       }
     }
 
     public bool SearchCaseSensitive
     {
-      get => _searchOptions.FindDirectories;
+      get => _searchOptions.SearchCaseSensitive;
       private set
       {
         if (_searchOptions.SearchCaseSensitive == value)
@@ -68,17 +60,16 @@ namespace Scope.ViewModels
       }
     }
 
-    public bool SearchContents
+    private IncludedExtensionViewModel CreateIncludedExtension(string extension)
     {
-      get => _searchOptions.SearchContents;
-      private set
+      return new IncludedExtensionViewModel(extension);
+    }
+
+    private void SelectAllFileExtensions()
+    {
+      foreach (var item in IncludedExtensions)
       {
-        if (_searchOptions.SearchContents == value)
-        {
-          return;
-        }
-        _searchOptions.SearchContents = value;
-        PropertyChanged.Raise(this, nameof(SearchContents));
+        item.IsIncluded = true;
       }
     }
 

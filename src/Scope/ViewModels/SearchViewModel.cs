@@ -20,7 +20,7 @@ namespace Scope.ViewModels
     private Visibility _optionsVisibility = Visibility.Collapsed;
     private Visibility _searchIndicatorVisibility = Visibility.Hidden;
 
-    public SearchViewModel(ISearch searchIndex, IUiDispatch uiDispatch)
+    public SearchViewModel(ISearch searchIndex, IUiDispatch uiDispatch, SearchOptionsViewModel searchOptionsViewModel)
     {
       _searchIndex = searchIndex;
       _uiDispatch = uiDispatch;
@@ -32,9 +32,12 @@ namespace Scope.ViewModels
 
       FindFilesBySearchTermsCommand = new RelayCommand(FindFilesBySearchTerms);
       ToggleDetailsVisibilityCommand = new RelayCommand(ToggleDetailsVisibility);
-    }
+      SearchOptions = searchOptionsViewModel;
+        }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public SearchOptionsViewModel SearchOptions { get; }
 
     public string SearchTerms
     {

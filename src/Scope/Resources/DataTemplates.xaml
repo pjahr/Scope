@@ -129,4 +129,23 @@
 
   </DataTemplate>
 
+  <DataTemplate DataType="{x:Type vm:SearchOptionsViewModel}">
+    <v:SearchOptionsView/>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:IncludedExtensionViewModel}">
+    <DockPanel
+          Margin="3 3 12 3">
+      <CheckBox
+        x:Name="_checkBox"
+            DockPanel.Dock="Left"
+            VerticalAlignment="Center"
+          IsChecked="{Binding IsIncluded}"/>
+      <Label
+        Target="_checkBox"
+            Content="{Binding Name}"
+            DockPanel.Dock="Right" />
+    </DockPanel>
+  </DataTemplate>
+
 </ResourceDictionary>

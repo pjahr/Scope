@@ -169,6 +169,7 @@
     <Compile Include="Models\Interfaces\ISearchOptions.cs" />
     <Compile Include="Models\Interfaces\Match.cs" />
     <Compile Include="Models\Interfaces\MatchType.cs" />
+    <Compile Include="Models\Interfaces\SearchMode.cs" />
     <Compile Include="Models\KnownFileExtensions.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Messages.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Views\Behaviors\CommandOnKey.cs" />
     <Compile Include="Views\Behaviors\CommandOnReceiveKeyboardFocus.cs" />
     <Compile Include="Views\BindingProxy.cs" />
+    <Compile Include="Views\Converters\EnumMatchToBooleanConverter.cs" />
     <Compile Include="Views\CurrentP4kFsView.xaml.cs">
       <DependentUpon>CurrentP4kFsView.xaml</DependentUpon>
     </Compile>
@@ -257,6 +259,9 @@
     </Compile>
     <Compile Include="Views\PinnedItemsView.xaml.cs">
       <DependentUpon>PinnedItemsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchOptionsView.xaml.cs">
+      <DependentUpon>SearchOptionsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchView.xaml.cs">
       <DependentUpon>SearchView.xaml</DependentUpon>
@@ -318,6 +323,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PinnedItemsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchOptionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

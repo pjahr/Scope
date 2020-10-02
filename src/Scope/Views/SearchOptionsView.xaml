@@ -1,0 +1,68 @@
+﻿<UserControl x:Class="Scope.Views.SearchOptionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Scope.ViewModels"
+             xmlns:c="clr-namespace:Scope.Views.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance vm:SearchOptionsViewModel, IsDesignTimeCreatable=False}">
+  <UserControl.Resources>
+    <c:EnumMatchToBooleanConverter x:Key="EnumConverter" />
+  </UserControl.Resources>
+  <StackPanel
+      Background="WhiteSmoke">
+
+    <WrapPanel
+        Margin="3">
+
+      <StackPanel >
+
+        <RadioButton Content="Directory names"
+                     GroupName="Mode" 
+                     IsChecked="{Binding SearchMode,
+                                         Mode=TwoWay,
+                                         Converter={StaticResource EnumConverter},
+                                         ConverterParameter=DirectoryName}"  />
+        <RadioButton Content="File names"
+                     GroupName="Mode" 
+                     IsChecked="{Binding SearchMode,
+                                         Mode=TwoWay,
+                                         Converter={StaticResource EnumConverter},
+                                         ConverterParameter=FileName}"  />
+        <RadioButton Content="File contents"
+                     GroupName="Mode" 
+                     IsChecked="{Binding SearchMode,
+                                         Mode=TwoWay,
+                                         Converter={StaticResource EnumConverter},
+                                         ConverterParameter=FileContent}"  />
+        <RadioButton Content="File names and contents"
+                     GroupName="Mode" 
+                     IsChecked="{Binding SearchMode,
+                                         Mode=TwoWay,
+                                         Converter={StaticResource EnumConverter},
+                                         ConverterParameter=FileNameAndContent}"  />
+
+      </StackPanel>
+
+    </WrapPanel>
+
+    <TextBlock
+        Text="File types"
+        Margin="6" />
+
+    <ItemsControl ItemsSource="{Binding IncludedExtensions}"                  
+        Margin="3 0">
+
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <WrapPanel/>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+
+    </ItemsControl>   
+
+  </StackPanel>
+  
+</UserControl>

@@ -7,9 +7,8 @@ namespace Scope.Models
   [Export]
   internal class SearchOptions : ISearchOptions
   {
-    public bool FindDirectories { get; set; }
+    public SearchMode Mode { get; set; }
     public bool SearchCaseSensitive { get; set; }
-    public bool SearchContents { get; set; }
     public ICollection<string> IncludeExtensions { get; }
   }
 }
