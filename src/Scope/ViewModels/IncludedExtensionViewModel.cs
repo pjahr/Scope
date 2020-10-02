@@ -10,7 +10,7 @@ namespace Scope.ViewModels
 
     public IncludedExtensionViewModel(string name)
     {
-      Name = name.ToUpper();
+      Name = name.ToLower();
     }
     public event PropertyChangedEventHandler PropertyChanged;
     public event Action<bool> IsIncludedChanged;

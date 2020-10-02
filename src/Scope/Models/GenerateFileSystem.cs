@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
@@ -11,17 +12,32 @@ namespace Scope.Models
   {
     private P4kDirectory _root;
 
-    public IFileSystem Generate(ZipFile zipFile)
+    public IFileSystem Generate(ZipFile zipFile, IDictionary<string, int> fileTypes)
     {
       _root = P4kDirectory.Root();
-      List<IFile> files = new List<IFile>();
+
+      var files = new List<IFile>();
+            
       foreach (ZipEntry item in zipFile.Cast<ZipEntry>()
                                        .Where(f => f.IsFile))
       {
         var directory = EnsureDirectoryExists(item.Name);
         var file = new P4kFile(item, zipFile);
+        
         files.Add(file);
         directory.Add(file);
+
+        var extension = Path.GetExtension(file.Name)
+                            .TrimStart('.');
+
+        if (!fileTypes.ContainsKey(extension))
+        {
+          fileTypes.Add(extension,1);
+        }
+        else
+        {
+          fileTypes[extension]++;
+        }
       }
 
       return new P4kFileSystem(_root, Convert.ToInt32(zipFile.Count), files);

@@ -12,5 +12,6 @@ namespace Scope.Models.Interfaces
     Task CloseAsync();
     event Action Changed;
     bool IsInitialized { get; }
+    P4kFileStatistics Statistics { get; }
   }
 }

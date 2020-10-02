@@ -62,6 +62,8 @@
     <Compile Include="Models\CryXmlSerializer.cs" />
     <Compile Include="Models\CryXmlValue.cs" />
     <Compile Include="Models\Extensions.cs" />
+    <Compile Include="SeachableFileType.cs" />
+    <Compile Include="SearchProvider.cs" />
     <Compile Include="ViewModels\CryXmlTextFileViewModel.cs" />
     <Compile Include="ViewModels\JsonTextFileViewModel.cs" />
     <Compile Include="ViewModels\TextFileViewModel.cs" />

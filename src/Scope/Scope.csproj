@@ -177,6 +177,7 @@
     <Compile Include="Models\OutputDirectory.cs" />
     <Compile Include="Models\P4kDirectory.cs" />
     <Compile Include="Models\P4kFile.cs" />
+    <Compile Include="Models\P4kFileStatistics.cs" />
     <Compile Include="Models\P4kFileSystem.cs" />
     <Compile Include="Models\Progress.cs" />
     <Compile Include="Models\PinnedItems.cs" />

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Scope.Models;
 using Scope.Models.Interfaces;
@@ -12,6 +13,7 @@ namespace Scope.Tests.Models
     private GenerateFileSystem _sut;
     private IFileSystem _result;
     private ZipFile _zipFile;
+    private IDictionary<string, int> _fileTypes = new Dictionary<string, int>();
 
     public GenerateFileSystemFacts()
     {
@@ -83,6 +85,7 @@ namespace Scope.Tests.Models
       ThenTheNumberOfFilesInRootIs(0);
       ThenRootContainsFile("first", "second", fileName);
       ThenFileContains(filePath, fileContent);
+      ThenFileTypesContains("txt", 1);
     }
 
     private void GivenItIsCreated()
@@ -92,7 +95,7 @@ namespace Scope.Tests.Models
 
     private void WhenItGenerates()
     {
-      _result = _sut.Generate(_zipFile);
+      _result = _sut.Generate(_zipFile, _fileTypes);
     }
 
     private void ThenTheNumberOfDirectoriesInRootIs(int expected)
@@ -118,6 +121,13 @@ namespace Scope.Tests.Models
                                                         == pathSegments[pathSegments.Length - 1]));
     }
 
-    private void ThenFileContains(string fileName, string fileContent) { }
+    private void ThenFileContains(string fileName, string fileContent) 
+    {
+      
+    }
+    private void ThenFileTypesContains(string extension, int count) 
+    {
+      Assert.Equal(count, _fileTypes[extension]);
+    }
   }
 }

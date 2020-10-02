@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
@@ -27,6 +28,8 @@ namespace Scope.Models
     {
       _outputDirectory = outputDirectory;
       _onUiThread = onUiThread;
+
+      Statistics = new P4kFileStatistics(new Dictionary<string, int>());
     }
 
     ///<inheritdoc/>
@@ -37,6 +40,8 @@ namespace Scope.Models
     
     ///<inheritdoc/>
     public bool IsInitialized => _p4k != null;
+
+    public P4kFileStatistics Statistics { get; private set; }
 
     ///<inheritdoc/>
     public event Action Changed;
@@ -72,9 +77,10 @@ namespace Scope.Models
       try
       {
         _p4k = new ZipFile(p4kFile.FullName) { Key = _key };
-
-        FileSystem = new GenerateFileSystem().Generate(_p4k);
+        var fileTypes = new Dictionary<string, int>();
+        FileSystem = new GenerateFileSystem().Generate(_p4k, fileTypes);
         FileName = p4kFile.FullName;
+        Statistics = new P4kFileStatistics(fileTypes);
       }
       catch (Exception ex)
       {

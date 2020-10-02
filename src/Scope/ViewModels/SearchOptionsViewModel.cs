@@ -1,12 +1,9 @@
 ﻿using Scope.Models.Interfaces;
 using Scope.Utils;
-using Scope.ViewModels.Commands;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
 using System.Linq;
-using System.Windows.Input;
 
 namespace Scope.ViewModels
 {
@@ -14,23 +11,38 @@ namespace Scope.ViewModels
   public class SearchOptionsViewModel : INotifyPropertyChanged
   {
     private readonly ISearchOptions _searchOptions;
+    private readonly IKnownFileExtensions _knownFileTypes;
+    private bool _searchAllSearchableFileTypes;
+    private bool _searchAllFileTypes;
 
     public SearchOptionsViewModel(ISearchOptions searchOptions,
                                   IKnownFileExtensions knownFileTypes)
     {
       _searchOptions = searchOptions;
+      _knownFileTypes = knownFileTypes;
 
-      IncludedExtensions = knownFileTypes.All
-                                         .OrderBy(x => x)
-                                         .Select(x => CreateIncludedExtension(x))
-                                         .ToList();
-      SelectAllFileExtensionsCommand = new RelayCommand(SelectAllFileExtensions);
+      IncludedExtensions = new ObservableCollection<IncludedExtensionViewModel>();
+      UpdateKnownFileTypes();      
+
+      _knownFileTypes.Changed += UpdateKnownFileTypes;
+    }
+
+    private void UpdateKnownFileTypes()
+    {
+      IncludedExtensions.Clear();
+
+      foreach (var extension in _knownFileTypes.All
+                                          .OrderBy(x => x)
+                                          .Select(x => CreateIncludedExtension(x))
+                                          .ToList())
+      {
+        IncludedExtensions.Add(extension);
+      }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public IReadOnlyCollection<IncludedExtensionViewModel> IncludedExtensions { get; private set; }
-    public ICommand SelectAllFileExtensionsCommand { get; }
+    public ObservableCollection<IncludedExtensionViewModel> IncludedExtensions { get; private set; }
     
     public SearchMode SearchMode
     {
@@ -49,7 +61,7 @@ namespace Scope.ViewModels
     public bool SearchCaseSensitive
     {
       get => _searchOptions.SearchCaseSensitive;
-      private set
+      set
       {
         if (_searchOptions.SearchCaseSensitive == value)
         {
@@ -60,18 +72,70 @@ namespace Scope.ViewModels
       }
     }
 
+    public bool SearchAllFileTypes
+    {
+      get => _searchAllFileTypes;
+      set
+      {
+        if (_searchAllFileTypes == value)
+        {
+          return;
+        }
+        _searchAllFileTypes = value;
+        PropertyChanged.Raise(this, nameof(SearchAllFileTypes));
+
+        if (_searchAllFileTypes)
+        {
+          foreach (var item in IncludedExtensions)
+          {
+            item.IsIncluded = true;
+          }
+        }
+        else
+        {
+          foreach (var item in IncludedExtensions)
+          {
+            item.IsIncluded = false;
+          }
+        }
+      }
+    }
+
+    public bool SearchAllSearchableFileTypes
+    {
+      get => _searchAllSearchableFileTypes;
+      set
+      {
+        if (_searchAllSearchableFileTypes == value)
+        {
+          return;
+        }
+        _searchAllSearchableFileTypes = value;        
+
+        PropertyChanged.Raise(this, nameof(SearchAllSearchableFileTypes));
+
+        if (_searchAllSearchableFileTypes)
+        {
+          // if the user ticks 'searchable' all known searchables get ticked, all others unticked
+          foreach (var item in IncludedExtensions)
+          {
+            item.IsIncluded = _knownFileTypes.Searchable.Contains(item.Name);
+          }
+        }
+        else
+        {
+          // if the user unticks 'searchable' all file types get unticked
+          foreach (var item in IncludedExtensions)
+          {
+            item.IsIncluded = false;
+          }
+        }
+      }
+    }
+
     private IncludedExtensionViewModel CreateIncludedExtension(string extension)
     {
       return new IncludedExtensionViewModel(extension);
     }
-
-    private void SelectAllFileExtensions()
-    {
-      foreach (var item in IncludedExtensions)
-      {
-        item.IsIncluded = true;
-      }
-    }
-
   }
 }

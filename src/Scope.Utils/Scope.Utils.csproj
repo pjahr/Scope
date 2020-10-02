@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="EventExtensions.cs" />
     <Compile Include="FileSystemExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
