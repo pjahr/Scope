@@ -15,6 +15,7 @@ namespace Scope.Models
   internal class Search : ISearch
   {
     private readonly ICurrentP4k _currentP4K;
+    private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
     private readonly List<Match> _results = new List<Match>();
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
@@ -26,15 +27,17 @@ namespace Scope.Models
 
     public IReadOnlyCollection<Match> Results => _results;
 
-    public Search(ICurrentP4k currentP4K, IUiDispatch uiDispatch)
+    public Search(ICurrentP4k currentP4K,
+                  ISearchOptions searchOptions,
+                  IUiDispatch uiDispatch)
     {
       _currentP4K = currentP4K;
+      _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
     }
 
     public Task FindMatches(params string[] searchTerms)
     {
-
       if (_currentP4K.FileSystem == null)
       {
         return Task.CompletedTask;
@@ -53,12 +56,7 @@ namespace Scope.Models
 
       return Task.Factory.StartNew(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles),
                                          _cts.Token);
-    }
-
-    private readonly string[] _knownTextFileFormats =
-    {
-      ".txt", ".cfg", ".cfgf", ".cfgm", ".ini", ".id", "json"
-    };
+    }    
 
     private void FindItems(string[] searchTerms, int numberOfFiles)
     {
@@ -66,15 +64,29 @@ namespace Scope.Models
       {
         var f = _currentP4K.FileSystem[i];
 
-        if (!_knownTextFileFormats.Any(ending => f.Name.EndsWith(ending)))
+        if (!_searchOptions.IncludeExtensions.Any(ending => f.Name.EndsWith(ending)))
         {
           continue;
         }
 
         foreach (var term in searchTerms)
         {
-          FindMatchInFileName(f, term);
-          //FindMatchInContent(f, term);
+          switch (_searchOptions.Mode)
+          {
+            case SearchMode.DirectoryName:
+              FindMatchInFileName(f, term);
+              break;
+            case SearchMode.FileName:
+              FindMatchInFileName(f, term);
+              break;
+            case SearchMode.FileContent:
+              break;
+            case SearchMode.FileNameAndContent:
+              FindMatchInFileName(f, term);
+              break;
+            default:
+              break;
+          }          
         }
       }
 
@@ -92,7 +104,6 @@ namespace Scope.Models
       {
         return; // provide only one match if the file name matches multiple terms
       }
-
       if (f.Name.Contains(term.ToLowerInvariant()))
       {
         var match = new Match(term, f, MatchType.Filename);

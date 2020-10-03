@@ -32,9 +32,9 @@ namespace Scope.ViewModels
       IncludedExtensions.Clear();
 
       foreach (var extension in _knownFileTypes.All
-                                          .OrderBy(x => x)
-                                          .Select(x => CreateIncludedExtension(x))
-                                          .ToList())
+                                               .OrderBy(x => x)
+                                               .Select(x => CreateIncludedExtension(x))
+                                               .ToList())
       {
         IncludedExtensions.Add(extension);
       }
