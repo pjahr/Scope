@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Scope.Interfaces;
 using Scope.Utils;
 using Scope.Zip.Zip;
@@ -15,12 +16,14 @@ namespace Scope.Models
       _zipEntry = zipEntry;
       _zip = zip;
 
+      Index = Convert.ToInt32(_zipEntry.ZipFileIndex);
       Name = _zipEntry.Name.GetFileName();
       Path = _zipEntry.Name;
       BytesCompressed = _zipEntry.CompressedSize;
       BytesUncompressed = _zipEntry.Size;
     }
 
+    public int Index { get; }
     public string Name { get; }
     public string Path { get; }
     public long BytesCompressed { get; }

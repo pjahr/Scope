@@ -36,7 +36,7 @@ namespace Scope.Models
       _uiDispatch = uiDispatch;
     }
 
-    public Task FindMatches(params string[] searchTerms)
+    public Task FindMatches(IProgress<SearchProgress> progress, params string[] searchTerms)
     {
       if (_currentP4K.FileSystem == null)
       {
@@ -54,11 +54,11 @@ namespace Scope.Models
 
       Began.Raise();
 
-      return Task.Factory.StartNew(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles),
+      return Task.Factory.StartNew(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles, progress),
                                          _cts.Token);
     }    
 
-    private void FindItems(string[] searchTerms, int numberOfFiles)
+    private void FindItems(string[] searchTerms, int numberOfFiles, IProgress<SearchProgress> progress)
     {
       for (int i = 0; i < numberOfFiles; i++)
       {
@@ -86,15 +86,16 @@ namespace Scope.Models
               break;
             default:
               break;
-          }          
+          }
+        }
+
+        if ((i + 1) % 10 == 0)
+        {
+          progress.Report(new SearchProgress(10, numberOfFiles));
         }
       }
 
-      if (_results.Any())
-      {
-        Console.WriteLine(_results.Select(m => $"{m.File.Path}").Aggregate((c, n) => $"{c}\r\n{n}"));
-      }
-
+      progress.Report(new SearchProgress(0, 0)); // reset progress with magic null value
       Finished.Raise();
     }
 

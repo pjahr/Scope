@@ -13,7 +13,7 @@ namespace Scope.ViewModels
       Name = name.ToLower();
     }
     public event PropertyChangedEventHandler PropertyChanged;
-    public event Action<bool> IsIncludedChanged;
+    public event Action<string, bool> IsIncludedChanged;
 
     public string Name { get; private set; }
 
@@ -28,7 +28,7 @@ namespace Scope.ViewModels
         }
         _isIncluded = value;
         PropertyChanged.Raise(this, nameof(IsIncluded));
-        IsIncludedChanged.Raise(_isIncluded);
+        IsIncludedChanged.Raise(Name, _isIncluded);
       }
     }
 

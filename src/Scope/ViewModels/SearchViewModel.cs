@@ -15,12 +15,13 @@ namespace Scope.ViewModels
   {
     private readonly ISearch _searchIndex;
     private readonly IUiDispatch _uiDispatch;
-
     private string _searchTerms = string.Empty;
     private Visibility _optionsVisibility = Visibility.Collapsed;
     private Visibility _searchIndicatorVisibility = Visibility.Hidden;
 
-    public SearchViewModel(ISearch searchIndex, IUiDispatch uiDispatch, SearchOptionsViewModel searchOptionsViewModel)
+    public SearchViewModel(ISearch searchIndex,
+                           IUiDispatch uiDispatch,
+                           SearchOptionsViewModel searchOptionsViewModel)
     {
       _searchIndex = searchIndex;
       _uiDispatch = uiDispatch;
@@ -33,7 +34,7 @@ namespace Scope.ViewModels
       FindFilesBySearchTermsCommand = new RelayCommand(FindFilesBySearchTerms);
       ToggleDetailsVisibilityCommand = new RelayCommand(ToggleDetailsVisibility);
       SearchOptions = searchOptionsViewModel;
-        }
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -84,6 +85,10 @@ namespace Scope.ViewModels
       }
     }
 
+    public string ProgressText { get; private set; }
+    public int ProgressValue { get; private set; }
+    public int ProgressMaximum { get; private set; }
+
     public ICommand FindFilesBySearchTermsCommand { get; }
     public ICommand ToggleDetailsVisibilityCommand { get; }
 
@@ -114,9 +119,25 @@ namespace Scope.ViewModels
 
     private void ClearResults() { }
 
+    int _progress = 0;
     private void FindFilesBySearchTerms()
     {
-      _searchIndex.FindMatches(SearchTerms);
+      _progress = 0;
+      var progress = new Progress<SearchProgress>(PublishProgress);
+      
+      _searchIndex.FindMatches(progress, SearchTerms);
+    }
+
+    private void PublishProgress(SearchProgress progress)
+    {
+      _progress += progress.Progress;
+      ProgressText = $"{_progress}/{progress.Total}";
+      ProgressValue = _progress;
+      ProgressMaximum = progress.Total;
+
+      PropertyChanged.Raise(this, nameof(ProgressText));
+      PropertyChanged.Raise(this, nameof(ProgressValue));
+      PropertyChanged.Raise(this, nameof(ProgressMaximum));
     }
   }
 }

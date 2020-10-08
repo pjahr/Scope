@@ -8,7 +8,7 @@ namespace Scope.Models.Interfaces
   {
     IReadOnlyCollection<Match> Results { get; }
 
-    Task FindMatches(params string[] searchTerms);
+    Task FindMatches(IProgress<SearchProgress> progress, params string[] searchTerms);
 
     event Action Began;
 

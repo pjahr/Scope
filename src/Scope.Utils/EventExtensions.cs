@@ -15,6 +15,11 @@ namespace Scope.Utils
       action?.Invoke(p0);
     }
 
+    public static void Raise<T0, T1>(this Action<T0, T1> action, T0 p0, T1 p1)
+    {
+      action?.Invoke(p0, p1);
+    }
+
     public static void Raise(this EventHandler action, object sender)
     {
       action?.Invoke(sender, new EventArgs());

@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Scope.Tests.Models
 {
-  internal class FileFake:IFile
+  internal class FileFake : IFile
   {
     private byte[] _bytes;
 
+    public int Index { get; set; }
     public string Name { get; set; }
     public string Path { get; set; }
     public long BytesCompressed { get; set; }
@@ -18,6 +19,7 @@ namespace Scope.Tests.Models
       get { return Encoding.UTF8.GetString(_bytes); }
       set { _bytes = Encoding.UTF8.GetBytes(value); }
     }
+
 
     public Stream Read()
     {

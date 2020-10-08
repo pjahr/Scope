@@ -170,6 +170,7 @@
     <Compile Include="Models\Interfaces\Match.cs" />
     <Compile Include="Models\Interfaces\MatchType.cs" />
     <Compile Include="Models\Interfaces\SearchMode.cs" />
+    <Compile Include="Models\Interfaces\SearchProgress.cs" />
     <Compile Include="Models\KnownFileExtensions.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\Messages.cs" />

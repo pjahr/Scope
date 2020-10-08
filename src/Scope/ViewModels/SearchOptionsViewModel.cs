@@ -141,7 +141,29 @@ namespace Scope.ViewModels
 
     private IncludedExtensionViewModel CreateIncludedExtension(string extension)
     {
-      return new IncludedExtensionViewModel(extension);
+      var vm = new IncludedExtensionViewModel(extension);
+
+      vm.IsIncludedChanged += UpdateInModel;
+
+      return vm;
+    }
+
+    private void UpdateInModel(string extension, bool isIncluded)
+    {
+      if (isIncluded)
+      {
+        if (!_searchOptions.IncludeExtensions.Contains(extension))
+        {
+          _searchOptions.IncludeExtensions.Add(extension);
+        }
+      }
+      else
+      {
+        if(_searchOptions.IncludeExtensions.Contains(extension))
+        {
+          _searchOptions.IncludeExtensions.Remove(extension);
+        }
+      }
     }
   }
 }
