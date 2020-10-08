@@ -36,7 +36,9 @@ namespace Scope.ViewModels
                                                .Select(x => CreateIncludedExtension(x))
                                                .ToList())
       {
+        _searchOptions.IncludeExtensions.Add(extension.Name);
         IncludedExtensions.Add(extension);
+        SearchAllFileTypes = true;
       }
     }
 
@@ -55,6 +57,10 @@ namespace Scope.ViewModels
         }
         _searchOptions.Mode = value;
         PropertyChanged.Raise(this, nameof(SearchMode));
+        if (_searchOptions.Mode!=SearchMode.DirectoryName)
+        {
+          return;
+        }
       }
     }
 

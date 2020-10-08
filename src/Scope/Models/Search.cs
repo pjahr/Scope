@@ -104,13 +104,20 @@ namespace Scope.Models
       {
         return; // provide only one match if the file name matches multiple terms
       }
-      if (f.Name.Contains(term.ToLowerInvariant()))
+      if (FileNameContains(f, term))
       {
         var match = new Match(term, f, MatchType.Filename);
 
         _results.Add(match);
         _uiDispatch.Do(() => MatchFound.Raise(match));
       }
+    }
+
+    private bool FileNameContains(IFile f, string term)
+    {
+      return _searchOptions.SearchCaseSensitive
+        ? f.Name.Contains(term)
+        : f.Name.ToLowerInvariant().Contains(term.ToLowerInvariant());
     }
 
     private void FindMatchInContent(IFile f, string term)

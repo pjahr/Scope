@@ -2,9 +2,9 @@
 {
   public enum SearchMode
   {
-    DirectoryName,
     FileName,
     FileContent,
-    FileNameAndContent
+    FileNameAndContent,
+    DirectoryName
   }
 }
