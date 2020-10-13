@@ -152,7 +152,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedFiles()
     {
-      foreach (var vm in _fileSystem.Root.Files.Select(d => new FileTreeNodeViewModel(d)))
+      foreach (var vm in _fileSystem.Root.Files.Select(d => new FileTreeNodeViewModel(d, _search)))
       {
         RootItems.Add(vm);
       }

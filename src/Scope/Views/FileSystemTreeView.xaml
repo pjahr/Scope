@@ -76,9 +76,7 @@
              
              <b:TextBlockHighlightWordsInSquareBrackets
                FormattedText="{Binding Name}"
-               FormattedTextStyle="{StaticResource SearchResultHighlight}">
-               
-             </b:TextBlockHighlightWordsInSquareBrackets>
+               FormattedTextStyle="{StaticResource SearchResultHighlight}"/>
              
              </xaml:Interaction.Behaviors>
 
@@ -139,8 +137,18 @@
           Text="{Binding Name}"
           Margin="0 0 6 0"
           DockPanel.Dock="Left"
-          VerticalAlignment="Center"/>
-        
+          VerticalAlignment="Center" >
+          
+           <xaml:Interaction.Behaviors>
+             
+             <b:TextBlockHighlightWordsInSquareBrackets
+               FormattedText="{Binding Name}"
+               FormattedTextStyle="{StaticResource SearchResultHighlight}"/>
+             
+             </xaml:Interaction.Behaviors>
+
+        </TextBlock>
+
       </DockPanel>
 
     </HierarchicalDataTemplate>

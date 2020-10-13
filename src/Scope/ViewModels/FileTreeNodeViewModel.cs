@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Scope.Interfaces;
+using Scope.Models.Interfaces;
 
 namespace Scope.ViewModels
 {
   internal class FileTreeNodeViewModel : TreeNodeViewModel
   {
-    public FileTreeNodeViewModel(IFile file) : base(file.Name, file.Path)
+    private readonly ISearch _search;
+
+    public FileTreeNodeViewModel(IFile file,
+                                 ISearch search) : base(file.Name, file.Path)
     {
       Model = file;
-
+      _search = search;
       var compressed = file.BytesCompressed.ToFileSize()
                            .Split(' ');
       CompressedSizeValue = compressed[0];
@@ -21,6 +26,11 @@ namespace Scope.ViewModels
 
       UncompressedSizeValue = uncompressed[0];
       UncompressedSizeUnit = uncompressed[1];
+
+      _search.Finished += HighlightSearchTerm;
+      _search.ResultsCleared += ResetName;
+
+      HighlightSearchTerm();
     }
 
     public IFile Model { get; }
@@ -38,6 +48,16 @@ namespace Scope.ViewModels
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
       throw new NotImplementedException();
+    }
+
+    private void HighlightSearchTerm()
+    {
+      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.Results.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
+    }
+
+    private void ResetName()
+    {
+      Name = Model.Name;
     }
   }
 }

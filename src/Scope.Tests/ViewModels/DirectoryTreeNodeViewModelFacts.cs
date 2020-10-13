@@ -21,7 +21,7 @@ namespace Scope.Tests.ViewModels
                                                     string expected)
     {
       var terms = searchTerms.Split(' ');
-      Assert.Equal(expected, DirectoryTreeNodeViewModel.GetHighlightMarkup(name, terms));
+      Assert.Equal(expected, ViewModelUtils.GetHighlightMarkup(name, terms));
     }
   }
 }

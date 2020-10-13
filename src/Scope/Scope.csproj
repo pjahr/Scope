@@ -218,6 +218,7 @@
     <Compile Include="ViewModels\StatusBarViewModel.cs" />
     <Compile Include="ViewModels\TreeNodeViewModel.cs" />
     <Compile Include="ViewModels\ViewModelExtensions.cs" />
+    <Compile Include="ViewModels\ViewModelUtils.cs" />
     <Compile Include="Views\AboutWindowView.xaml.cs">
       <DependentUpon>AboutWindowView.xaml</DependentUpon>
     </Compile>
