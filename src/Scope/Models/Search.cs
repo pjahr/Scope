@@ -17,7 +17,10 @@ namespace Scope.Models
     private readonly ICurrentP4k _currentP4K;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly List<Match> _results = new List<Match>();
+    private readonly Dictionary<IFile, Match> _results = new Dictionary<IFile, Match>();
+    private readonly List<string> _resultPaths = new List<string>();
+    private readonly List<int> _resultIds = new List<int>();
+
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
     public event Action ResultsCleared;
@@ -25,7 +28,9 @@ namespace Scope.Models
     public event Action Began;
     public event Action Finished;
 
-    public IReadOnlyCollection<Match> Results => _results;
+    public IReadOnlyCollection<Match> Results => _results.Values;
+    public IReadOnlyCollection<string> ResultPaths => _resultPaths;
+    public IReadOnlyCollection<int> ResultIds => _resultIds;
 
     public Search(ICurrentP4k currentP4K,
                   ISearchOptions searchOptions,
@@ -44,6 +49,8 @@ namespace Scope.Models
       }
 
       _results.Clear();
+      _resultIds.Clear();
+      _resultPaths.Clear();
       ResultsCleared.Raise();
 
       // do not search for nothing or white space
@@ -56,7 +63,7 @@ namespace Scope.Models
 
       return Task.Factory.StartNew(() => FindItems(searchTerms, _currentP4K.FileSystem.TotalNumberOfFiles, progress),
                                          _cts.Token);
-    }    
+    }
 
     private void FindItems(string[] searchTerms, int numberOfFiles, IProgress<SearchProgress> progress)
     {
@@ -101,7 +108,7 @@ namespace Scope.Models
 
     private void FindMatchInFileName(IFile f, string term)
     {
-      if (_results.Any(match => match.File == f))
+      if (_results.ContainsKey(f))
       {
         return; // provide only one match if the file name matches multiple terms
       }
@@ -109,7 +116,10 @@ namespace Scope.Models
       {
         var match = new Match(term, f, MatchType.Filename);
 
-        _results.Add(match);
+        _results.Add(f, match);
+        _resultPaths.Add(f.Path);
+        _resultIds.Add(f.Index);
+
         _uiDispatch.Do(() => MatchFound.Raise(match));
       }
     }
@@ -135,7 +145,7 @@ namespace Scope.Models
       {
         var match = new Match(term, f, MatchType.Content);
         _uiDispatch.Do(() => MatchFound.Raise(match));
-        _results.Add(match);
+        _results.Add(f, match);
       }
     }
   }

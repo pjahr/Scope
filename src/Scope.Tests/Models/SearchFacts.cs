@@ -22,6 +22,7 @@ namespace Scope.Tests.Models
 
     private IFile[] _files;
     private ISearchOptions _searchOptions = new SearchOptions();
+    private IProgress<SearchProgress> _progress = Mock.Of<IProgress<SearchProgress>>();
 
     public SearchFacts()
     {
@@ -41,7 +42,7 @@ namespace Scope.Tests.Models
     {
       WhenSutIsCreated();
 
-      await _sut.FindMatches("");
+      await _sut.FindMatches(_progress, "");
 
       ThenTheResultsAreEmpty();
       ThenTheEventWasRaised(1);
@@ -61,7 +62,7 @@ namespace Scope.Tests.Models
       GivenFiles(AFile(filename));
       WhenSutIsCreated();
 
-      await _sut.FindMatches(terms);
+      await WhenItSearchesFor(terms);
 
       ThenItFoundTheFile();
     }
@@ -76,10 +77,14 @@ namespace Scope.Tests.Models
 
       GivenFiles(AFile(filename));
       WhenSutIsCreated();
-
-      await _sut.FindMatches(terms);
+      await WhenItSearchesFor(terms);
 
       ThenItFoundTheFile();
+    }
+
+    private async Task WhenItSearchesFor(string[] terms)
+    {
+      await _sut.FindMatches(_progress, terms);
     }
 
     [Theory()]
@@ -93,7 +98,7 @@ namespace Scope.Tests.Models
       GivenFiles(AFile(filename));
       WhenSutIsCreated();
 
-      await _sut.FindMatches(terms);
+      await WhenItSearchesFor(terms);
 
       ThenItDidntFoundTheFile();
     }

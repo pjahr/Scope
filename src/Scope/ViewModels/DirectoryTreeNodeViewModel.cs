@@ -109,28 +109,36 @@ namespace Scope.ViewModels
     private List<TreeNodeViewModel> GetContents()
     {
       var contents = new List<TreeNodeViewModel>();
+      var pathes = _search.Results.Select(r => r.File.Path).ToArray();
 
-      var directories = _search.Results.Any()
-                                        ? Model.Directories
-                                               .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)))
-                                        : Model.Directories;
-
-      var files = _search.Results.Any()
-                                  ? Model.Files
-                                         .Where(c => _search.Results.Any(r => r.File.Path.StartsWith(c.Path)))
-                                  : Model.Files;
-
-      foreach (var directory in directories)
+      foreach (var directory in GetDirectories())
       {
         contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _uiDispatch));
       }
 
-      foreach (var file in files)
+      foreach (var file in GetFiles())
       {
         contents.Add(new FileTreeNodeViewModel(file));
       }
 
       return contents;
+    }
+
+    private IEnumerable<IFile> GetFiles()
+    {
+      if (!_search.Results.Any())
+      {
+        return Model.Files;
+      }
+
+      return Model.Files.Where(f => _search.ResultIds.Contains(f.Index));
+    }
+
+    private IEnumerable<IDirectory> GetDirectories()
+    {
+      return _search.Results.Any()
+               ? Model.Directories.Where(d => _search.ResultPaths.Any(path => path.StartsWith(d.Path)))
+               : Model.Directories;
     }
 
     private void FilterContent()
