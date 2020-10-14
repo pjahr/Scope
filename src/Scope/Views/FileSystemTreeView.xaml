@@ -69,8 +69,7 @@
           Data="{StaticResource DirectoryIcon}"
           Style="{StaticResource FileSystemEntryIcon}" />
 
-        <TextBlock
-          Text="{Binding Name}" >
+        <TextBlock>
           
            <xaml:Interaction.Behaviors>
              
@@ -134,12 +133,11 @@
 
         <!--last item in DockPanel takes remaining space-->
         <TextBlock
-          Text="{Binding Name}"
           Margin="0 0 6 0"
           DockPanel.Dock="Left"
           VerticalAlignment="Center" >
           
-           <xaml:Interaction.Behaviors>
+            <xaml:Interaction.Behaviors>
              
              <b:TextBlockHighlightWordsInSquareBrackets
                FormattedText="{Binding Name}"
