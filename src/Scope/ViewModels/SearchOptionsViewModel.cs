@@ -1,5 +1,6 @@
 ﻿using Scope.Models.Interfaces;
 using Scope.Utils;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
@@ -13,18 +14,23 @@ namespace Scope.ViewModels
     private readonly ISearchOptions _searchOptions;
     private readonly IKnownFileExtensions _knownFileTypes;
     private bool _searchAllSearchableFileTypes;
-    private bool _searchAllFileTypes;
+    private bool _searchAllFileTypes = false;
 
     public SearchOptionsViewModel(ISearchOptions searchOptions,
-                                  IKnownFileExtensions knownFileTypes)
+                                    IKnownFileExtensions knownFileTypes)
     {
       _searchOptions = searchOptions;
       _knownFileTypes = knownFileTypes;
-
       IncludedExtensions = new ObservableCollection<IncludedExtensionViewModel>();
       UpdateKnownFileTypes();      
 
       _knownFileTypes.Changed += UpdateKnownFileTypes;
+      SearchAllSearchableFileTypes = true;
+    }
+
+    private void Initialize()
+    {
+      throw new NotImplementedException();
     }
 
     private void UpdateKnownFileTypes()
@@ -38,7 +44,7 @@ namespace Scope.ViewModels
       {
         _searchOptions.IncludeExtensions.Add(extension.Name);
         IncludedExtensions.Add(extension);
-        SearchAllFileTypes = true;
+        SearchAllSearchableFileTypes = true;
       }
     }
 
@@ -83,15 +89,12 @@ namespace Scope.ViewModels
       get => _searchAllFileTypes;
       set
       {
-        if (_searchAllFileTypes == value)
-        {
-          return;
-        }
         _searchAllFileTypes = value;
         PropertyChanged.Raise(this, nameof(SearchAllFileTypes));
 
         if (_searchAllFileTypes)
         {
+          // toggle all items
           foreach (var item in IncludedExtensions)
           {
             item.IsIncluded = true;
@@ -99,10 +102,18 @@ namespace Scope.ViewModels
         }
         else
         {
+          // untoggle all items
           foreach (var item in IncludedExtensions)
           {
             item.IsIncluded = false;
           }
+        }
+
+        if (_searchAllFileTypes)
+        {
+          // untick 'searachble file types'
+          _searchAllSearchableFileTypes = false;
+          PropertyChanged.Raise(this, nameof(SearchAllSearchableFileTypes));             
         }
       }
     }
@@ -112,10 +123,6 @@ namespace Scope.ViewModels
       get => _searchAllSearchableFileTypes;
       set
       {
-        if (_searchAllSearchableFileTypes == value)
-        {
-          return;
-        }
         _searchAllSearchableFileTypes = value;        
 
         PropertyChanged.Raise(this, nameof(SearchAllSearchableFileTypes));
@@ -135,6 +142,13 @@ namespace Scope.ViewModels
           {
             item.IsIncluded = false;
           }
+        }
+
+        if (_searchAllSearchableFileTypes)
+        {
+          // untick 'all'
+          _searchAllFileTypes = false;
+          PropertyChanged.Raise(this, nameof(SearchAllFileTypes));
         }
       }
     }
