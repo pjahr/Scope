@@ -52,7 +52,7 @@ namespace Scope.ViewModels
 
     private void HighlightSearchTerm()
     {
-      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.Results.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
+      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.FileResults.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
     }
 
     private void ResetName()

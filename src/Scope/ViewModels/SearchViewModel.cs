@@ -115,7 +115,7 @@ namespace Scope.ViewModels
                             : Visibility.Visible;
     }
 
-    private void AddMatch(Match obj) { }
+    private void AddMatch(FileMatch obj) { }
 
     private void ClearResults() { }
 

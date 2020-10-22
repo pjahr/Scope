@@ -152,6 +152,7 @@
     <Compile Include="Models\Dialogs.cs" />
     <Compile Include="Models\ExtractP4kContent.cs" />
     <Compile Include="Models\GenerateFileSystem.cs" />
+    <Compile Include="Models\Interfaces\DirectoryMatch.cs" />
     <Compile Include="Models\Interfaces\ICurrentItem.cs" />
     <Compile Include="Models\Interfaces\ICurrentP4k.cs" />
     <Compile Include="Models\Interfaces\IDialog.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="Models\Interfaces\IPinnedItems.cs" />
     <Compile Include="Models\Interfaces\ISearch.cs" />
     <Compile Include="Models\Interfaces\ISearchOptions.cs" />
-    <Compile Include="Models\Interfaces\Match.cs" />
+    <Compile Include="Models\Interfaces\FileMatch.cs" />
     <Compile Include="Models\Interfaces\MatchType.cs" />
     <Compile Include="Models\Interfaces\SearchMode.cs" />
     <Compile Include="Models\Interfaces\SearchProgress.cs" />

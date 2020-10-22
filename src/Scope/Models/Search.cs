@@ -17,18 +17,20 @@ namespace Scope.Models
     private readonly ICurrentP4k _currentP4K;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly Dictionary<IFile, Match> _results = new Dictionary<IFile, Match>();
+    private readonly Dictionary<IFile, FileMatch> _fileResults = new Dictionary<IFile, FileMatch>();
+    private readonly Dictionary<IDirectory, DirectoryMatch> _directoryResults = new Dictionary<IDirectory, DirectoryMatch>();
     private readonly List<string> _resultPaths = new List<string>();
     private readonly List<int> _resultIds = new List<int>();
 
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
     public event Action ResultsCleared;
-    public event Action<Match> MatchFound;
+    public event Action<FileMatch> MatchFound;
     public event Action Began;
     public event Action Finished;
 
-    public IReadOnlyCollection<Match> Results => _results.Values;
+    public IReadOnlyCollection<FileMatch> FileResults => _fileResults.Values;
+    public IReadOnlyCollection<DirectoryMatch> DirectoryResults => _directoryResults.Values;
     public IReadOnlyCollection<string> ResultPaths => _resultPaths;
     public IReadOnlyCollection<int> ResultIds => _resultIds;
 
@@ -48,7 +50,7 @@ namespace Scope.Models
         return Task.CompletedTask;
       }
 
-      _results.Clear();
+      _fileResults.Clear();
       _resultIds.Clear();
       _resultPaths.Clear();
       ResultsCleared.Raise();
@@ -67,11 +69,17 @@ namespace Scope.Models
 
     private void FindItems(string[] searchTerms, int numberOfFiles, IProgress<SearchProgress> progress)
     {
+      if (_searchOptions.Mode==SearchMode.DirectoryName)
+      {
+        FindMatchInContainedDirectoryNames(searchTerms, _currentP4K.FileSystem.Root);
+        return;        
+      }
+
       for (int i = 0; i < numberOfFiles; i++)
       {
         var f = _currentP4K.FileSystem[i];
 
-        if (!_searchOptions.IncludeExtensions.Any(ending => f.Name.EndsWith(ending)))
+        if (!_searchOptions.IncludeExtensions.Any(extension => f.Name.EndsWith(extension)))
         {
           continue;
         }
@@ -106,17 +114,33 @@ namespace Scope.Models
       Finished.Raise();
     }
 
+    private void FindMatchInContainedDirectoryNames(string[] searchTerms, IDirectory current)
+    {
+      foreach (var directory in current.Directories)
+      {
+        foreach (var term in searchTerms)
+        {
+          if (directory.Name.Contains(term))
+          {
+            _directoryResults.Add(directory, new DirectoryMatch(term, directory));
+          }
+        }
+        // recurse into child
+        FindMatchInContainedDirectoryNames(searchTerms, directory);
+      }
+    }
+
     private void FindMatchInFileName(IFile f, string term)
     {
-      if (_results.ContainsKey(f))
+      if (_fileResults.ContainsKey(f))
       {
         return; // provide only one match if the file name matches multiple terms
       }
       if (FileNameContains(f, term))
       {
-        var match = new Match(term, f, MatchType.Filename);
+        var match = new FileMatch(term, f, MatchType.Filename);
 
-        _results.Add(f, match);
+        _fileResults.Add(f, match);
         _resultPaths.Add(f.Path);
         _resultIds.Add(f.Index);
 
@@ -143,9 +167,9 @@ namespace Scope.Models
 
       if (text.Contains(term.ToLowerInvariant()))
       {
-        var match = new Match(term, f, MatchType.Content);
+        var match = new FileMatch(term, f, MatchType.Content);
         _uiDispatch.Do(() => MatchFound.Raise(match));
-        _results.Add(f, match);
+        _fileResults.Add(f, match);
       }
     }
   }

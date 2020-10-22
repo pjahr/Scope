@@ -85,7 +85,7 @@ namespace Scope.ViewModels
     private void FilterRootItems()
     {
 
-      var hidden = RootItems.Where(i => !_search.Results.Any(r => r.File.Path.StartsWith(i.Path)))
+      var hidden = RootItems.Where(i => !_search.FileResults.Any(r => r.File.Path.StartsWith(i.Path)))
                             .ToArray();
 
       foreach (var item in hidden)
@@ -94,7 +94,7 @@ namespace Scope.ViewModels
       }
 
       // show info if no results
-      SearchFoundNoMatch = _search.Results.Any() ? null : new SearchFoundNoMatchViewModel();
+      SearchFoundNoMatch = _search.FileResults.Any() ? null : new SearchFoundNoMatchViewModel();
       PropertyChanged.Raise(this, nameof(SearchFoundNoMatch));
     }
 

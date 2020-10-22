@@ -37,7 +37,7 @@ namespace Scope.ViewModels
 
     private void HighlightSearchTerm()
     {
-      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.Results.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
+      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.FileResults.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
     }    
 
     public IDirectory Model { get; }
@@ -63,7 +63,7 @@ namespace Scope.ViewModels
     private List<TreeNodeViewModel> GetContents()
     {
       var contents = new List<TreeNodeViewModel>();
-      var pathes = _search.Results.Select(r => r.File.Path).ToArray();
+      var pathes = _search.FileResults.Select(r => r.File.Path).ToArray();
 
       foreach (var directory in GetDirectories())
       {
@@ -80,7 +80,7 @@ namespace Scope.ViewModels
 
     private IEnumerable<IFile> GetFiles()
     {
-      if (!_search.Results.Any())
+      if (!_search.FileResults.Any())
       {
         return Model.Files;
       }
@@ -90,14 +90,14 @@ namespace Scope.ViewModels
 
     private IEnumerable<IDirectory> GetDirectories()
     {
-      return _search.Results.Any()
+      return _search.FileResults.Any()
                ? Model.Directories.Where(d => _search.ResultPaths.Any(path => path.StartsWith(d.Path)))
                : Model.Directories;
     }
 
     private void FilterContent()
     {
-      if (_search.Results.Any())
+      if (_search.FileResults.Any())
       {
         return;
       }
@@ -113,7 +113,7 @@ namespace Scope.ViewModels
 
     private bool ContainsOrIsAnySearchResult(TreeNodeViewModel child)
     {
-      return _search.Results.Any(m => m.File.Path.StartsWith(child.Path));
+      return _search.FileResults.Any(m => m.File.Path.StartsWith(child.Path));
     }
   }
 }

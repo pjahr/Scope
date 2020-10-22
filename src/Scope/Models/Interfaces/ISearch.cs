@@ -6,7 +6,8 @@ namespace Scope.Models.Interfaces
 {
   public interface ISearch
   {
-    IReadOnlyCollection<Match> Results { get; }
+    IReadOnlyCollection<FileMatch> FileResults { get; }
+    IReadOnlyCollection<DirectoryMatch> DirectoryResults { get; }
     IReadOnlyCollection<string> ResultPaths { get; }
     IReadOnlyCollection<int> ResultIds { get; }
 
@@ -18,6 +19,6 @@ namespace Scope.Models.Interfaces
 
     event Action ResultsCleared;
 
-    event Action<Match> MatchFound;
+    event Action<FileMatch> MatchFound;
   }
 }

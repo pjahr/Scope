@@ -2,10 +2,10 @@
 
 namespace Scope.Models.Interfaces
 {
-  public class Match
+  public class FileMatch
   {
 
-    public Match(string term, IFile file, MatchType type, int offset=-1)
+    public FileMatch(string term, IFile file, MatchType type, int offset=-1)
     {
       Term = term;
       File = file;
@@ -22,5 +22,5 @@ namespace Scope.Models.Interfaces
     {
       return $"{File.Path} : {Offset} ({Type})";
     }
-  }  
+  }
 }

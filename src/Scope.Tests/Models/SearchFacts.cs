@@ -13,14 +13,14 @@ namespace Scope.Tests.Models
   public class SearchFacts
   {
     private ISearch _sut;
-    
+
     private readonly ICurrentP4k _currentP4K = Mock.Of<ICurrentP4k>();
-    private readonly IFileSystem _fileSystem = Mock.Of<IFileSystem>();
     private readonly IUiDispatch _uiDispatch = Mock.Of<IUiDispatch>();
     private readonly Action _resultsClearedWasRaised = Mock.Of<Action>();
-    private readonly List<Scope.Models.Interfaces.Match> _results = new List<Scope.Models.Interfaces.Match>();
+    private readonly List<FileMatch> _results = new List<FileMatch>();
 
     private IFile[] _files;
+    private IFileSystem _fileSystem = Mock.Of<IFileSystem>();
     private ISearchOptions _searchOptions = new SearchOptions();
     private IProgress<SearchProgress> _progress = Mock.Of<IProgress<SearchProgress>>();
 
@@ -58,7 +58,7 @@ namespace Scope.Tests.Models
     public async void It_can_find_files_by_name(string filename, string[] terms)
     {
       _searchOptions.Mode = SearchMode.FileName;
-      
+
       GivenFiles(AFile(filename));
       WhenSutIsCreated();
 
@@ -82,7 +82,7 @@ namespace Scope.Tests.Models
       ThenItFoundTheFile();
     }
 
-    private async Task WhenItSearchesFor(string[] terms)
+    private async Task WhenItSearchesFor(params string[] terms)
     {
       await _sut.FindMatches(_progress, terms);
     }
@@ -103,11 +103,44 @@ namespace Scope.Tests.Models
       ThenItDidntFoundTheFile();
     }
 
+    [Fact]
+    public async void It_can_search_for_directories()
+    {
+      _searchOptions.Mode = SearchMode.DirectoryName;
+      _searchOptions.SearchCaseSensitive = false;
+
+      var data = new FakeDirectory("Data", "/Data");
+
+      var root = new FakeDirectory("",
+                                   "/",
+                                   new[]
+                                   {
+                                     data,
+                                     new FakeDirectory("Engine", "/Engine")
+                                   },
+                                   new[]
+                                   {
+                                     AFile("one.txt"),
+                                     AFile("two.png")
+                                   }
+                                  );
+
+      _fileSystem = new FakeFileSystem(root);
+      _currentP4K.ReturnsOn(m => m.IsInitialized, true)
+                       .ReturnsOn(m => m.FileSystem, _fileSystem);
+
+      WhenSutIsCreated();
+
+      await WhenItSearchesFor("at");
+
+      Assert.Same(data, _sut.DirectoryResults.Single().Directory);
+    }
 
     private void GivenFiles(params IFile[] files)
     {
       _files = files;
       _fileSystem.ReturnsOn(m => m.TotalNumberOfFiles, _files.Count());
+
     }
 
     private void WhenSutIsCreated()
@@ -119,7 +152,7 @@ namespace Scope.Tests.Models
 
     private void ThenTheResultsAreEmpty()
     {
-      Assert.Empty(_sut.Results);
+      Assert.Empty(_sut.FileResults);
     }
 
     private void ThenTheEventWasRaised(int expectedCalls)
