@@ -9,14 +9,17 @@ namespace Scope.ViewModels
   internal class DirectoryTreeNodeViewModel : TreeNodeViewModel
   {
     private readonly ISearch _search;
+    private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
 
     public DirectoryTreeNodeViewModel(IDirectory directory,
                                       ISearch search,
+                                      ISearchOptions searchOptions,
                                       IUiDispatch uiDispatch) : base(directory.Name, directory.Path)
     {
       Model = directory;
       _search = search;
+      _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
 
       _search.Finished += FilterContent;
@@ -97,12 +100,29 @@ namespace Scope.ViewModels
 
     private void FilterContent()
     {
+      if (_searchOptions.Mode == SearchMode.DirectoryName)
+      {
+        if (_search.DirectoryResults.Any())
+        {
+          return;
+        }
+
+        var contentToRemove = Children.Where(c => !ContainsOrIsAnyFileSearchResult(c))
+                                         .ToArray();
+
+        foreach (var content in contentToRemove)
+        {
+          _uiDispatch.Do(() => Children.Remove(content));
+        }
+        return;
+      }
+
       if (_search.FileResults.Any())
       {
         return;
       }
 
-      var contentToRemove = Children.Where(c => !ContainsOrIsAnySearchResult(c))
+      var contentToRemove = Children.Where(c => !ContainsOrIsAnyFileSearchResult(c))
                                          .ToArray();
 
       foreach (var content in contentToRemove)
@@ -111,9 +131,17 @@ namespace Scope.ViewModels
       }
     }
 
-    private bool ContainsOrIsAnySearchResult(TreeNodeViewModel child)
+    private bool ContainsOrIsAnyFileSearchResult(TreeNodeViewModel child)
     {
       return _search.FileResults.Any(m => m.File.Path.StartsWith(child.Path));
+    }
+
+    private bool ContainsOrIsAnyDirectorySearchResult(TreeNodeViewModel child)
+    {
+      if(child is FileTreeNodeViewModel)
+      { return true; }
+
+      return _search.DirectoryResults.Any(r => r.Directory==child.);
     }
   }
 }
