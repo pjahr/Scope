@@ -147,7 +147,7 @@ namespace Scope.Tests.Models
     {
       _sut = new Search(_currentP4K, _searchOptions, _uiDispatch);
       _sut.ResultsCleared += _resultsClearedWasRaised;
-      _sut.MatchFound += _results.Add;
+      //_sut.MatchFound += _results.Add;
     }
 
     private void ThenTheResultsAreEmpty()

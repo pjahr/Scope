@@ -19,6 +19,6 @@ namespace Scope.Models.Interfaces
 
     event Action ResultsCleared;
 
-    event Action<FileMatch> MatchFound;
+    //event Action<FileMatch> MatchFound;
   }
 }

@@ -14,6 +14,7 @@ namespace Scope.ViewModels
     private readonly IPinnedItems _selectedItems;
     private readonly IExtractP4kContent _extractP4KContent;
     private readonly ISearch _search;
+    private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
 
     public CurrentP4kFileSystemViewModel(ICurrentP4k currentP4k,
@@ -21,6 +22,7 @@ namespace Scope.ViewModels
                                          IPinnedItems selectedItems,
                                          IExtractP4kContent extractP4KContent,
                                          ISearch search,
+                                         ISearchOptions searchOptions,
                                          IUiDispatch uiDispatch,
                                          SearchOptionsViewModel searchOptionsViewModel)
     {
@@ -29,6 +31,7 @@ namespace Scope.ViewModels
       _selectedItems = selectedItems;
       _extractP4KContent = extractP4KContent;
       _search = search;
+      _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
 
       SearchOptionsViewModel = searchOptionsViewModel;
@@ -46,6 +49,7 @@ namespace Scope.ViewModels
                                                   _selectedItems,
                                                   _extractP4KContent,
                                                   _search,
+                                                  _searchOptions,
                                                   _uiDispatch)
                      : null;
 

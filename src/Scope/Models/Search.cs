@@ -25,7 +25,7 @@ namespace Scope.Models
     private readonly CancellationTokenSource _cts = new CancellationTokenSource();
 
     public event Action ResultsCleared;
-    public event Action<FileMatch> MatchFound;
+    //public event Action<FileMatch> MatchFound;
     public event Action Began;
     public event Action Finished;
 
@@ -51,6 +51,7 @@ namespace Scope.Models
       }
 
       _fileResults.Clear();
+      _directoryResults.Clear();
       _resultIds.Clear();
       _resultPaths.Clear();
       ResultsCleared.Raise();
@@ -69,12 +70,19 @@ namespace Scope.Models
 
     private void FindItems(string[] searchTerms, int numberOfFiles, IProgress<SearchProgress> progress)
     {
-      if (_searchOptions.Mode==SearchMode.DirectoryName)
+      if (_searchOptions.Mode == SearchMode.DirectoryName)
       {
         FindMatchInContainedDirectoryNames(searchTerms, _currentP4K.FileSystem.Root);
-        return;        
+        Finished.Raise();
+        return;
       }
 
+      FindMatchesInFiles(searchTerms, numberOfFiles, progress);
+      Finished.Raise();
+    }
+
+    private void FindMatchesInFiles(string[] searchTerms, int numberOfFiles, IProgress<SearchProgress> progress)
+    {
       for (int i = 0; i < numberOfFiles; i++)
       {
         var f = _currentP4K.FileSystem[i];
@@ -86,22 +94,7 @@ namespace Scope.Models
 
         foreach (var term in searchTerms)
         {
-          switch (_searchOptions.Mode)
-          {
-            case SearchMode.DirectoryName:
-              FindMatchInFileName(f, term);
-              break;
-            case SearchMode.FileName:
-              FindMatchInFileName(f, term);
-              break;
-            case SearchMode.FileContent:
-              break;
-            case SearchMode.FileNameAndContent:
-              FindMatchInFileName(f, term);
-              break;
-            default:
-              break;
-          }
+          FindMatchInFileName(f, term);
         }
 
         if ((i + 1) % 10 == 0)
@@ -111,7 +104,6 @@ namespace Scope.Models
       }
 
       progress.Report(new SearchProgress(0, 0)); // reset progress with magic null value
-      Finished.Raise();
     }
 
     private void FindMatchInContainedDirectoryNames(string[] searchTerms, IDirectory current)
@@ -143,8 +135,6 @@ namespace Scope.Models
         _fileResults.Add(f, match);
         _resultPaths.Add(f.Path);
         _resultIds.Add(f.Index);
-
-        _uiDispatch.Do(() => MatchFound.Raise(match));
       }
     }
 
@@ -168,7 +158,6 @@ namespace Scope.Models
       if (text.Contains(term.ToLowerInvariant()))
       {
         var match = new FileMatch(term, f, MatchType.Content);
-        _uiDispatch.Do(() => MatchFound.Raise(match));
         _fileResults.Add(f, match);
       }
     }

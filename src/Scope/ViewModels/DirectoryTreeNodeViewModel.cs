@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Scope.Interfaces;
@@ -31,6 +32,7 @@ namespace Scope.ViewModels
       {
         ResetChildren();
       }
+      HighlightSearchTerm();
     }
 
     private void ResetName()
@@ -40,7 +42,15 @@ namespace Scope.ViewModels
 
     private void HighlightSearchTerm()
     {
-      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.FileResults.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
+      if (_searchOptions.Mode != SearchMode.DirectoryName)
+      {
+        return;
+      }
+      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.DirectoryResults
+                                                            .Select(r => r.Term)
+                                                            .Distinct()
+                                                            .OrderBy(t => t.Length)
+                                                            .ToArray());
     }    
 
     public IDirectory Model { get; }
@@ -49,10 +59,17 @@ namespace Scope.ViewModels
     {
       base.OnDisposing();
       _search.Finished -= FilterContent;
+      _search.Finished -= HighlightSearchTerm;
+      _search.ResultsCleared -= ResetName;
+      _search.Began -= ResetChildren;
     }
 
     public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {
+      foreach (var item in Children)
+      {
+        item.Dispose();
+      }
       Children.Clear();
 
       foreach (var nodeVm in GetContents())
@@ -70,7 +87,7 @@ namespace Scope.ViewModels
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _uiDispatch));
+        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _searchOptions, _uiDispatch));
       }
 
       foreach (var file in GetFiles())
@@ -100,32 +117,57 @@ namespace Scope.ViewModels
 
     private void FilterContent()
     {
-      if (_searchOptions.Mode == SearchMode.DirectoryName)
+      switch (_searchOptions.Mode)
       {
-        if (_search.DirectoryResults.Any())
-        {
+        case SearchMode.FileName:
+          RemoveContentsThatDoNotMatchSearchTerm();
           return;
-        }
+        case SearchMode.FileContent:
+          break;
+        case SearchMode.FileNameAndContent:
+          break;
+        case SearchMode.DirectoryName:
+          //RemoveDirectoriesThatDoNotMatchSearchTerm();
+          return;
+        default:
+          break;
+      }      
+    }
 
-        var contentToRemove = Children.Where(c => !ContainsOrIsAnyFileSearchResult(c))
-                                         .ToArray();
-
-        foreach (var content in contentToRemove)
-        {
-          _uiDispatch.Do(() => Children.Remove(content));
-        }
-        return;
-      }
-
-      if (_search.FileResults.Any())
+    private void RemoveDirectoriesThatDoNotMatchSearchTerm()
+    {
+      if (!_search.DirectoryResults.Any())
       {
         return;
       }
 
-      var contentToRemove = Children.Where(c => !ContainsOrIsAnyFileSearchResult(c))
-                                         .ToArray();
+      var contentsToRemove = Children.Where(c => IsAFile(c)
+                                             || !ContainsOrIsAnyDirectorySearchResult(c))
+                                     .ToArray();
 
-      foreach (var content in contentToRemove)
+      foreach (var content in contentsToRemove)
+      {
+        _uiDispatch.Do(() => Children.Remove(content));
+      }
+      return;
+    }
+
+    private bool IsAFile(TreeNodeViewModel c)
+    {
+      return c is FileTreeNodeViewModel;
+    }
+
+    private void RemoveContentsThatDoNotMatchSearchTerm()
+    {
+      if (!_search.FileResults.Any())
+      {
+        return;
+      }
+
+      var contentsToRemove = Children.Where(c => !ContainsOrIsAnyFileSearchResult(c))
+                                     .ToArray();
+
+      foreach (var content in contentsToRemove)
       {
         _uiDispatch.Do(() => Children.Remove(content));
       }
@@ -138,10 +180,12 @@ namespace Scope.ViewModels
 
     private bool ContainsOrIsAnyDirectorySearchResult(TreeNodeViewModel child)
     {
-      if(child is FileTreeNodeViewModel)
-      { return true; }
+      return _search.DirectoryResults.Any(r => child.Path.Contains(r.Directory.Path));
+    }
 
-      return _search.DirectoryResults.Any(r => r.Directory==child.);
+    public override string ToString()
+    {
+      return $"{Name} ({Path})";
     }
   }
 }

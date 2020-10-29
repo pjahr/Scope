@@ -59,5 +59,10 @@ namespace Scope.ViewModels
     {
       Name = Model.Name;
     }
+
+    public override string ToString()
+    {
+      return $"{Name} ({Path})";
+    }
   }
 }

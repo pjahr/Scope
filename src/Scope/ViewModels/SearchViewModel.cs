@@ -26,8 +26,6 @@ namespace Scope.ViewModels
       _searchIndex = searchIndex;
       _uiDispatch = uiDispatch;
 
-      _searchIndex.ResultsCleared += ClearResults;
-      _searchIndex.MatchFound += AddMatch;
       _searchIndex.Began += ShowSearchIndicator;
       _searchIndex.Finished += HideSearchIndicator;
 
@@ -94,8 +92,7 @@ namespace Scope.ViewModels
 
     public void Dispose()
     {
-      _searchIndex.ResultsCleared -= ClearResults;
-      _searchIndex.MatchFound -= AddMatch;
+      
     }
 
     private void HideSearchIndicator()
@@ -114,10 +111,6 @@ namespace Scope.ViewModels
                             ? Visibility.Collapsed
                             : Visibility.Visible;
     }
-
-    private void AddMatch(FileMatch obj) { }
-
-    private void ClearResults() { }
 
     int _progress = 0;
     private void FindFilesBySearchTerms()

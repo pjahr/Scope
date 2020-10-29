@@ -18,6 +18,7 @@ namespace Scope.ViewModels
     private readonly IPinnedItems _selectedItems;
     private readonly IExtractP4kContent _extractP4KContent;
     private readonly ISearch _search;
+    private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
 
 
@@ -26,6 +27,7 @@ namespace Scope.ViewModels
                                   IPinnedItems selectedItems,
                                   IExtractP4kContent extractP4KContent,
                                   ISearch search,
+                                  ISearchOptions searchOptions,
                                   IUiDispatch uiDispatch)
     {
       _fileSystem = fileSystem;
@@ -33,6 +35,7 @@ namespace Scope.ViewModels
       _selectedItems = selectedItems;
       _extractP4KContent = extractP4KContent;
       _search = search;
+      _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
 
       RootItems = new ObservableCollection<TreeNodeViewModel>();
@@ -80,16 +83,47 @@ namespace Scope.ViewModels
         CreateContainedDirectories();
         CreateContainedFiles();
       });
+
+      SearchFoundNoMatch = null;
+      PropertyChanged.Raise(this, nameof(SearchFoundNoMatch));
     }
 
     private void FilterRootItems()
     {
+      if (_searchOptions.Mode == SearchMode.DirectoryName)
+      {
+        SearchInDirectoryNames();
+      }
+      else
+      {
+        SearchInFiles();
+      }
+    }
 
-      var hidden = RootItems.Where(i => !_search.FileResults.Any(r => r.File.Path.StartsWith(i.Path)))
-                            .ToArray();
+    private void SearchInDirectoryNames()
+    {
+      var hidden = RootItems.Where(i => !_search.DirectoryResults.Any(r => r.Directory.Path.StartsWith(i.Path)))
+                                  .ToArray();
 
       foreach (var item in hidden)
       {
+        item.Dispose();
+        _uiDispatch.Do(() => RootItems.Remove(item));
+      }
+
+      // show info if no results
+      SearchFoundNoMatch = _search.DirectoryResults.Any() ? null : new SearchFoundNoMatchViewModel();
+      PropertyChanged.Raise(this, nameof(SearchFoundNoMatch));
+    }
+
+    private void SearchInFiles()
+    {
+      var hidden = RootItems.Where(i => !_search.FileResults.Any(r => r.File.Path.StartsWith(i.Path)))
+                                  .ToArray();
+
+      foreach (var item in hidden)
+      {
+        item.Dispose();
         _uiDispatch.Do(() => RootItems.Remove(item));
       }
 
@@ -160,9 +194,10 @@ namespace Scope.ViewModels
 
     private void CreateContainedDirectories()
     {
-      foreach (var vm in _fileSystem.Root.Directories.Select(d => new DirectoryTreeNodeViewModel(d, _search, _uiDispatch)))
+      var rootDirectories = _fileSystem.Root.Directories.Select(d => new DirectoryTreeNodeViewModel(d, _search, _searchOptions, _uiDispatch));
+      foreach (var directory in rootDirectories)
       {
-        RootItems.Add(vm);
+        RootItems.Add(directory);
       }
     }
 
