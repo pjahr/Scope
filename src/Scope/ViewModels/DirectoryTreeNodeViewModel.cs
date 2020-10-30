@@ -28,10 +28,10 @@ namespace Scope.ViewModels
       _search.ResultsCleared += ResetName;
       _search.Began += ResetChildren;
 
-      if (!Model.IsEmpty)
-      {
-        ResetChildren();
-      }
+      //if (!Model.IsEmpty)
+      //{
+      //  ResetChildren();
+      //}
       HighlightSearchTerm();
     }
 
@@ -42,11 +42,18 @@ namespace Scope.ViewModels
 
     private void HighlightSearchTerm()
     {
-      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.FileResults
-                                                            .Select(r => r.Term)
-                                                            .Distinct()
-                                                            .OrderBy(t => t.Length)
-                                                            .ToArray());
+      var searchTerms = _search.CurrentSearchTerms
+                                                                  .Distinct()
+                                                                  .OrderBy(t => t.Length)
+                                                                  .ToArray();
+      if (!searchTerms.Any())
+      {
+        searchTerms = new[] { "" };
+      }
+
+      Console.WriteLine($"{Model.Name} <- {searchTerms.Aggregate((c,n)=>$"{c},{n}")}");
+
+      Name = ViewModelUtils.GetHighlightMarkup(Name, searchTerms);
     }    
 
     public IDirectory Model { get; }

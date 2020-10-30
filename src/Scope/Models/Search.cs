@@ -16,6 +16,7 @@ namespace Scope.Models
   {
     private readonly ICurrentP4k _currentP4K;
     private readonly ISearchOptions _searchOptions;
+    private readonly List<string> _currentSearchTerms = new List<string>();
     private readonly Dictionary<IFile, FileMatch> _fileResults = new Dictionary<IFile, FileMatch>();
     private readonly List<string> _resultPaths = new List<string>();
     private readonly List<int> _resultIds = new List<int>();
@@ -29,6 +30,7 @@ namespace Scope.Models
     public IReadOnlyCollection<FileMatch> FileResults => _fileResults.Values;
     public IReadOnlyCollection<string> ResultPaths => _resultPaths;
     public IReadOnlyCollection<int> ResultIds => _resultIds;
+    public IReadOnlyCollection<string> CurrentSearchTerms => _currentSearchTerms;
 
     public Search(ICurrentP4k currentP4K,
                   ISearchOptions searchOptions)
@@ -43,6 +45,9 @@ namespace Scope.Models
       {
         return Task.CompletedTask;
       }
+
+      _currentSearchTerms.Clear();
+      _currentSearchTerms.AddRange(searchTerms);
 
       _fileResults.Clear();
       _resultIds.Clear();

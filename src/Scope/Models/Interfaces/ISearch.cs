@@ -10,6 +10,8 @@ namespace Scope.Models.Interfaces
     IReadOnlyCollection<string> ResultPaths { get; }
     IReadOnlyCollection<int> ResultIds { get; }
 
+    IReadOnlyCollection<string> CurrentSearchTerms { get; }
+
     Task FindMatches(IProgress<SearchProgress> progress, params string[] searchTerms);
 
     event Action Began;
