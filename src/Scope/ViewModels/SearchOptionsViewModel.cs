@@ -17,7 +17,7 @@ namespace Scope.ViewModels
     private bool _searchAllFileTypes = false;
 
     public SearchOptionsViewModel(ISearchOptions searchOptions,
-                                    IKnownFileExtensions knownFileTypes)
+                                  IKnownFileExtensions knownFileTypes)
     {
       _searchOptions = searchOptions;
       _knownFileTypes = knownFileTypes;
@@ -26,11 +26,6 @@ namespace Scope.ViewModels
 
       _knownFileTypes.Changed += UpdateKnownFileTypes;
       SearchAllSearchableFileTypes = true;
-    }
-
-    private void Initialize()
-    {
-      throw new NotImplementedException();
     }
 
     private void UpdateKnownFileTypes()
@@ -63,10 +58,6 @@ namespace Scope.ViewModels
         }
         _searchOptions.Mode = value;
         PropertyChanged.Raise(this, nameof(SearchMode));
-        if (_searchOptions.Mode!=SearchMode.DirectoryName)
-        {
-          return;
-        }
       }
     }
 

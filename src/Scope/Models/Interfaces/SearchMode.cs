@@ -4,7 +4,6 @@
   {
     FileName,
     FileContent,
-    FileNameAndContent,
-    DirectoryName
+    FileNameAndContent
   }
 }

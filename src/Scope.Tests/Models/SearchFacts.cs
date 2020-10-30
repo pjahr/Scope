@@ -17,7 +17,6 @@ namespace Scope.Tests.Models
     private readonly ICurrentP4k _currentP4K = Mock.Of<ICurrentP4k>();
     private readonly IUiDispatch _uiDispatch = Mock.Of<IUiDispatch>();
     private readonly Action _resultsClearedWasRaised = Mock.Of<Action>();
-    private readonly List<FileMatch> _results = new List<FileMatch>();
 
     private IFile[] _files;
     private IFileSystem _fileSystem = Mock.Of<IFileSystem>();
@@ -103,39 +102,6 @@ namespace Scope.Tests.Models
       ThenItDidntFoundTheFile();
     }
 
-    [Fact]
-    public async void It_can_search_for_directories()
-    {
-      _searchOptions.Mode = SearchMode.DirectoryName;
-      _searchOptions.SearchCaseSensitive = false;
-
-      var data = new FakeDirectory("Data", "/Data");
-
-      var root = new FakeDirectory("",
-                                   "/",
-                                   new[]
-                                   {
-                                     data,
-                                     new FakeDirectory("Engine", "/Engine")
-                                   },
-                                   new[]
-                                   {
-                                     AFile("one.txt"),
-                                     AFile("two.png")
-                                   }
-                                  );
-
-      _fileSystem = new FakeFileSystem(root);
-      _currentP4K.ReturnsOn(m => m.IsInitialized, true)
-                       .ReturnsOn(m => m.FileSystem, _fileSystem);
-
-      WhenSutIsCreated();
-
-      await WhenItSearchesFor("at");
-
-      Assert.Same(data, _sut.DirectoryResults.Single().Directory);
-    }
-
     private void GivenFiles(params IFile[] files)
     {
       _files = files;
@@ -145,9 +111,8 @@ namespace Scope.Tests.Models
 
     private void WhenSutIsCreated()
     {
-      _sut = new Search(_currentP4K, _searchOptions, _uiDispatch);
+      _sut = new Search(_currentP4K, _searchOptions);
       _sut.ResultsCleared += _resultsClearedWasRaised;
-      //_sut.MatchFound += _results.Add;
     }
 
     private void ThenTheResultsAreEmpty()
@@ -162,12 +127,12 @@ namespace Scope.Tests.Models
 
     private void ThenItFoundTheFile()
     {
-      Assert.NotNull(_results.SingleOrDefault(r => r.File == _files[0]));
+      Assert.NotNull(_sut.FileResults.SingleOrDefault(r => r.File == _files[0]));
     }
 
     private void ThenItDidntFoundTheFile()
     {
-      Assert.Empty(_results);
+      Assert.Empty(_sut.FileResults);
     }
 
     private static FileFake AFile(string filename)

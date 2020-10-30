@@ -42,11 +42,7 @@ namespace Scope.ViewModels
 
     private void HighlightSearchTerm()
     {
-      if (_searchOptions.Mode != SearchMode.DirectoryName)
-      {
-        return;
-      }
-      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.DirectoryResults
+      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.FileResults
                                                             .Select(r => r.Term)
                                                             .Distinct()
                                                             .OrderBy(t => t.Length)
@@ -126,30 +122,9 @@ namespace Scope.ViewModels
           break;
         case SearchMode.FileNameAndContent:
           break;
-        case SearchMode.DirectoryName:
-          //RemoveDirectoriesThatDoNotMatchSearchTerm();
-          return;
         default:
           break;
       }      
-    }
-
-    private void RemoveDirectoriesThatDoNotMatchSearchTerm()
-    {
-      if (!_search.DirectoryResults.Any())
-      {
-        return;
-      }
-
-      var contentsToRemove = Children.Where(c => IsAFile(c)
-                                             || !ContainsOrIsAnyDirectorySearchResult(c))
-                                     .ToArray();
-
-      foreach (var content in contentsToRemove)
-      {
-        _uiDispatch.Do(() => Children.Remove(content));
-      }
-      return;
     }
 
     private bool IsAFile(TreeNodeViewModel c)
@@ -176,11 +151,6 @@ namespace Scope.ViewModels
     private bool ContainsOrIsAnyFileSearchResult(TreeNodeViewModel child)
     {
       return _search.FileResults.Any(m => m.File.Path.StartsWith(child.Path));
-    }
-
-    private bool ContainsOrIsAnyDirectorySearchResult(TreeNodeViewModel child)
-    {
-      return _search.DirectoryResults.Any(r => child.Path.Contains(r.Directory.Path));
     }
 
     public override string ToString()

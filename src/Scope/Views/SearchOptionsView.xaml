@@ -30,26 +30,21 @@
 
     <WrapPanel
         Margin="3">
-
       
-        <RadioButton Content="Directory names"
-                     GroupName="Mode" 
-                     IsChecked="{Binding SearchMode,
-                                         Mode=TwoWay,
-                                         Converter={StaticResource EnumConverter},
-                                         ConverterParameter=DirectoryName}"  />
         <RadioButton Content="File names"
                      GroupName="Mode" 
                      IsChecked="{Binding SearchMode,
                                          Mode=TwoWay,
                                          Converter={StaticResource EnumConverter},
                                          ConverterParameter=FileName}"  />
+      
         <RadioButton Content="File contents"
                      GroupName="Mode" 
                      IsChecked="{Binding SearchMode,
                                          Mode=TwoWay,
                                          Converter={StaticResource EnumConverter},
                                          ConverterParameter=FileContent}"  />
+      
         <RadioButton Content="File names and contents"
                      GroupName="Mode" 
                      IsChecked="{Binding SearchMode,

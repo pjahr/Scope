@@ -90,34 +90,6 @@ namespace Scope.ViewModels
 
     private void FilterRootItems()
     {
-      if (_searchOptions.Mode == SearchMode.DirectoryName)
-      {
-        SearchInDirectoryNames();
-      }
-      else
-      {
-        SearchInFiles();
-      }
-    }
-
-    private void SearchInDirectoryNames()
-    {
-      var hidden = RootItems.Where(i => !_search.DirectoryResults.Any(r => r.Directory.Path.StartsWith(i.Path)))
-                                  .ToArray();
-
-      foreach (var item in hidden)
-      {
-        item.Dispose();
-        _uiDispatch.Do(() => RootItems.Remove(item));
-      }
-
-      // show info if no results
-      SearchFoundNoMatch = _search.DirectoryResults.Any() ? null : new SearchFoundNoMatchViewModel();
-      PropertyChanged.Raise(this, nameof(SearchFoundNoMatch));
-    }
-
-    private void SearchInFiles()
-    {
       var hidden = RootItems.Where(i => !_search.FileResults.Any(r => r.File.Path.StartsWith(i.Path)))
                                   .ToArray();
 
