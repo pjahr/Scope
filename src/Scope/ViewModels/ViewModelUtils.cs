@@ -9,6 +9,11 @@ namespace Scope.ViewModels
   {
     public static string GetHighlightMarkup(string text, string[] searchTerms)
     {
+      if (!searchTerms.Any())
+      {
+        return text;
+      }
+
       var allSpans = searchTerms
                      .SelectMany(term => FindOccurrences(text, term))
                      .OrderBy(span => span.Begin).ToList();
@@ -52,6 +57,11 @@ namespace Scope.ViewModels
 
     private static IEnumerable<Span> FindOccurrences(string text, string term)
     {
+      if (string.IsNullOrWhiteSpace(term)||term.Length==0)
+      {
+        yield break;
+      }
+
       var length = term.Length;
       var offset = 0;
       while (text.Length > 0)

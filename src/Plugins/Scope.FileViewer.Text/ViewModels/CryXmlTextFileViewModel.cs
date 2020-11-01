@@ -13,8 +13,14 @@ namespace Scope.FileViewer.Text.ViewModels
     public CryXmlTextFileViewModel(IFile file)
     {
       XmlDocument x;
+
+
+
       using (var s = file.Read())
       {
+        var header = new byte[4];
+        s.Read(header, 0, 4);
+        var headerText=Encoding.UTF8.GetString(header);
         x = CryXmlSerializer.ReadStream(s);
       }
 
