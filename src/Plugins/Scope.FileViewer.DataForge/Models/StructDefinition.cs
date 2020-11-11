@@ -26,20 +26,18 @@ namespace Scope.FileViewer.DataForge.Models
     public ushort FirstAttributeIndex { get; set; }
     public uint NodeType { get; set; }
 
-    public PropertyDefinition[] Properties { get; private set; }
-
     public string Name => _valueOf(NameOffset);
     //public String __parentTypeIndex { get { return String.Format("{0:X4}", ParentTypeIndex); } }
     //public String __attributeCount { get { return String.Format("{0:X4}", AttributeCount); } }
     //public String __firstAttributeIndex { get { return String.Format("{0:X4}", FirstAttributeIndex); } }
     //public String __nodeType { get { return String.Format("{0:X4}", NodeType); } }
 
-    public void Read(BinaryReader r, string name, DataForgeFile df)
+    public Struct Read(BinaryReader r, string name, DataForgeFile df)
     {
       var baseStruct = this;
       var properties = new List<PropertyDefinition>();
 
-     
+
       // TODO: Do we need to handle property overrides (original comment, investigate)
 
       // TODO: Include 1st call in while loop (same call inside)?
@@ -96,7 +94,7 @@ namespace Scope.FileViewer.DataForge.Models
           // ConversionType seems only used to differentiate between arrays and single values
           var arrayCount = r.ReadUInt32();
           var firstIndex = r.ReadUInt32();
-          
+
           var elements = new List<object>();
 
           for (var i = 0; i < arrayCount; i++)
@@ -225,12 +223,27 @@ namespace Scope.FileViewer.DataForge.Models
         }
       }
 
-      Properties = properties.ToArray();
+      return new Struct
+      {
+        Name = Name, 
+        Properties = properties.Select(p => new Property { Name = p.Name }).ToArray()
+      };
     }
 
     public override string ToString()
     {
       return $"{Name} ({AttributeCount}, {FirstAttributeIndex} ,{NodeType}, {ParentTypeIndex})";
     }
+  }
+
+  internal class Struct
+  {
+    public string Name { get; set; }
+    public Property[] Properties { get; set; } = new Property[0];
+  }
+
+  internal class Property
+  {
+    public string Name { get; set; }
   }
 }

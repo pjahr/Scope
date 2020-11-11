@@ -170,17 +170,27 @@ namespace Scope.FileViewer.DataForge.Models
       Profile(() =>
       {
 
+        var structs = new List<Struct>();
+
       foreach (var dataMapping in DataMappingTable)
       {
+
+          if (dataMapping.StructIndex == 814)
+          {
+
+          }
+
+
         var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
         Console.WriteLine($"Map {dataMapping.Name}->{dataStruct.Name} ({dataMapping.StructCount})");
         
         for (var i = 0; i < dataMapping.StructCount; i++)
         {
-          dataStruct.Read(r, dataMapping.Name, this);
+          structs.Add(dataStruct.Read(r, dataMapping.Name, this));
         }
       }
+        Console.WriteLine(structs.Count);
       },"map data"
         );
 
