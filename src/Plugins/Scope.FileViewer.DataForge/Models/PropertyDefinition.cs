@@ -13,8 +13,8 @@ namespace Scope.FileViewer.DataForge.Models
 
       NameOffset = r.ReadUInt32();
       StructIndex = r.ReadUInt16();
-      DataType = (DataType) r.ReadUInt16();
-      ConversionType = (ConversionType) r.ReadUInt16();
+      DataType = (DataType)r.ReadUInt16();
+      ConversionType = (ConversionType)r.ReadUInt16();
       Padding = r.ReadUInt16();
     }
 
@@ -24,96 +24,96 @@ namespace Scope.FileViewer.DataForge.Models
     public ConversionType ConversionType { get; set; }
     public ushort Padding { get; set; }
     public string Name => _valueOf(NameOffset);
-    public object Value { get; private set; }
-    public object Unknown { get; private set; }
+    public object Value { get; private set; } // -> Property
+    public object Unknown { get; private set; } // -> Property
 
-    public void Read(BinaryReader r, DataForgeFile df)
+    public Property Read(BinaryReader r, DataForgeFile df)
     {
-      //Console.Write($"Reading Property: {Name} ({ConversionType}, {DataType}): ");
-
+      object value;
       switch (DataType)
       {
         case DataType.Reference:
-          Unknown=r.ReadUInt32(); // ?
-          Value = r.ReadGuid();
-          break;
+          Unknown = r.ReadUInt32(); // ?
+          value = r.ReadGuid();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Locale:
           var offset = r.ReadUInt32();
-          Value = df.ValueMap[offset];
-          break;
+          value = df.ValueMap[offset];
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.StrongPointer:
           r.ReadUInt32(); // ? {1:X8}
-          Value = r.ReadUInt32();
-          break;
+          value = r.ReadUInt32();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.WeakPointer:
           var structIndex = r.ReadUInt32();
           var itemIndex = r.ReadUInt32();
           df.WeakMappings2.Add(new ClassMapping
-                               {
-                                 StructIndex = (ushort) structIndex, RecordIndex = (int) itemIndex
-                               });
-          break;
+          {
+            StructIndex = (ushort)structIndex,
+            RecordIndex = (int)itemIndex
+          });
+          return new Property { Name = Name, Type = DataType, Value = "TODO" };
 
         case DataType.String:
           var v = r.ReadUInt32();
-          Value = df.ValueMap[v];
-          break;
+          value = df.ValueMap[v];
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Boolean:
-          Value = r.ReadByte();
-          break;
+          value = r.ReadByte();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Single:
-          Value = r.ReadSingle();
-          break;
+          value = r.ReadSingle();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Double:
-          Value = r.ReadDouble();
-          break;
+          value = r.ReadDouble();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Guid:
-          Value = r.ReadGuid();
-          break;
+          value = r.ReadGuid();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.SByte:
-          Value = r.ReadSByte();
-          break;
+          value = r.ReadSByte();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Int16:
-          Value = r.ReadInt16();
-          break;
+          value = r.ReadInt16();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Int32:
-          Value = r.ReadInt32();
-          break;
+          value = r.ReadInt32();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Int64:
-          Value = r.ReadInt64();
-          break;
+          value = r.ReadInt64();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Byte:
-          Value = r.ReadByte();
-          break;
+          value = r.ReadByte();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.UInt16:
-          Value = r.ReadUInt16();
-          break;
+          value = r.ReadUInt16();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.UInt32:
-          Value = r.ReadUInt32();
-          break;
+          value = r.ReadUInt32();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.UInt64:
-          Value = r.ReadUInt64();
-          break;
+          value = r.ReadUInt64();
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         case DataType.Enum:
           var enumDefinition = df.EnumDefinitionTable[StructIndex]; // ?
-          Value = df.ValueMap[r.ReadUInt32()];
-          break;
+          value = df.ValueMap[r.ReadUInt32()];
+          return new Property { Name = Name, Type = DataType, Value = value };
 
         default:
           throw new NotImplementedException();
@@ -122,7 +122,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     public override string ToString()
     {
-      return $"Prop: {Name} ({ConversionType}, {DataType}):{Value}";
+      return $"Prop: {Name} ({ConversionType}, {DataType})";
     }
   }
 }

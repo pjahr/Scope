@@ -111,12 +111,12 @@ namespace Scope.FileViewer.DataForge.Models
 
       // read all the item types using the respective item counts
 
-      Profile(()=> StructDefinitionTable = structDefinitionCount.ToArray(() => new StructDefinition(r, V)), "Reading structs");
+      Profile(() => StructDefinitionTable = structDefinitionCount.ToArray(() => new StructDefinition(r, V)), "Reading structs");
 
 
       Profile(() => PropertyDefinitionTable = propertyDefinitionCount.ToArray(() => new PropertyDefinition(r, V)), "Reading properties");
 
-      Profile(() => EnumDefinitionTable = enumDefinitionCount.ToArray(() => new EnumDefinition(r, V, i=>EnumOptionTable[i].Value)), "Reading enums");
+      Profile(() => EnumDefinitionTable = enumDefinitionCount.ToArray(() => new EnumDefinition(r, V, i => EnumOptionTable[i].Value)), "Reading enums");
 
       Profile(() => DataMappingTable = dataMappingCount.ToArray(() => new DataMapping(r, VS)), "Reading data mappings");
 
@@ -135,7 +135,7 @@ namespace Scope.FileViewer.DataForge.Models
       Profile(() => DoubleValues = doubleValueCount.ToArray(r.ReadDouble), "Reading Doubles");
 
       Profile(() => GuidValues = guidValueCount.ToArray(r.ReadGuid), "Reading Guids");
-      Profile(() => StringValues = stringValueCount.ToArray(()=>new StringLookup(r,V)), "Reading Strings");
+      Profile(() => StringValues = stringValueCount.ToArray(() => new StringLookup(r, V)), "Reading Strings");
       Profile(() => LocaleValues = localeValueCount.ToArray(r.ReadUInt32), "Reading Locales");
       Profile(() => EnumValues = enumValueCount.ToArray(r.ReadUInt32), "Reading Enum values");
       Profile(() => StrongValues = strongValueCount.ToArray(() => new Pointer(r)), "Reading strong pointers");
@@ -167,53 +167,52 @@ namespace Scope.FileViewer.DataForge.Models
 
       ///////////////////////////////////////////////////////////////////////////
 
+      var structs = new List<Struct>();
       Profile(() =>
       {
 
-        var structs = new List<Struct>();
 
-      foreach (var dataMapping in DataMappingTable)
-      {
+        foreach (var dataMapping in DataMappingTable)
+        {
 
+          // DEBUG
           if (dataMapping.StructIndex == 814)
           {
 
           }
+          var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
+          Console.WriteLine($"Map {dataMapping.Name}->{dataStruct.Name} ({dataMapping.StructCount})");
 
-        var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
-
-        Console.WriteLine($"Map {dataMapping.Name}->{dataStruct.Name} ({dataMapping.StructCount})");
-        
-        for (var i = 0; i < dataMapping.StructCount; i++)
-        {
-          structs.Add(dataStruct.Read(r, dataMapping.Name, this));
+          for (var i = 0; i < dataMapping.StructCount; i++)
+          {
+            structs.Add(dataStruct.Read(r, dataMapping.Name, this));
+          }
         }
-      }
         Console.WriteLine(structs.Count);
-      },"map data"
+      }, "map data"
         );
 
       ValueTable = values.ToArray();
 
-      Profile(()=>
+      Profile(() =>
       {
 
-      Files = new Dictionary<string, string>();
+        Files = new Dictionary<string, string>();
 
-      foreach (var record in RecordDefinitionTable)
-      {
-        var filename = ValueMap[record.FileNameOffset];
-        var name = ValueMap[record.NameOffset];
-        if (Files.ContainsKey(filename))
+        foreach (var record in RecordDefinitionTable)
         {
-          Console.WriteLine($"{filename} {name} {record.OtherIndex} {record.StructIndex} {record.VariantIndex}");
+          var filename = ValueMap[record.FileNameOffset];
+          var name = ValueMap[record.NameOffset];
+          if (Files.ContainsKey(filename))
+          {
+            Console.WriteLine($"{filename} {name} {record.OtherIndex} {record.StructIndex} {record.VariantIndex}");
+          }
+          else
+          {
+            Files.Add(filename, name);
+          }
         }
-        else
-        {
-          Files.Add(filename, name);
-        }
-      }
       }, "gather values"
         );
     }

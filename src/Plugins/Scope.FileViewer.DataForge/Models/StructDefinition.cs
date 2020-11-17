@@ -27,26 +27,21 @@ namespace Scope.FileViewer.DataForge.Models
     public uint NodeType { get; set; }
 
     public string Name => _valueOf(NameOffset);
-    //public String __parentTypeIndex { get { return String.Format("{0:X4}", ParentTypeIndex); } }
-    //public String __attributeCount { get { return String.Format("{0:X4}", AttributeCount); } }
-    //public String __firstAttributeIndex { get { return String.Format("{0:X4}", FirstAttributeIndex); } }
-    //public String __nodeType { get { return String.Format("{0:X4}", NodeType); } }
-
+    
     public Struct Read(BinaryReader r, string name, DataForgeFile df)
     {
       var baseStruct = this;
-      var properties = new List<PropertyDefinition>();
+      var propertyDefinitions = new List<PropertyDefinition>();
 
 
       // TODO: Do we need to handle property overrides (original comment, investigate)
 
       // TODO: Include 1st call in while loop (same call inside)?
 
-      var propertyDefinitions = Enumerable.Range(FirstAttributeIndex, AttributeCount)
-                                          .Select(i => df.PropertyDefinitionTable[i])
-                                          .ToArray();
 
-      properties.InsertRange(0, propertyDefinitions);
+      propertyDefinitions.InsertRange(0, Enumerable.Range(FirstAttributeIndex, AttributeCount)
+                                          .Select(i => df.PropertyDefinitionTable[i])
+                                          .ToArray());
 
       while (baseStruct.ParentTypeIndex != 0xFFFFFFFF)
       {
@@ -55,11 +50,13 @@ namespace Scope.FileViewer.DataForge.Models
         var attributes = Enumerable.Range(baseStruct.FirstAttributeIndex, baseStruct.AttributeCount)
                                    .Select(i => df.PropertyDefinitionTable[i])
                                    .ToArray();
-        properties.InsertRange(0,
+        propertyDefinitions.InsertRange(0,
                                attributes);
       }
+      
+      var properties = new List<Property>();
 
-      foreach (var propertyDefinition in properties)
+      foreach (var propertyDefinition in propertyDefinitions)
       {
         propertyDefinition.ConversionType =
           (ConversionType)((int)propertyDefinition.ConversionType & 0xFF);
@@ -86,7 +83,7 @@ namespace Scope.FileViewer.DataForge.Models
           }
           else
           {
-            propertyDefinition.Read(r, df);
+            properties.Add(propertyDefinition.Read(r, df));
           }
         }
         else
@@ -225,25 +222,14 @@ namespace Scope.FileViewer.DataForge.Models
 
       return new Struct
       {
-        Name = Name, 
-        Properties = properties.Select(p => new Property { Name = p.Name }).ToArray()
+        Name = Name,
+        Properties = properties.ToArray()
       };
     }
 
     public override string ToString()
     {
-      return $"{Name} ({AttributeCount}, {FirstAttributeIndex} ,{NodeType}, {ParentTypeIndex})";
+      return $"{Name} ({AttributeCount}, {FirstAttributeIndex}, {NodeType}, {ParentTypeIndex})";
     }
-  }
-
-  internal class Struct
-  {
-    public string Name { get; set; }
-    public Property[] Properties { get; set; } = new Property[0];
-  }
-
-  internal class Property
-  {
-    public string Name { get; set; }
   }
 }
