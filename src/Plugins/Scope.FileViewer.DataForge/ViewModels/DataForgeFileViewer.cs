@@ -5,43 +5,20 @@ using Scope.Interfaces;
 
 namespace Scope.FileViewer.DataForge.ViewModels
 {
-  public class DataForgeFileViewer : IFileViewer
+  internal class DataForgeFileViewer : IFileViewer
   {
     private static DataForgeFile _df;
-    private readonly IMessageQueue _messages;
 
-    public DataForgeFileViewer(IFile file, IMessageQueue messages)
+    internal DataForgeFileViewer(DataForgeFile df, string errorMessage)
     {
-      _messages = messages;
-
-      if (_df != null)
-      {
-        // HACK(PJ): load only once for now. Caching for open p4k most likely. 
-        return;
-      }
-
-      try
-      {
-        using (var s = file.Read())
-        using (var r = new BinaryReader(s))
-        {
-          _df= new DataForgeFile(r, _messages);
-        }
-      }
-      catch (Exception e)
-      {
-        ErrorMessage =
-          $"There was an error opening {file.Name}.\r\n\r\n{e.Message}\r\n\r\n{e.StackTrace}";
-
-        _messages.Add(ErrorMessage);
-      }
+      _df = df;
+      ErrorMessage = errorMessage;
     }
 
     public string Header => "Data Forge";
     public string ErrorMessage { get; }
     public void Dispose()
-    {
-      
+    {      
     }
   }
 }

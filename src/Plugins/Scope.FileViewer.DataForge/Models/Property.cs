@@ -1,6 +1,6 @@
 ﻿namespace Scope.FileViewer.DataForge.Models
 {
-  internal class Property
+  public class Property
   {
     public string Name { get; set; }
     public DataType Type { get; set; }

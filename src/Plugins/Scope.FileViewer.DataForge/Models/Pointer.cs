@@ -2,7 +2,7 @@
 
 namespace Scope.FileViewer.DataForge.Models
 {
-  internal class Pointer
+  public class Pointer
   {
     public Pointer(BinaryReader r)
     {

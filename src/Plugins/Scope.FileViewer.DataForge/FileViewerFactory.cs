@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
+using System.IO;
 using System.Linq;
+using Scope.FileViewer.DataForge.Models;
 using Scope.FileViewer.DataForge.ViewModels;
 using Scope.Interfaces;
 
@@ -10,10 +13,12 @@ namespace Scope.FileViewer.DataForge
   {
     private static readonly string[] Extensions = { ".dcb" };
     private readonly IMessageQueue _messages;
+    private readonly DataForgeFileCache _dataForgeFileCache;
 
-    public FileViewerFactory(IMessageQueue messages)
+    public FileViewerFactory(IMessageQueue messages, DataForgeFileCache dataForgeFileCache)
     {
       _messages = messages;
+      _dataForgeFileCache = dataForgeFileCache;
     }
 
     public bool CanHandle(IFile file)
@@ -23,17 +28,29 @@ namespace Scope.FileViewer.DataForge
 
     public IFileViewer Create(IFile file)
     {
-      return new DataForgeFileViewer(file, _messages);
+      var errorMessage = "";
+
+      if (_dataForgeFileCache.Current == null)
+      {
+        // HACK(PJ): load only once for now. Caching for open p4k most likely. 
+        try
+        {
+          using (var s = file.Read())
+          using (var r = new BinaryReader(s))
+          {
+            _dataForgeFileCache.Current = new DataForgeFile(r, _messages);
+          }
+        }
+        catch (Exception e)
+        {
+          errorMessage =
+            $"There was an error opening {file.Name}.\r\n\r\n{e.Message}\r\n\r\n{e.StackTrace}";
+
+          _messages.Add(errorMessage);
+        }
+      }
+
+      return new DataForgeFileViewer(_dataForgeFileCache.Current, errorMessage);
     }
   }
-
-  //internal class SearchProvider : ISearchProvider
-  //{
-
-  //}
-
-  //internal class FileSubStructureProvider : IFileSubStructureProvider
-  //{
-
-  //}
 }

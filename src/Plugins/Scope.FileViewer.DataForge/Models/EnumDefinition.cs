@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Scope.FileViewer.DataForge.Models
 {
-  internal class EnumDefinition
+  public class EnumDefinition
   {
     private readonly Func<uint, string> _valueOf;
     private readonly Func<uint, string> _enumValueOf;

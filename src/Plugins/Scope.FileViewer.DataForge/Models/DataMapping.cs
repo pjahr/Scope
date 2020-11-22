@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Scope.FileViewer.DataForge.Models
 {
-  internal class DataMapping
+  public class DataMapping
   {
     private readonly Func<uint, string> _valueOf;
 

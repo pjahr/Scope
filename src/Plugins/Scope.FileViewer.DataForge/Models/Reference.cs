@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Scope.FileViewer.DataForge.Models
 {
-  internal class Reference
+  public class Reference
   {
     public Reference(BinaryReader r)
     {

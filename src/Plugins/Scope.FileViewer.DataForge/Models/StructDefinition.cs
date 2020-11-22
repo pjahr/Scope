@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Scope.FileViewer.DataForge.Models
 {
-  internal class StructDefinition
+  public class StructDefinition
   {
     private readonly Func<uint, string> _valueOf;
 

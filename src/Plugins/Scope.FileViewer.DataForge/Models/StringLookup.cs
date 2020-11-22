@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Scope.FileViewer.DataForge.Models
 {
-  internal class StringLookup
+  public class StringLookup
   {
     private readonly Func<uint, string> _valueOf;
     private uint _value;
