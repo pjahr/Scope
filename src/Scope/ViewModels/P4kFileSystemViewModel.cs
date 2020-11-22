@@ -20,7 +20,7 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-
+    private readonly IFileSubStructureProvider[] _subFileFactories;
 
     public P4kFileSystemViewModel(IFileSystem fileSystem,
                                   ICurrentItem currentItem,
@@ -28,7 +28,8 @@ namespace Scope.ViewModels
                                   IExtractP4kContent extractP4KContent,
                                   ISearch search,
                                   ISearchOptions searchOptions,
-                                  IUiDispatch uiDispatch)
+                                  IUiDispatch uiDispatch,
+                                  IEnumerable<IFileSubStructureProvider> subFileFactories)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;
@@ -37,7 +38,7 @@ namespace Scope.ViewModels
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-
+      _subFileFactories = subFileFactories.ToArray();
       RootItems = new ObservableCollection<TreeNodeViewModel>();
 
       SetCurrentItemCommand = new RelayCommand<object>(SetCurrentItem);
@@ -158,7 +159,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedFiles()
     {
-      foreach (var vm in _fileSystem.Root.Files.Select(d => new FileTreeNodeViewModel(d, _search)))
+      foreach (var vm in _fileSystem.Root.Files.Select(d => new FileTreeNodeViewModel(d, _search, _subFileFactories)))
       {
         RootItems.Add(vm);
       }
@@ -166,7 +167,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedDirectories()
     {
-      var rootDirectories = _fileSystem.Root.Directories.Select(d => new DirectoryTreeNodeViewModel(d, _search, _searchOptions, _uiDispatch));
+      var rootDirectories = _fileSystem.Root.Directories.Select(d => new DirectoryTreeNodeViewModel(d, _search, _searchOptions, _uiDispatch, _subFileFactories));
       foreach (var directory in rootDirectories)
       {
         RootItems.Add(directory);

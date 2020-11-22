@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 using Scope.ViewModels.Commands;

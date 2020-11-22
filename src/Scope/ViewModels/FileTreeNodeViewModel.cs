@@ -4,15 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
+using Scope.Utils;
 
 namespace Scope.ViewModels
 {
   internal class FileTreeNodeViewModel : TreeNodeViewModel
   {
     private readonly ISearch _search;
+    private IFileSubStructureProvider[] _subFileFactories;
 
     public FileTreeNodeViewModel(IFile file,
-                                 ISearch search) : base(file.Name, file.Path)
+                                 ISearch search,
+                                 IFileSubStructureProvider[] subFileFactories) : base(file.Name, file.Path)
     {
       Model = file;
       _search = search;
@@ -26,6 +29,8 @@ namespace Scope.ViewModels
 
       UncompressedSizeValue = uncompressed[0];
       UncompressedSizeUnit = uncompressed[1];
+
+      _subFileFactories = subFileFactories.Where(f => f.ApplicableFileExtension == System.IO.Path.GetExtension(file.Name)).ToArray();
 
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;

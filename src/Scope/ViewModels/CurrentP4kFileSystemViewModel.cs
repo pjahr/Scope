@@ -1,8 +1,10 @@
 ﻿using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
+using System.Linq;
 
 namespace Scope.ViewModels
 {
@@ -16,6 +18,7 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
+    private readonly IFileSubStructureProvider[] _subFileFactories;
 
     public CurrentP4kFileSystemViewModel(ICurrentP4k currentP4k,
                                          ICurrentItem currentFile,
@@ -24,7 +27,8 @@ namespace Scope.ViewModels
                                          ISearch search,
                                          ISearchOptions searchOptions,
                                          IUiDispatch uiDispatch,
-                                         SearchOptionsViewModel searchOptionsViewModel)
+                                         SearchOptionsViewModel searchOptionsViewModel,
+                                         IEnumerable<IFileSubStructureProvider> subFileFactories = null)
     {
       _currentP4K = currentP4k;
       _currentFile = currentFile;
@@ -33,7 +37,7 @@ namespace Scope.ViewModels
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-
+      _subFileFactories = subFileFactories != null ? subFileFactories.ToArray() : new IFileSubStructureProvider[0];
       SearchOptionsViewModel = searchOptionsViewModel;
 
       Initialize();
@@ -50,7 +54,8 @@ namespace Scope.ViewModels
                                                   _extractP4KContent,
                                                   _search,
                                                   _searchOptions,
-                                                  _uiDispatch)
+                                                  _uiDispatch,
+                                                  _subFileFactories)
                      : null;
 
       PropertyChanged.Raise(this, nameof(FileSystem));

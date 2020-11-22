@@ -157,7 +157,6 @@
     <Compile Include="Models\Interfaces\ICurrentP4k.cs" />
     <Compile Include="Models\Interfaces\IDialog.cs" />
     <Compile Include="Models\Interfaces\IDialogs.cs" />
-    <Compile Include="Models\Interfaces\IDirectory.cs" />
     <Compile Include="Models\Interfaces\IExtractP4kContent.cs" />
     <Compile Include="Models\Interfaces\IFileSystem.cs" />
     <Compile Include="Models\Interfaces\IKnownFileExtensions.cs" />

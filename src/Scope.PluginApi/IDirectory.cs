@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Scope.Interfaces;
 
-namespace Scope.Models.Interfaces
+namespace Scope.Interfaces
 {
   public interface IDirectory
   {

@@ -27,6 +27,7 @@ namespace Scope.Models
         files.Add(file);
         directory.Add(file);
 
+        // statistics
         var extension = Path.GetExtension(file.Name)
                             .TrimStart('.');
 

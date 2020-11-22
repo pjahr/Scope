@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Scope.Interfaces;
-using Scope.Models.Interfaces;
 
 namespace Scope.Models
 {

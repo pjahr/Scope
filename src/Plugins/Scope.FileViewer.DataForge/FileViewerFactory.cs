@@ -26,4 +26,14 @@ namespace Scope.FileViewer.DataForge
       return new DataForgeFileViewer(file, _messages);
     }
   }
+
+  //internal class SearchProvider : ISearchProvider
+  //{
+
+  //}
+
+  //internal class FileSubStructureProvider : IFileSubStructureProvider
+  //{
+
+  //}
 }

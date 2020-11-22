@@ -1,4 +1,6 @@
-﻿namespace Scope.Models.Interfaces
+﻿using Scope.Interfaces;
+
+namespace Scope.Models.Interfaces
 {
   public class DirectoryMatch
   {

@@ -12,17 +12,20 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
+    private readonly IEnumerable<IFileSubStructureProvider> _subFileFactories;
 
     public DirectoryTreeNodeViewModel(IDirectory directory,
                                       ISearch search,
                                       ISearchOptions searchOptions,
-                                      IUiDispatch uiDispatch) : base(directory.Name, directory.Path)
+                                      IUiDispatch uiDispatch,
+                                      IEnumerable<IFileSubStructureProvider> subFileFactories)
+      : base(directory.Name, directory.Path)
     {
       Model = directory;
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-
+      _subFileFactories = subFileFactories;
       _search.Finished += FilterContent;
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
@@ -51,10 +54,10 @@ namespace Scope.ViewModels
         searchTerms = new[] { "" };
       }
 
-      Console.WriteLine($"{Model.Name} <- {searchTerms.Aggregate((c,n)=>$"{c},{n}")}");
+      Console.WriteLine($"{Model.Name} <- {searchTerms.Aggregate((c, n) => $"{c},{n}")}");
 
       Name = ViewModelUtils.GetHighlightMarkup(Name, searchTerms);
-    }    
+    }
 
     public IDirectory Model { get; }
 
@@ -90,12 +93,12 @@ namespace Scope.ViewModels
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _searchOptions, _uiDispatch));
+        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _searchOptions, _uiDispatch, _subFileFactories));
       }
 
       foreach (var file in GetFiles())
       {
-        contents.Add(new FileTreeNodeViewModel(file, _search));
+        contents.Add(new FileTreeNodeViewModel(file, _search, _subFileFactories.ToArray()));
       }
 
       return contents;
@@ -131,7 +134,7 @@ namespace Scope.ViewModels
           break;
         default:
           break;
-      }      
+      }
     }
 
     private bool IsAFile(TreeNodeViewModel c)

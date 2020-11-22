@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Scope.Interfaces;
 using Scope.Models;
 using Scope.Models.Interfaces;
 using Scope.Zip.Zip;
