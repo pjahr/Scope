@@ -5,10 +5,11 @@
     public string Name { get; set; }
     public DataType Type { get; set; }
     public object Value { get; set; }
-
+    public bool IsList { get; set; } = false;
     public override string ToString()
     {
-      return $"{Name}: {Value}";
+      var s = IsList ? "s" : "";
+      return $"{Name}: {Value} ({Type}{s})";
     }
   }
 }

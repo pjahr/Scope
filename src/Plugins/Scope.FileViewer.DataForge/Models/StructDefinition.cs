@@ -67,18 +67,23 @@ namespace Scope.FileViewer.DataForge.Models
 
           if (propertyDefinition.DataType == DataType.Class)
           {
-            var dataStruct = df.StructDefinitionTable[propertyDefinition.StructIndex];
-            dataStruct.Read(r, propertyDefinition.Name, df);
+            var structDefinition = df.StructDefinitionTable[propertyDefinition.StructIndex];
+            var structData = structDefinition.Read(r, propertyDefinition.Name, df);
+            properties.Add(new Property() { Name = structDefinition.Name, Type = DataType.Class, Value = structData });
           }
           else if (propertyDefinition.DataType == DataType.StrongPointer)
           {
             var structIndex = (ushort)r.ReadUInt32();
             var recordIndex = (int)r.ReadUInt32();
 
+            var property = new Property() { Name = propertyDefinition.Name, Type = DataType.StrongPointer, Value = "some reference" };
+            properties.Add(property);
+
             df.ClassMappings.Add(new ClassMapping
             {
               StructIndex = structIndex,
-              RecordIndex = recordIndex
+              RecordIndex = recordIndex,
+              Property = property
             });
           }
           else
@@ -92,131 +97,142 @@ namespace Scope.FileViewer.DataForge.Models
           var arrayCount = r.ReadUInt32();
           var firstIndex = r.ReadUInt32();
 
-          var elements = new List<object>();
+          var elements = new List<Property>();
+          var propName = propertyDefinition.Name;
+          var propType = propertyDefinition.DataType;
 
           for (var i = 0; i < arrayCount; i++)
           {
             switch (propertyDefinition.DataType)
             {
               case DataType.Boolean:
-                elements.Add(df.BooleanValues[firstIndex + i]);
+                
+                elements.Add(new Property { Name = propName, Type = propType, Value = df.BooleanValues[firstIndex + i]});
                 break;
 
               case DataType.Double:
-                elements.Add(df.DoubleValues[firstIndex + i]);
+                elements.Add(new Property { Name = propName, Type = propType, Value = df.DoubleValues[firstIndex + i]});
 
                 break;
 
               case DataType.Enum: //TODO uint, value is retrieved from ValueMap
-                elements.Add(df.EnumValues[firstIndex + i]);
+                elements.Add(new Property { Name = propName, Type = propType, Value = df.EnumValues[firstIndex + i]});
 
                 break;
 
               case DataType.Guid:
-                elements.Add(df.GuidValues[firstIndex + i]);
+                elements.Add(new Property { Name = propName, Type = propType, Value = df.GuidValues[firstIndex + i]});
 
                 break;
 
               case DataType.Int16:
-                elements.Add(df.Int16Values[firstIndex + i]);
+                elements.Add(new Property { Name = propName, Type = propType, Value = df.Int16Values[firstIndex + i]});
 
                 break;
 
               case DataType.Int32:
-                elements.Add(df.Int32Values[firstIndex + i]);
+                elements.Add(new Property { Name = propName, Type = propType, Value = df.Int32Values[firstIndex + i]});
 
                 break;
 
               case DataType.Int64:
-                elements.Add(df.Int64Values[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.Int64Values[firstIndex + i]});
 
                 break;
 
               case DataType.SByte:
-                elements.Add(df.Int8Values[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.Int8Values[firstIndex + i]});
 
                 break;
 
               case DataType.Locale:
-                elements.Add(df.LocaleValues[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.LocaleValues[firstIndex + i]});
 
                 break;
 
               case DataType.Reference:
-                elements.Add(df.ReferenceValues[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.ReferenceValues[firstIndex + i]});
 
                 break;
 
               case DataType.Single:
-                elements.Add(df.SingleValues[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.SingleValues[firstIndex + i]});
 
                 break;
 
               case DataType.String:
-                elements.Add(df.StringValues[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.StringValues[firstIndex + i]});
 
                 break;
 
               case DataType.UInt16:
-                elements.Add(df.UInt16Values[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.UInt16Values[firstIndex + i]});
 
                 break;
 
               case DataType.UInt32:
-                elements.Add(df.UInt32Values[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.UInt32Values[firstIndex + i]});
 
                 break;
 
               case DataType.UInt64:
-                elements.Add(df.UInt64Values[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.UInt64Values[firstIndex + i]});
 
                 break;
 
               case DataType.Byte:
-                elements.Add(df.UInt8Values[firstIndex + i]);
+                elements.Add(new Property{Name = propName,Type = propType,Value =df.UInt8Values[firstIndex + i]});
 
                 break;
 
               case DataType.Class:
+
+                var property = new Property { Name = propName, Type = propType, Value = null };
+                elements.Add(property);
                 df.ClassMappings.Add(new ClassMapping
                 {
                   StructIndex = propertyDefinition.StructIndex,
-                  RecordIndex = (int)(firstIndex + i)
+                  RecordIndex = (int)(firstIndex + i),
+                  Property = property
                 });
                 break;
 
               case DataType.StrongPointer:
-
+                var property1 = new Property { Name = propName, Type = propType, Value = null };
+                elements.Add(property1);
                 df.StrongMappings.Add(new ClassMapping
                 {
                   StructIndex = propertyDefinition.StructIndex,
-                  RecordIndex = (int)(firstIndex + i)
+                  RecordIndex = (int)(firstIndex + i),
+                  Property = property1
                 });
                 break;
 
               case DataType.WeakPointer:
-
+                var property2 = new Property { Name = propName, Type = propType, Value = null };
+                elements.Add(property2);
                 df.WeakMappings1.Add(new ClassMapping
                 {
                   StructIndex = propertyDefinition.StructIndex,
-                  RecordIndex = (int)(firstIndex + i)
+                  RecordIndex = (int)(firstIndex + i),
+                  Property = property2
                 });
                 break;
 
               default:
                 throw new NotImplementedException();
-
-                // var tempe = this.DocumentRoot.CreateElement(String.Format("{0}", node.DataType));
-                // var tempa = this.DocumentRoot.CreateAttribute("__child");
-                // tempa.Value = (firstIndex + i).ToString();
-                // tempe.Attributes.Append(tempa);
-                // var tempb = this.DocumentRoot.CreateAttribute("__parent");
-                // tempb.Value = node.StructIndex.ToString();
-                // tempe.Attributes.Append(tempb);
-                // child.AppendChild(tempe);
-                // break;
             }
           }
+
+          var listProperty = new Property
+          {
+            Name = propertyDefinition.Name,
+            Type = propertyDefinition.DataType,
+            IsList = true,
+            Value = elements
+          };
+
+          properties.Add(listProperty);
         }
       }
 

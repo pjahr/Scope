@@ -69,6 +69,7 @@ namespace Scope.FileViewer.DataForge.Models
       StrongMappings = new List<ClassMapping>();
       WeakMappings1 = new List<ClassMapping>();
       WeakMappings2 = new List<ClassMapping>();
+      DataMap = new Dictionary<uint, List<Struct>>();
 
       if (!IsLegacy) // seams to be obsolete
       {
@@ -147,9 +148,8 @@ namespace Scope.FileViewer.DataForge.Models
       
       Profile(() => { ReadValues(r, textLength); }, "Reading value map");
 
-      List<Struct> structs = null;
-      Profile(() => { structs = MapData(r); }, "Mapping data");
-      Profile(() => { GenerateFiles(structs); }, "Generating files");
+      Profile(() => { MapData(r); }, "Mapping data");
+      Profile(() => { GenerateFiles(); }, "Generating files");
     }
 
     private void ReadValues(BinaryReader r, uint textLength)
@@ -183,7 +183,7 @@ namespace Scope.FileViewer.DataForge.Models
         }
       }
 
-      foreach (var dataMapping in ClassMapping)
+      foreach (var dataMapping in ClassMappings)
       {
         if (dataMapping.StructIndex == 0xFFFF)
         {
@@ -195,9 +195,9 @@ namespace Scope.FileViewer.DataForge.Models
         }
         else if (this.DataMap.ContainsKey(dataMapping.StructIndex) && this.DataMap[dataMapping.StructIndex].Count > dataMapping.RecordIndex)
         {
-          dataMapping.Node.ParentNode.ReplaceChild(
-              this.DataMap[dataMapping.StructIndex][dataMapping.RecordIndex],
-              dataMapping.Node);
+          //dataMapping.Node.ParentNode.ReplaceChild(
+          //    this.DataMap[dataMapping.StructIndex][dataMapping.RecordIndex],
+          //    dataMapping.Node);
         }
         else
         {
@@ -206,7 +206,7 @@ namespace Scope.FileViewer.DataForge.Models
       }
     }
 
-    private void GenerateFiles(List<Struct> structs)
+    private void GenerateFiles()
     {
 
       Files = new Dictionary<string, string>();
