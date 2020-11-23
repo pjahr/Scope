@@ -1,0 +1,23 @@
+Structs       : 866114
+ClassMappings : 836387
+StrongMappings: 303602
+WeakMappings1 :  20095
+WeakMappings2 : 205562
+
+
+
+
+
+
+unforge
+StructDefinitions : 3195
+PropertyDefinitions : 11188
+Enums : 367
+ValueTable : 178535
+DataMappingTable : 2110
+RecordDefintiionTable : 508803
+
+Require_ClasssMapping : 836387 OK
+Require_StrongMapping : 303602 OK
+Require_WeakMapping1:  20095 OK
+Require_WeakMapping2: 205562 OK

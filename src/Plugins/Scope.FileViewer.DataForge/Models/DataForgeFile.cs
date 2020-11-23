@@ -46,6 +46,7 @@ namespace Scope.FileViewer.DataForge.Models
     public Pointer[] WeakValues { get; set; }
 
     public Dictionary<uint, string> ValueMap { get; set; }
+    public Dictionary<uint, List<Struct>> DataMap { get; set; }
 
     public List<ClassMapping> ClassMappings { get; set; }
     public List<ClassMapping> StrongMappings { get; set; }
@@ -143,78 +144,86 @@ namespace Scope.FileViewer.DataForge.Models
 
       Profile(() => ReferenceValues = referenceValueCount.ToArray(() => new Reference(r)), "Reading referenes");
       Profile(() => EnumOptionTable = enumOptionCount.ToArray(() => new StringLookup(r, V)), "Reading enum options");
+      
+      Profile(() => { ReadValues(r, textLength); }, "Reading value map");
 
+      List<Struct> structs = null;
+      Profile(() => { structs = MapData(r); }, "Mapping data");
+      Profile(() => { GenerateFiles(structs); }, "Generating files");
+    }
+
+    private void ReadValues(BinaryReader r, uint textLength)
+    {
       var values = new List<string>();
-
       var maxPosition = r.BaseStream.Position + textLength;
       var startPosition = r.BaseStream.Position;
-
       ValueMap = new Dictionary<uint, string>();
-
-      Profile(() =>
+      while (r.BaseStream.Position < maxPosition)
       {
-
-        while (r.BaseStream.Position < maxPosition)
-        {
-          var offset = r.BaseStream.Position - startPosition;
-          var value = r.ReadNullTerminatedString();
-          values.Add(value);
-          ValueMap[(uint)offset] = value;
-        }
-      }, "Reading value map"
-
-      );
-
-      ///////////////////////////////////////////////////////////////////////////
-
-      var structs = new List<Struct>();
-      Profile(() =>
-      {
-
-
-        foreach (var dataMapping in DataMappingTable)
-        {
-
-          // DEBUG
-          if (dataMapping.StructIndex == 814)
-          {
-
-          }
-          var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
-
-          Console.WriteLine($"Map {dataMapping.Name}->{dataStruct.Name} ({dataMapping.StructCount})");
-
-          for (var i = 0; i < dataMapping.StructCount; i++)
-          {
-            structs.Add(dataStruct.Read(r, dataMapping.Name, this));
-          }
-        }
-        Console.WriteLine(structs.Count);
-      }, "map data"
-        );
-
+        var offset = r.BaseStream.Position - startPosition;
+        var value = r.ReadNullTerminatedString();
+        values.Add(value);
+        ValueMap[(uint)offset] = value;
+      }
       ValueTable = values.ToArray();
+    }
 
-      Profile(() =>
+    private void MapData(BinaryReader r)
+    {
+      var structs = new List<Struct>();
+      Console.WriteLine(structs.Count);
+      foreach (var dataMapping in DataMappingTable)
       {
+        DataMap[dataMapping.StructIndex] = new List<Struct>();
+        var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
-        Files = new Dictionary<string, string>();
-
-        foreach (var record in RecordDefinitionTable)
+        for (var i = 0; i < dataMapping.StructCount; i++)
         {
-          var filename = ValueMap[record.FileNameOffset];
-          var name = ValueMap[record.NameOffset];
-          if (Files.ContainsKey(filename))
-          {
-            Console.WriteLine($"{filename} {name} {record.OtherIndex} {record.StructIndex} {record.VariantIndex}");
-          }
-          else
-          {
-            Files.Add(filename, name);
-          }
+          DataMap[dataMapping.StructIndex].Add(dataStruct.Read(r, dataMapping.Name, this));
         }
-      }, "gather values"
-        );
+      }
+
+      foreach (var dataMapping in ClassMapping)
+      {
+        if (dataMapping.StructIndex == 0xFFFF)
+        {
+          throw new NotImplementedException("???");
+          //dataMapping.Item1.ParentNode.ReplaceChild(
+          //    this._xmlDocument.CreateElement("null"),
+          //    dataMapping.Item1);
+
+        }
+        else if (this.DataMap.ContainsKey(dataMapping.StructIndex) && this.DataMap[dataMapping.StructIndex].Count > dataMapping.RecordIndex)
+        {
+          dataMapping.Node.ParentNode.ReplaceChild(
+              this.DataMap[dataMapping.StructIndex][dataMapping.RecordIndex],
+              dataMapping.Node);
+        }
+        else
+        {
+          throw new NotImplementedException("bug");          
+        }
+      }
+    }
+
+    private void GenerateFiles(List<Struct> structs)
+    {
+
+      Files = new Dictionary<string, string>();
+
+      foreach (var record in RecordDefinitionTable)
+      {
+        var filename = ValueMap[record.FileNameOffset];
+        var name = ValueMap[record.NameOffset];
+        if (Files.ContainsKey(filename))
+        {
+          Console.WriteLine($"{filename} {name} {record.OtherIndex} {record.StructIndex} {record.VariantIndex}");
+        }
+        else
+        {
+          Files.Add(filename, name);
+        }
+      }
     }
 
     // TODO: Explain Shortcuts
@@ -228,5 +237,4 @@ namespace Scope.FileViewer.DataForge.Models
       _messages.Add($"DataForge: {what} took {sw.ElapsedMilliseconds} ms.");
     }
   }
-
 }

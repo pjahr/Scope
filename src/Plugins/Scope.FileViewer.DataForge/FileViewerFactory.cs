@@ -30,7 +30,7 @@ namespace Scope.FileViewer.DataForge
     {
       var errorMessage = "";
 
-      if (_dataForgeFileCache.Current == null)
+      if (_dataForgeFileCache[file] == null)
       {
         // HACK(PJ): load only once for now. Caching for open p4k most likely. 
         try
@@ -38,7 +38,7 @@ namespace Scope.FileViewer.DataForge
           using (var s = file.Read())
           using (var r = new BinaryReader(s))
           {
-            _dataForgeFileCache.Current = new DataForgeFile(r, _messages);
+            _dataForgeFileCache[file] = new DataForgeFile(r, _messages);
           }
         }
         catch (Exception e)
@@ -50,7 +50,7 @@ namespace Scope.FileViewer.DataForge
         }
       }
 
-      return new DataForgeFileViewer(_dataForgeFileCache.Current, errorMessage);
+      return new DataForgeFileViewer(_dataForgeFileCache[file], errorMessage);
     }
   }
 }
