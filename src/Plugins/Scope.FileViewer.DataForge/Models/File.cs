@@ -6,12 +6,14 @@ namespace Scope.FileViewer.DataForge.Models
   internal class File : IFile
   {
     private readonly byte[] _bytes;
+    private readonly Struct _dataForgeItem;
 
-    public File(string name, string path, byte[] bytes)
+    public File(string name, string path, Struct dataForgeItem)
     {
       Name = name;
       Path = path;
-      _bytes = bytes;
+      _dataForgeItem = dataForgeItem;
+      _bytes = new byte[0];
       BytesUncompressed = _bytes.Length;
       BytesCompressed = _bytes.Length;
     }

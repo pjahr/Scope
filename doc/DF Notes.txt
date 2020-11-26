@@ -21,3 +21,172 @@ Require_ClasssMapping : 836387 OK
 Require_StrongMapping : 303602 OK
 Require_WeakMapping1:  20095 OK
 Require_WeakMapping2: 205562 OK
+
+
+
+
+libs/foundry/records/actor/actorblockhelper.xml
+<ActorPUSpawningComponentParams __type="DataForgeComponentParams" __polymorphicType="ActorPUSpawningComponentParams" />
+
+"libs/foundry/records/actor/actormeleecombat.xml"
+forge.DataMap[forge.RecordDefinitionTable[2].StructIndex][forge.RecordDefinitionTable[2].VariantIndex].OuterXml
+
+DataMap[RecordDefinitionTable[2].StructIndex][RecordDefinitionTable[2].VariantIndex]
+
+<MeleeCombatConfig >
+  <attackNodes>
+    <MeleeAttackInfo >
+      <meleeAttacks>
+        <MeleeFragInfo attackType="LightRight"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+        <MeleeFragInfo attackType="HeavyLeft"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+      </meleeAttacks>
+    </MeleeAttackInfo>
+    <MeleeAttackInfo >
+      <meleeAttacks>
+        <MeleeFragInfo attackType="LightLeft"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+        <MeleeFragInfo attackType="HeavyRight"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+      </meleeAttacks>
+    </MeleeAttackInfo>
+    <MeleeAttackInfo >
+      <meleeAttacks>
+        <MeleeFragInfo attackType="HeavyRight"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+        <MeleeFragInfo attackType="HeavyLeft"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+      </meleeAttacks>
+    </MeleeAttackInfo>
+    <MeleeAttackInfo >
+      <meleeAttacks>
+        <MeleeFragInfo attackType="HeavyLeft"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+        <MeleeFragInfo attackType="HeavyRight"
+                       meleeAttackCategoryInfo="varWeakPointer:000007DE 000007DE"
+                        />
+      </meleeAttacks>
+    </MeleeAttackInfo>
+  </attackNodes>
+  <meleeAttackCategoryInfo>
+    <MeleeAttackCategoryInfo fragmentTag="punchjabR"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+    <MeleeAttackCategoryInfo fragmentTag="punchjabL"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+    <MeleeAttackCategoryInfo fragmentTag="punchhookR"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+    <MeleeAttackCategoryInfo fragmentTag="punchhookL"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+    <MeleeAttackCategoryInfo fragmentTag="punchupcutR"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+    <MeleeAttackCategoryInfo fragmentTag="punchupcutL"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+    <MeleeAttackCategoryInfo fragmentTag="punchhayR"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+    <MeleeAttackCategoryInfo fragmentTag="punchhayL"
+                             attackCategoryParams="varWeakPointer:000007DD 000007DD"
+                              />
+  </meleeAttackCategoryInfo>
+  <attackCategoryParams>
+    <AttackCategoryParams actionCategory="MeleeJab"
+                          cameraShakeParams="572a59c1-dab5-4903-891a-41cfeec6aa99"
+                          stunRecoveryModifier="1"
+                          blockStunReductionModifier="0,1"
+                          blockStunStaminaModifier="0,00371"
+                          attackImpulse="8"
+                          fullbodyAnimation="0"
+                          >
+      <damageInfo DamagePhysical="0,01"
+                  DamageEnergy="0"
+                  DamageDistortion="0"
+                  DamageThermal="0"
+                  DamageBiochemical="0"
+                  DamageStun="10"
+                  
+                  __polymorphicType="DamageInfo" />
+    </AttackCategoryParams>
+    <AttackCategoryParams actionCategory="MeleeHook"
+                          cameraShakeParams="b4d8fb11-b534-44e4-9245-8f5ffe6f6c41"
+                          stunRecoveryModifier="1"
+                          blockStunReductionModifier="0,1"
+                          blockStunStaminaModifier="0,00368"
+                          attackImpulse="16"
+                          fullbodyAnimation="1"
+                          >
+      <damageInfo DamagePhysical="0,02"
+                  DamageEnergy="0"
+                  DamageDistortion="0"
+                  DamageThermal="0"
+                  DamageBiochemical="0"
+                  DamageStun="20"
+                  
+                  __polymorphicType="DamageInfo" />
+    </AttackCategoryParams>
+    <AttackCategoryParams actionCategory="MeleeArmed"
+                          cameraShakeParams="00000000-0000-0000-0000-000000000000"
+                          stunRecoveryModifier="1"
+                          blockStunReductionModifier="0,1"
+                          blockStunStaminaModifier="0,00371"
+                          attackImpulse="12"
+                          fullbodyAnimation="0"
+                          >
+      <damageInfo DamagePhysical="5"
+                  DamageEnergy="0"
+                  DamageDistortion="0"
+                  DamageThermal="0"
+                  DamageBiochemical="0"
+                  DamageStun="20"
+                  
+                  __polymorphicType="DamageInfo" />
+    </AttackCategoryParams>
+    <AttackCategoryParams actionCategory="MeleeUpperCut"
+                          cameraShakeParams="00000000-0000-0000-0000-000000000000"
+                          stunRecoveryModifier="1"
+                          blockStunReductionModifier="0,1"
+                          blockStunStaminaModifier="0,00368"
+                          attackImpulse="18"
+                          fullbodyAnimation="1"
+                          >
+      <damageInfo DamagePhysical="0,03"
+                  DamageEnergy="0"
+                  DamageDistortion="0"
+                  DamageThermal="0"
+                  DamageBiochemical="0"
+                  DamageStun="40"
+                  
+                  __polymorphicType="DamageInfo" />
+    </AttackCategoryParams>
+    <AttackCategoryParams actionCategory="MeleeHaymaker"
+                          cameraShakeParams="00000000-0000-0000-0000-000000000000"
+                          stunRecoveryModifier="1"
+                          blockStunReductionModifier="0,1"
+                          blockStunStaminaModifier="0,00368"
+                          attackImpulse="20"
+                          fullbodyAnimation="1"
+                          >
+      <damageInfo DamagePhysical="0,03"
+                  DamageEnergy="0"
+                  DamageDistortion="0"
+                  DamageThermal="0"
+                  DamageBiochemical="0"
+                  DamageStun="40"
+                  
+                  __polymorphicType="DamageInfo" />
+    </AttackCategoryParams>
+  </attackCategoryParams>
+</MeleeCombatConfig>

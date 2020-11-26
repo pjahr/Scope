@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace Scope.FileViewer.DataForge.Models
 {
@@ -25,7 +26,7 @@ namespace Scope.FileViewer.DataForge.Models
     private StringLookup[] EnumOptionTable { get; set; }
 
     private string[] ValueTable { get; set; }
-    public Dictionary<string, string> Files { get; set; }
+    public Dictionary<string, IFile> Files { get; set; }
     public Reference[] ReferenceValues { get; set; }
     public Guid[] GuidValues { get; set; }
     public StringLookup[] StringValues { get; set; }
@@ -187,14 +188,21 @@ namespace Scope.FileViewer.DataForge.Models
       {
         if (dataMapping.StructIndex == 0xFFFF)
         {
-          throw new NotImplementedException("???");
+          //TODO handle StrongPointer/... later
           //dataMapping.Item1.ParentNode.ReplaceChild(
           //    this._xmlDocument.CreateElement("null"),
           //    dataMapping.Item1);
-
         }
         else if (this.DataMap.ContainsKey(dataMapping.StructIndex) && this.DataMap[dataMapping.StructIndex].Count > dataMapping.RecordIndex)
         {
+          var value = DataMap[dataMapping.StructIndex][dataMapping.RecordIndex];
+          
+          var structProperty = new Property() { Name = value.Name, Value = value, Type = DataType.Class, IsList = false };
+          
+          //DataMap[dataMapping.StructIndex][dataMapping.RecordIndex] = value;
+          
+          dataMapping.Property = structProperty;
+
           //dataMapping.Node.ParentNode.ReplaceChild(
           //    this.DataMap[dataMapping.StructIndex][dataMapping.RecordIndex],
           //    dataMapping.Node);
@@ -209,7 +217,7 @@ namespace Scope.FileViewer.DataForge.Models
     private void GenerateFiles()
     {
 
-      Files = new Dictionary<string, string>();
+      Files = new Dictionary<string, IFile>();
 
       foreach (var record in RecordDefinitionTable)
       {
@@ -221,7 +229,7 @@ namespace Scope.FileViewer.DataForge.Models
         }
         else
         {
-          Files.Add(filename, name);
+          Files.Add(filename, new File(name, filename, DataMap[record.StructIndex].First()));
         }
       }
     }
