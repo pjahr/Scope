@@ -53,7 +53,12 @@ namespace Scope.FileViewer.DataForge.Models
         propertyDefinitions.InsertRange(0,
                                attributes);
       }
-      
+
+      if (name== "MeleeAttackInfo")
+      {
+
+      }
+
       var properties = new List<Property>();
 
       foreach (var propertyDefinition in propertyDefinitions)
@@ -186,8 +191,7 @@ namespace Scope.FileViewer.DataForge.Models
                 break;
 
               case DataType.Class:
-
-                var property = new Property { Name = propName, Type = propType, Value = null };
+                var property = new Property { Name = propName, Type = propType, Value = "MAPPING PLACEHOLDER" };
                 elements.Add(property);
                 df.ClassMappings.Add(new ClassMapping
                 {
@@ -198,7 +202,7 @@ namespace Scope.FileViewer.DataForge.Models
                 break;
 
               case DataType.StrongPointer:
-                var property1 = new Property { Name = propName, Type = propType, Value = null };
+                var property1 = new Property { Name = propName, Type = propType, Value = "MAPPING PLACEHOLDER" };
                 elements.Add(property1);
                 df.StrongMappings.Add(new ClassMapping
                 {
@@ -209,7 +213,7 @@ namespace Scope.FileViewer.DataForge.Models
                 break;
 
               case DataType.WeakPointer:
-                var property2 = new Property { Name = propName, Type = propType, Value = null };
+                var property2 = new Property { Name = propName, Type = propType, Value = "MAPPING PLACEHOLDER" };
                 elements.Add(property2);
                 df.WeakMappings1.Add(new ClassMapping
                 {

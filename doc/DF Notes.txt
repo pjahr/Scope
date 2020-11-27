@@ -4,11 +4,6 @@ StrongMappings: 303602
 WeakMappings1 :  20095
 WeakMappings2 : 205562
 
-
-
-
-
-
 unforge
 StructDefinitions : 3195
 PropertyDefinitions : 11188
@@ -23,13 +18,13 @@ Require_WeakMapping1:  20095 OK
 Require_WeakMapping2: 205562 OK
 
 
-
-
-libs/foundry/records/actor/actorblockhelper.xml
-<ActorPUSpawningComponentParams __type="DataForgeComponentParams" __polymorphicType="ActorPUSpawningComponentParams" />
-
 "libs/foundry/records/actor/actormeleecombat.xml"
 forge.DataMap[forge.RecordDefinitionTable[2].StructIndex][forge.RecordDefinitionTable[2].VariantIndex].OuterXml
+
+MeleeCombatConfig StructDefinitionTable[2016]
+attackNodes: ClassMappings[664987]
+
+
 
 DataMap[RecordDefinitionTable[2].StructIndex][RecordDefinitionTable[2].VariantIndex]
 
