@@ -146,7 +146,7 @@ namespace Scope.FileViewer.DataForge.Models
 
       Profile(() => ReferenceValues = referenceValueCount.ToArray(() => new Reference(r)), "Reading referenes");
       Profile(() => EnumOptionTable = enumOptionCount.ToArray(() => new StringLookup(r, V)), "Reading enum options");
-
+      
       Profile(() => { ReadValues(r, textLength); }, "Reading value map");
 
       Profile(() => { MapData(r); }, "Mapping data");
@@ -175,10 +175,6 @@ namespace Scope.FileViewer.DataForge.Models
       Console.WriteLine(structs.Count);
       foreach (var dataMapping in DataMappingTable)
       {
-        if (dataMapping.StructIndex == 2016 || dataMapping.StructIndex == 2015)
-        {
-          //DBG
-        }
         DataMap[dataMapping.StructIndex] = new List<Struct>();
         var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
@@ -190,11 +186,6 @@ namespace Scope.FileViewer.DataForge.Models
 
       foreach (var dataMapping in ClassMappings)
       {
-        if (dataMapping.StructIndex == 2016 || dataMapping.StructIndex == 2015)
-        {
-          //DBG
-        }
-
         if (dataMapping.StructIndex == 0xFFFF)
         {
           //TODO handle StrongPointer/... later
@@ -202,21 +193,14 @@ namespace Scope.FileViewer.DataForge.Models
           //    this._xmlDocument.CreateElement("null"),
           //    dataMapping.Item1);
         }
-        else if (this.DataMap.ContainsKey(dataMapping.StructIndex)
-              && this.DataMap[dataMapping.StructIndex].Count > dataMapping.RecordIndex)
+        else if (this.DataMap.ContainsKey(dataMapping.StructIndex) && this.DataMap[dataMapping.StructIndex].Count > dataMapping.RecordIndex)
         {
           var value = DataMap[dataMapping.StructIndex][dataMapping.RecordIndex];
-
-          var structProperty = new Property()
-          {
-            Name = value.Name,
-            Value = value,
-            Type = DataType.Class,
-            IsList = false
-          };
-
+          
+          var structProperty = new Property() { Name = value.Name, Value = value, Type = DataType.Class, IsList = false };
+          
           //DataMap[dataMapping.StructIndex][dataMapping.RecordIndex] = value;
-
+          
           dataMapping.Property = structProperty;
 
           //dataMapping.Node.ParentNode.ReplaceChild(
@@ -225,54 +209,7 @@ namespace Scope.FileViewer.DataForge.Models
         }
         else
         {
-          throw new NotImplementedException("bug");
-        }
-      }
-
-      foreach (var dataMapping in StrongMappings)
-      {
-        var strong = StrongValues[dataMapping.RecordIndex];
-
-        if (strong.Index == 0xFFFFFFFF)
-        {
-          // set null value?
-        }
-        else
-        {
-          var s = DataMap[strong.StructType][(Int32)strong.Index];
-          dataMapping.Property.Value = s;
-        }
-      }
-
-      foreach (var dataMapping in WeakMappings1)
-      {
-        var weak = WeakValues[dataMapping.RecordIndex];
-
-        if (weak.Index == 0xFFFFFFFF)
-        {
-          dataMapping.Property.Value = String.Format("0");
-        }
-        else
-        {
-          dataMapping.Property.Value = DataMap[weak.StructType][(Int32)weak.Index];
-        }
-      }
-
-      foreach (var dataMapping in WeakMappings2)
-      {
-        if (dataMapping.StructIndex == 0xFFFF)
-        {
-          dataMapping.Property.Value = "null";
-        }
-        else if (dataMapping.RecordIndex == -1)
-        {
-          var s = this.DataMap[dataMapping.StructIndex].FirstOrDefault();
-          var v = s ?? (object)"MISSING VALUE";
-          dataMapping.Property.Value = v;
-        }
-        else
-        {
-          dataMapping.Property.Value = DataMap[dataMapping.StructIndex][dataMapping.RecordIndex];
+          throw new NotImplementedException("bug");          
         }
       }
     }

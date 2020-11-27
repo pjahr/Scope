@@ -50,14 +50,12 @@ namespace Scope.FileViewer.DataForge.Models
         case DataType.WeakPointer:
           var structIndex = r.ReadUInt32();
           var itemIndex = r.ReadUInt32();
-          var property = new Property { Name = Name, Type = DataType, Value = "MAPPING PLACEHOLDER" };
           df.WeakMappings2.Add(new ClassMapping
           {
             StructIndex = (ushort)structIndex,
-            RecordIndex = (int)itemIndex,
-            Property = property
+            RecordIndex = (int)itemIndex
           });
-          return property;
+          return new Property { Name = Name, Type = DataType, Value = "TODO" };
 
         case DataType.String:
           var v = r.ReadUInt32();
