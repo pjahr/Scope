@@ -175,11 +175,13 @@ namespace Scope.FileViewer.DataForge.Models
       Console.WriteLine(structs.Count);
       foreach (var dataMapping in DataMappingTable)
       {
-        if (dataMapping.StructIndex == 2016 || dataMapping.StructIndex == 2015)
+        if (dataMapping.StructIndex == 2013 || dataMapping.StructIndex == 2015)
         {
           //DBG
         }
+
         DataMap[dataMapping.StructIndex] = new List<Struct>();
+        
         var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
         for (var i = 0; i < dataMapping.StructCount; i++)
@@ -188,26 +190,26 @@ namespace Scope.FileViewer.DataForge.Models
         }
       }
 
-      foreach (var dataMapping in ClassMappings)
+      foreach (var classMapping in ClassMappings)
       {
-        if (dataMapping.StructIndex == 2016 || dataMapping.StructIndex == 2015)
+        if (classMapping.StructIndex == 2015)
         {
           //DBG
         }
 
-        if (dataMapping.StructIndex == 0xFFFF)
+        if (classMapping.StructIndex == 0xFFFF)
         {
           //TODO handle StrongPointer/... later
           //dataMapping.Item1.ParentNode.ReplaceChild(
           //    this._xmlDocument.CreateElement("null"),
           //    dataMapping.Item1);
         }
-        else if (this.DataMap.ContainsKey(dataMapping.StructIndex)
-              && this.DataMap[dataMapping.StructIndex].Count > dataMapping.RecordIndex)
+        else if (this.DataMap.ContainsKey(classMapping.StructIndex)
+              && this.DataMap[classMapping.StructIndex].Count > classMapping.RecordIndex)
         {
-          var value = DataMap[dataMapping.StructIndex][dataMapping.RecordIndex];
+          var value = DataMap[classMapping.StructIndex][classMapping.RecordIndex];
 
-          var structProperty = new Property()
+          var property = new Property()
           {
             Name = value.Name,
             Value = value,
@@ -216,8 +218,14 @@ namespace Scope.FileViewer.DataForge.Models
           };
 
           //DataMap[dataMapping.StructIndex][dataMapping.RecordIndex] = value;
+          var propertyIndex = classMapping.PropertyContainer.IndexOf(classMapping.Property);
+          
+          if (propertyIndex == -1)
+          {
+            throw new InvalidDataException();
+          }
 
-          dataMapping.Property = structProperty;
+          classMapping.PropertyContainer[propertyIndex] = property;
 
           //dataMapping.Node.ParentNode.ReplaceChild(
           //    this.DataMap[dataMapping.StructIndex][dataMapping.RecordIndex],

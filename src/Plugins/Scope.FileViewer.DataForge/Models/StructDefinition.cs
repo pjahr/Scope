@@ -58,7 +58,7 @@ namespace Scope.FileViewer.DataForge.Models
       {
 
       }
-
+      var result = new Struct { Name = Name };
       var properties = new List<Property>();
 
       foreach (var propertyDefinition in propertyDefinitions)
@@ -88,6 +88,7 @@ namespace Scope.FileViewer.DataForge.Models
             {
               StructIndex = structIndex,
               RecordIndex = recordIndex,
+              PropertyContainer = properties,
               Property = property
             });
           }
@@ -190,17 +191,22 @@ namespace Scope.FileViewer.DataForge.Models
 
                 break;
 
+                //////////////////////////////////////////////////////////////////////////////////////////////////
               case DataType.Class:
                 var property = new Property { Name = propName, Type = propType, Value = "MAPPING PLACEHOLDER" };
+                
                 elements.Add(property);
+
                 df.ClassMappings.Add(new ClassMapping
                 {
                   StructIndex = propertyDefinition.StructIndex,
                   RecordIndex = (int)(firstIndex + i),
+                  PropertyContainer = elements,
                   Property = property
                 });
                 break;
 
+                //////////////////////////////////////////////////////////////////////////////////////////////////
               case DataType.StrongPointer:
                 var property1 = new Property { Name = propName, Type = propType, Value = "MAPPING PLACEHOLDER" };
                 elements.Add(property1);
@@ -208,6 +214,7 @@ namespace Scope.FileViewer.DataForge.Models
                 {
                   StructIndex = propertyDefinition.StructIndex,
                   RecordIndex = (int)(firstIndex + i),
+                  PropertyContainer = elements,
                   Property = property1
                 });
                 break;
@@ -219,6 +226,7 @@ namespace Scope.FileViewer.DataForge.Models
                 {
                   StructIndex = propertyDefinition.StructIndex,
                   RecordIndex = (int)(firstIndex + i),
+                  PropertyContainer = elements,
                   Property = property2
                 });
                 break;
@@ -239,12 +247,8 @@ namespace Scope.FileViewer.DataForge.Models
           properties.Add(listProperty);
         }
       }
-
-      return new Struct
-      {
-        Name = Name,
-        Properties = properties.ToArray()
-      };
+      result.Properties = properties;
+      return result;
     }
 
     public override string ToString()
