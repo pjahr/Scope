@@ -130,9 +130,7 @@ namespace Scope.ViewModels
 
     protected virtual void LoadChildren() { }
 
-    protected virtual void OnDisposing()
-    {
-    }
+    protected virtual void OnDisposing() { }
 
     public virtual Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
     {

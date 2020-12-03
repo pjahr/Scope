@@ -12,29 +12,25 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly IEnumerable<IFileSubStructureProvider> _subFileFactories;
+    private readonly IEnumerable<IFileSubStructureProvider> _fileSubStructureProviders;
 
     public DirectoryTreeNodeViewModel(IDirectory directory,
                                       ISearch search,
                                       ISearchOptions searchOptions,
                                       IUiDispatch uiDispatch,
-                                      IEnumerable<IFileSubStructureProvider> subFileFactories)
+                                      IEnumerable<IFileSubStructureProvider> fileSubStructureProviders)
       : base(directory.Name, directory.Path)
     {
       Model = directory;
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-      _subFileFactories = subFileFactories;
+      _fileSubStructureProviders = fileSubStructureProviders;
       _search.Finished += FilterContent;
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
       _search.Began += ResetChildren;
 
-      //if (!Model.IsEmpty)
-      //{
-      //  ResetChildren();
-      //}
       HighlightSearchTerm();
     }
 
@@ -46,15 +42,13 @@ namespace Scope.ViewModels
     private void HighlightSearchTerm()
     {
       var searchTerms = _search.CurrentSearchTerms
-                                                                  .Distinct()
-                                                                  .OrderBy(t => t.Length)
-                                                                  .ToArray();
+                               .Distinct()
+                               .OrderBy(t => t.Length)
+                               .ToArray();
       if (!searchTerms.Any())
       {
         searchTerms = new[] { "" };
       }
-
-      Console.WriteLine($"{Model.Name} <- {searchTerms.Aggregate((c, n) => $"{c},{n}")}");
 
       Name = ViewModelUtils.GetHighlightMarkup(Name, searchTerms);
     }
@@ -93,12 +87,12 @@ namespace Scope.ViewModels
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _searchOptions, _uiDispatch, _subFileFactories));
+        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders));
       }
 
       foreach (var file in GetFiles())
       {
-        contents.Add(new FileTreeNodeViewModel(file, _search, _subFileFactories.ToArray()));
+        contents.Add(new FileTreeNodeViewModel(file, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders.ToArray()));
       }
 
       return contents;
@@ -136,12 +130,7 @@ namespace Scope.ViewModels
           break;
       }
     }
-
-    private bool IsAFile(TreeNodeViewModel c)
-    {
-      return c is FileTreeNodeViewModel;
-    }
-
+        
     private void RemoveContentsThatDoNotMatchSearchTerm()
     {
       if (!_search.FileResults.Any())

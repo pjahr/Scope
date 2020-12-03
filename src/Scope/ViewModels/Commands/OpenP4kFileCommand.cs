@@ -83,7 +83,7 @@ namespace Scope.ViewModels.Commands
 
       CanExecuteChanged.Raise(this); // raise event so that consumers (buttons) can reactivate
 
-      _messages.Add($"Loaded {_currentP4K.FileName}.");
+      _messages.Add($"Loaded {_currentP4K.FileName}.({_.PropertyName}, {task.Status})");
       _progress.Stop();
     }
   }

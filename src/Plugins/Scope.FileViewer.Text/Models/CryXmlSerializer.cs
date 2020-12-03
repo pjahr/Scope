@@ -30,7 +30,7 @@ namespace Scope.FileViewer.Text.Models
     public static int ReadInt(this BinaryReader r,
                               ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
     {
-      var bytes = new[] {r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte()};
+      var bytes = new[] { r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte() };
 
       if (byteOrder == ByteOrderEnum.LittleEndian)
       {
@@ -44,7 +44,7 @@ namespace Scope.FileViewer.Text.Models
     public static short ReadInt16(this BinaryReader r,
                                   ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
     {
-      var bytes = new[] {r.ReadByte(), r.ReadByte()};
+      var bytes = new[] { r.ReadByte(), r.ReadByte() };
 
       if (byteOrder == ByteOrderEnum.LittleEndian)
       {
@@ -77,7 +77,7 @@ namespace Scope.FileViewer.Text.Models
     public static uint ReadUInt32(this BinaryReader r,
                                   ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
     {
-      var bytes = new[] {r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte()};
+      var bytes = new[] { r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte() };
 
       if (byteOrder == ByteOrderEnum.LittleEndian)
       {
@@ -114,12 +114,13 @@ namespace Scope.FileViewer.Text.Models
     {
       using (BinaryReader r = new BinaryReader(stream))
       {
+        stream.Position = 0;
         var peek = r.PeekChar();
 
-        if (peek == '<')
-        {
-          return null; // File is already XML
-        }
+        //if (peek == '<')
+        //{
+        //  return null; // File is already XML
+        //}
 
         if (peek != 'C')
         {
@@ -210,17 +211,17 @@ namespace Scope.FileViewer.Text.Models
         {
           var position = r.BaseStream.Position;
           var value = new CryXmlNode
-                      {
-                        NodeID = nodeID++,
-                        NodeNameOffset = r.ReadInt(byteOrder),
-                        ContentOffset = r.ReadInt(byteOrder),
-                        AttributeCount = r.ReadInt16(byteOrder),
-                        ChildCount = r.ReadInt16(byteOrder),
-                        ParentNodeID = r.ReadInt(byteOrder),
-                        FirstAttributeIndex = r.ReadInt(byteOrder),
-                        FirstChildIndex = r.ReadInt(byteOrder),
-                        Reserved = r.ReadInt(byteOrder)
-                      };
+          {
+            NodeID = nodeID++,
+            NodeNameOffset = r.ReadInt(byteOrder),
+            ContentOffset = r.ReadInt(byteOrder),
+            AttributeCount = r.ReadInt16(byteOrder),
+            ChildCount = r.ReadInt16(byteOrder),
+            ParentNodeID = r.ReadInt(byteOrder),
+            FirstAttributeIndex = r.ReadInt(byteOrder),
+            FirstChildIndex = r.ReadInt(byteOrder),
+            Reserved = r.ReadInt(byteOrder)
+          };
 
           nodeTable.Add(value);
           if (writeLog)
@@ -251,9 +252,10 @@ namespace Scope.FileViewer.Text.Models
         {
           var position = r.BaseStream.Position;
           var value = new CryXmlReference
-                      {
-                        NameOffset = r.ReadInt(byteOrder), ValueOffset = r.ReadInt(byteOrder)
-                      };
+          {
+            NameOffset = r.ReadInt(byteOrder),
+            ValueOffset = r.ReadInt(byteOrder)
+          };
 
           attributeTable.Add(value);
           if (writeLog)
@@ -297,9 +299,10 @@ namespace Scope.FileViewer.Text.Models
         {
           var position = r.BaseStream.Position;
           var value = new CryXmlValue
-                      {
-                        Offset = (int) position - stringTableOffset, Value = r.ReadCString()
-                      };
+          {
+            Offset = (int)position - stringTableOffset,
+            Value = r.ReadCString()
+          };
 
           dataTable.Add(value);
 
@@ -336,7 +339,7 @@ namespace Scope.FileViewer.Text.Models
             }
             else
             {
-              throw new InvalidDataException("This is a bug according to the originl code.");
+              throw new InvalidDataException("This is a bug according to the original code.");
               //element.SetAttribute(dataMap[attributeTable[attributeIndex].NameOffset], "BUGGED");
             }
 
@@ -354,7 +357,7 @@ namespace Scope.FileViewer.Text.Models
           }
           else
           {
-            throw new InvalidDataException("This is a bug according to the originl code.");
+            throw new InvalidDataException("This is a bug according to the original code.");
             //element.AppendChild(xmlDoc.CreateCDataSection("BUGGED"));
           }
 

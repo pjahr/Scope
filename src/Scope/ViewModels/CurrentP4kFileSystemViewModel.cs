@@ -18,7 +18,7 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly IFileSubStructureProvider[] _subFileFactories;
+    private readonly IFileSubStructureProvider[] _fileSubStructureProviders;
 
     public CurrentP4kFileSystemViewModel(ICurrentP4k currentP4k,
                                          ICurrentItem currentFile,
@@ -28,7 +28,7 @@ namespace Scope.ViewModels
                                          ISearchOptions searchOptions,
                                          IUiDispatch uiDispatch,
                                          SearchOptionsViewModel searchOptionsViewModel,
-                                         IEnumerable<IFileSubStructureProvider> subFileFactories = null)
+                                         IEnumerable<IFileSubStructureProvider> fileSubStructureProviders = null)
     {
       _currentP4K = currentP4k;
       _currentFile = currentFile;
@@ -37,7 +37,7 @@ namespace Scope.ViewModels
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-      _subFileFactories = subFileFactories != null ? subFileFactories.ToArray() : new IFileSubStructureProvider[0];
+      _fileSubStructureProviders = fileSubStructureProviders != null ? fileSubStructureProviders.ToArray() : new IFileSubStructureProvider[0];
       SearchOptionsViewModel = searchOptionsViewModel;
 
       Initialize();
@@ -55,7 +55,7 @@ namespace Scope.ViewModels
                                                   _search,
                                                   _searchOptions,
                                                   _uiDispatch,
-                                                  _subFileFactories)
+                                                  _fileSubStructureProviders)
                      : null;
 
       PropertyChanged.Raise(this, nameof(FileSystem));

@@ -285,9 +285,9 @@ namespace Scope.FileViewer.DataForge.Models
         // Record names are, so the file name part is replaced by the record name.
 
         var recordFileName = Path.GetFileName(recordPath);
-        var filePath = recordFileName.Replace(recordFileName, $"{recordName}.df");
+        var filePath = recordPath.Replace(recordFileName, $"{recordName}.df");
 
-        var file = CreateFile(record, recordPath, recordName, filePath);
+        var file = CreateFile(record, recordName, filePath);
         var path = Path.GetDirectoryName(recordPath);
 
         GeneratePathIfNecessary(path);
@@ -298,7 +298,7 @@ namespace Scope.FileViewer.DataForge.Models
       Console.WriteLine($"Generated {Files.Count} files in {Directories.Count} directories.");
     }
 
-    private File CreateFile(Record record, string recordPath, string recordName, string filePath)
+    private File CreateFile(Record record, string recordName, string filePath)
     {
       File file;
 
@@ -308,7 +308,7 @@ namespace Scope.FileViewer.DataForge.Models
       }
       else
       {
-        //TODO: What is with the millions of other items in those lists?
+        //TODO: What is with the millions of other items in those lists? 
         file = new File(recordName, filePath, DataMap[record.StructIndex].First());
         Files.Add(filePath, file);
       }

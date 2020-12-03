@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Linq;
 using Scope.FileViewer.DataForge.ViewModels;
 using Scope.Interfaces;
 
@@ -20,12 +21,19 @@ namespace Scope.FileViewer.DataForge
     public IReadOnlyCollection<IDirectory> GetDirectories(IFile file)
     {
       var df = _dataForgeFileCache[file];
-      throw new System.NotImplementedException();      
+      var rootDirectories = df.Directories.Keys.Where(key => !key.Contains('\\'))
+                                               .Select(key => df.Directories[key]);
+
+      return new List<IDirectory>(rootDirectories);
     }
 
     public IReadOnlyCollection<IFile> GetFiles(IFile file)
     {
-      throw new System.NotImplementedException();
+      var df = _dataForgeFileCache[file];
+      var rootDirectories = df.Files.Keys.Where(key => !key.Contains('/'))
+                                         .Select(key => df.Files[key]);
+
+      return new List<IFile>(rootDirectories);
     }
   }
 }
