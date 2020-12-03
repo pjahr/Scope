@@ -27,6 +27,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private string[] ValueTable { get; set; }
     public Dictionary<string, IFile> Files { get; set; }
+    internal Dictionary<string, Directory> Directories { get; private set; }
     public Reference[] ReferenceValues { get; set; }
     public Guid[] GuidValues { get; set; }
     public StringLookup[] StringValues { get; set; }
@@ -175,13 +176,8 @@ namespace Scope.FileViewer.DataForge.Models
       Console.WriteLine(structs.Count);
       foreach (var dataMapping in DataMappingTable)
       {
-        if (dataMapping.StructIndex == 2013 || dataMapping.StructIndex == 2015)
-        {
-          //DBG
-        }
-
         DataMap[dataMapping.StructIndex] = new List<Struct>();
-        
+
         var dataStruct = StructDefinitionTable[dataMapping.StructIndex];
 
         for (var i = 0; i < dataMapping.StructCount; i++)
@@ -192,11 +188,6 @@ namespace Scope.FileViewer.DataForge.Models
 
       foreach (var classMapping in ClassMappings)
       {
-        if (classMapping.StructIndex == 2015)
-        {
-          //DBG
-        }
-
         if (classMapping.StructIndex == 0xFFFF)
         {
           //TODO handle StrongPointer/... later
@@ -217,19 +208,14 @@ namespace Scope.FileViewer.DataForge.Models
             IsList = false
           };
 
-          //DataMap[dataMapping.StructIndex][dataMapping.RecordIndex] = value;
           var propertyIndex = classMapping.PropertyContainer.IndexOf(classMapping.Property);
-          
+
           if (propertyIndex == -1)
           {
             throw new InvalidDataException();
           }
 
           classMapping.PropertyContainer[propertyIndex] = property;
-
-          //dataMapping.Node.ParentNode.ReplaceChild(
-          //    this.DataMap[dataMapping.StructIndex][dataMapping.RecordIndex],
-          //    dataMapping.Node);
         }
         else
         {
@@ -287,21 +273,78 @@ namespace Scope.FileViewer.DataForge.Models
 
     private void GenerateFiles()
     {
-
       Files = new Dictionary<string, IFile>();
+      Directories = new Dictionary<string, Directory>();
 
       foreach (var record in RecordDefinitionTable)
       {
-        var filename = ValueMap[record.FileNameOffset];
-        var name = ValueMap[record.NameOffset];
-        if (Files.ContainsKey(filename))
+        var recordPath = ValueMap[record.FileNameOffset];
+        var recordName = ValueMap[record.NameOffset];
+
+        // The record path file name parts are not unique.
+        // Record names are, so the file name part is replaced by the record name.
+
+        var recordFileName = Path.GetFileName(recordPath);
+        var filePath = recordFileName.Replace(recordFileName, $"{recordName}.df");
+
+        var file = CreateFile(record, recordPath, recordName, filePath);
+        var path = Path.GetDirectoryName(recordPath);
+
+        GeneratePathIfNecessary(path);
+
+        Directories[path].Add(file);        
+      }
+
+      Console.WriteLine($"Generated {Files.Count} files in {Directories.Count} directories.");
+    }
+
+    private File CreateFile(Record record, string recordPath, string recordName, string filePath)
+    {
+      File file;
+
+      if (Files.ContainsKey(filePath))
+      {
+        throw new InvalidDataException($"File {filePath} already exists.");
+      }
+      else
+      {
+        //TODO: What is with the millions of other items in those lists?
+        file = new File(recordName, filePath, DataMap[record.StructIndex].First());
+        Files.Add(filePath, file);
+      }
+
+      return file;
+    }
+
+    private void GeneratePathIfNecessary(string path)
+    {
+      int i;
+      Directory lastDirectory=null;
+      while (true)
+      {
+        if (!Directories.ContainsKey(path))
         {
-          Console.WriteLine($"{filename} {name} {record.OtherIndex} {record.StructIndex} {record.VariantIndex}");
+          var directory = new Directory(path, path);
+          if (lastDirectory != null)
+          {
+            directory.Add(lastDirectory);
+          }
+          Directories.Add(path, directory);
+          lastDirectory = directory;
         }
         else
         {
-          Files.Add(filename, new File(name, filename, DataMap[record.StructIndex].First()));
+          if (lastDirectory!=null)
+          {
+            Directories[path].Add(lastDirectory);
+          }
+          break;
         }
+
+        i = path.LastIndexOf('\\'); // index of first directory char  
+
+        if (i == -1) break;
+        path = path.Substring(0, i);
       }
     }
 

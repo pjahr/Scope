@@ -6,19 +6,30 @@ namespace Scope.FileViewer.DataForge.Models
 {
   internal class Directory : IDirectory
   {
-    public Directory(string name, string path, IEnumerable<IDirectory> directories, IEnumerable<IFile> files)
+    private readonly List<Directory> _directories;
+    private readonly List<File> _files;
+
+    public Directory(string name, string path, IEnumerable<Directory> directories = null, IEnumerable<File> files = null)
     {
       Name = name;
       Path = path;
-      Directories = directories.ToArray();
-      Files = files.ToArray();
-
-      IsEmpty = !directories.Any() & !files.Any();
+      _directories = new List<Directory>(directories ?? new Directory[0]);
+      _files = new List<File>(files ?? new File[0]);
     }
     public string Name { get; }
     public string Path { get; }
-    public IReadOnlyCollection<IDirectory> Directories { get; }
-    public IReadOnlyCollection<IFile> Files { get; }
-    public bool IsEmpty { get; }
+    public IReadOnlyCollection<IDirectory> Directories => _directories;
+    public IReadOnlyCollection<IFile> Files => _files;
+    public bool IsEmpty => !_directories.Any() && !_files.Any();
+
+    internal void Add(Directory child)
+    {
+      _directories.Add(child);
+    }
+
+    internal void Add(File child)
+    {
+      _files.Add(child);
+    }
   }
 }

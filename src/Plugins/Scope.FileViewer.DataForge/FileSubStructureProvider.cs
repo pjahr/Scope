@@ -19,7 +19,8 @@ namespace Scope.FileViewer.DataForge
 
     public IReadOnlyCollection<IDirectory> GetDirectories(IFile file)
     {
-      throw new System.NotImplementedException();
+      var df = _dataForgeFileCache[file];
+      throw new System.NotImplementedException();      
     }
 
     public IReadOnlyCollection<IFile> GetFiles(IFile file)
