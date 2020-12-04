@@ -242,12 +242,6 @@
     <Compile Include="Views\CurrentP4kFsView.xaml.cs">
       <DependentUpon>CurrentP4kFsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DirectoryItemView.xaml.cs">
-      <DependentUpon>DirectoryItemView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\FileItemView.xaml.cs">
-      <DependentUpon>FileItemView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\FileSystemTreeView.xaml.cs">
       <DependentUpon>FileSystemTreeView.xaml</DependentUpon>
     </Compile>
@@ -298,14 +292,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\CurrentP4kFsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DirectoryItemView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\FileItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
