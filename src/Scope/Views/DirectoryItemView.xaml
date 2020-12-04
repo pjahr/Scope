@@ -84,6 +84,7 @@
           </Style.Triggers>
         </Style>
       </StackPanel.Style>
+      
     </StackPanel>
 
     <ListBox

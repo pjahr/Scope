@@ -10,66 +10,109 @@
   d:DesignHeight="450"
   d:DesignWidth="800">
 
-  <StackPanel
+  <StackPanel>
+
+
+    <StackPanel
     Orientation="Horizontal"
     Height="20"
     Focusable="True"
     KeyDown="NavigateIfNecessary">
 
-    <xaml:Interaction.Behaviors>
-      <behaviors:CommandOnClick
+      <xaml:Interaction.Behaviors>
+        <behaviors:CommandOnClick
         Command="{Binding SetCurrentItemCommand}" />
-      <behaviors:CommandOnReceiveKeyboardFocus
+        <behaviors:CommandOnReceiveKeyboardFocus
         Command="{Binding SetCurrentItemCommand}" />
-      <behaviors:AcquireKeyboardFocusOnClick />
-    </xaml:Interaction.Behaviors>
+        <behaviors:CommandOnDoubleClick
+          Command="{Binding ToggleIsExpandedCommand}" />
+        <behaviors:CommandOnKey
+          Key="Enter"
+          Command="{Binding ToggleIsExpandedCommand}" />
+        <behaviors:AcquireKeyboardFocusOnClick />
+        <behaviors:AcquireKeyboardFocusOnClick />
+      </xaml:Interaction.Behaviors>
 
-    <Path
+      <Path
       Data="{StaticResource FileIcon}"
       Style="{StaticResource FileSystemEntryIcon}" />
 
-    <TextBlock
+      <TextBlock
       Text="{Binding Name}"
       Margin="3"
       VerticalAlignment="Center" />
 
-    <StackPanel.Style>
-      <Style
+      <StackPanel.Style>
+        <Style
         TargetType="StackPanel">
 
-        <Setter
+          <Setter
           Property="Background"
           Value="Transparent" />
 
-        <Style.Triggers>
+          <Style.Triggers>
 
-          <Trigger
+            <Trigger
             Property="IsMouseOver"
             Value="True">
-            <Setter
+              <Setter
               Property="Background"
               Value="{StaticResource AccentColor40}" />
-          </Trigger>
+            </Trigger>
 
-          <Trigger
+            <Trigger
             Property="IsFocused"
             Value="True">
-            <Setter
+              <Setter
               Property="Background"
               Value="DarkGoldenrod" />
-          </Trigger>
+            </Trigger>
 
-          <DataTrigger
+            <DataTrigger
             Binding="{Binding IsActive}"
             Value="True">
-            <Setter
+              <Setter
               Property="Background"
               Value="{StaticResource AccentColor}" />
-          </DataTrigger>
+            </DataTrigger>
 
-        </Style.Triggers>
-      </Style>
-    </StackPanel.Style>
+          </Style.Triggers>
+        </Style>
+      </StackPanel.Style>
+
+    </StackPanel>
+
+    <ListBox
+      ItemsSource="{Binding Items}"
+      Style="{StaticResource FileSystemTreeListBox}"
+      Margin="12 0 0 0"
+      Focusable="False">
+
+      <ListBox.ItemContainerStyle>
+        <Style
+          TargetType="ListBoxItem">
+
+          <!--Keyboard focus is handled by the data templates/views themselves.-->
+          <Setter
+            Property="Focusable"
+            Value="False" />
+          <Setter
+            Property="Template">
+            <Setter.Value>
+              <ControlTemplate
+                TargetType="ListBoxItem">
+                <Border
+                  BorderThickness="0 0 0 0">
+                  <ContentPresenter />
+                </Border>
+              </ControlTemplate>
+            </Setter.Value>
+          </Setter>
+        </Style>
+      </ListBox.ItemContainerStyle>
+
+    </ListBox>
 
   </StackPanel>
+
 </UserControl>

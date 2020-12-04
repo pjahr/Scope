@@ -48,12 +48,7 @@ namespace Scope.ViewModels
 
       ExpandCommand = new RelayCommand<object>(async p =>
       {
-        if (!(p is DirectoryTreeNodeViewModel directory))
-        {
-          return;
-        }
-
-        await directory.LoadChildrenAsync();
+        await ((TreeNodeViewModel)p).LoadChildrenAsync();
       });
 
       CreateRootItems();

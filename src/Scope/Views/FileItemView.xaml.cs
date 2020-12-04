@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace Scope.Views
@@ -15,59 +14,49 @@ namespace Scope.Views
     {
       if (e.Key == Key.Up)
       {
-        NavigateUp();
+        var listBox = this.FindParent<ListBox>();
+        var item = this.FindParent<ListBoxItem>();
+
+        var i = listBox.Items.IndexOf(item.DataContext);
+
+        if (i == 0)
+        {
+          // focus parent
+          var parentItem = listBox.FindParent<ListBoxItem>();
+          Keyboard.Focus(parentItem.FindFocusableChild());
+          return;
+        }
+
+        var listBoxItem =
+          (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i - 1]);
+        var lastDeepestChild = GetLastDeepestChild(listBoxItem);
+        Keyboard.Focus(lastDeepestChild.FindFocusableChild());
         e.Handled = true;
         return;
       }
 
       if (e.Key == Key.Down)
       {
-        NavigateDown();
+        var listBox = this.FindParent<ListBox>();
+        var item = this.FindParent<ListBoxItem>();
+
+        var i = listBox.Items.IndexOf(item.DataContext);
+
+        if (i == listBox.Items.Count - 1)
+        {
+          // focus parents successor
+          //var parentBox = listBox.TryFindParent<ListBox>();
+          //var parentItem = listBox.TryFindParent<ListBoxItem>();
+          //parentItem.Focus();        
+          return;
+        }
+
+        var listBoxItem =
+          (ListBoxItem)listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i + 1]);
+        Keyboard.Focus(listBoxItem.FindFocusableChild());
         e.Handled = true;
       }
-    }
-
-    private void NavigateDown()
-    {
-      var listBox = this.FindParent<ListBox>();
-      var item = this.FindParent<ListBoxItem>();
-
-      var i = listBox.Items.IndexOf(item.DataContext);
-
-      if (i == listBox.Items.Count - 1)
-      {
-        // focus parents successor
-        //var parentBox = listBox.TryFindParent<ListBox>();
-        //var parentItem = listBox.TryFindParent<ListBoxItem>();
-        //parentItem.Focus();
-        return;
-      }
-
-      var listBoxItem =
-        (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i + 1]);
-      Keyboard.Focus(listBoxItem.FindFocusableChild());
-    }
-
-    private void NavigateUp()
-    {
-      var listBox = this.FindParent<ListBox>();
-      var item = this.FindParent<ListBoxItem>();
-
-      var i = listBox.Items.IndexOf(item.DataContext);
-
-      if (i == 0)
-      {
-        // focus parent
-        var parentItem = listBox.FindParent<ListBoxItem>();
-        Keyboard.Focus(parentItem.FindFocusableChild());
-        return;
-      }
-
-      var listBoxItem =
-        (ListBoxItem) listBox.ItemContainerGenerator.ContainerFromItem(listBox.Items[i - 1]);
-      var lastDeepestChild = GetLastDeepestChild(listBoxItem);
-      Keyboard.Focus(lastDeepestChild.FindFocusableChild());
-    }
+    }    
 
     private static ListBoxItem GetLastDeepestChild(ListBoxItem listBoxItem)
     {

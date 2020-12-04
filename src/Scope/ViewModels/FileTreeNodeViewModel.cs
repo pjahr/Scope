@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
-using Scope.Utils;
 
 namespace Scope.ViewModels
 {
@@ -13,7 +12,7 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private IFileSubStructureProvider[] _fileSubStructureProviders;
+    private readonly IFileSubStructureProvider[] _fileSubStructureProviders;
 
     public FileTreeNodeViewModel(IFile file,
                                  ISearch search,
@@ -22,6 +21,7 @@ namespace Scope.ViewModels
                                  IFileSubStructureProvider[] fileSubStructureProviders) : base(file.Name, file.Path)
     {
       Model = file;
+      Console.WriteLine($"VM: {Model.Name}");
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
@@ -50,7 +50,7 @@ namespace Scope.ViewModels
     public string UncompressedSizeValue { get; }
     public string UncompressedSizeUnit { get; }
 
-    public override bool HasDummyChild => base.HasDummyChild;
+    public override bool HasDummyChild => _fileSubStructureProviders.Any();
 
     protected override void OnDisposing()
     {

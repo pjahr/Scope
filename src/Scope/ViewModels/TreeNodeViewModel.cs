@@ -28,6 +28,7 @@ namespace Scope.ViewModels
 
     private TreeNodeViewModel()
     { /*Only for dummy...*/
+      _name = "_ _ _";
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
