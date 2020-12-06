@@ -9,13 +9,14 @@ using Scope.Interfaces;
 namespace Scope.FileViewer.DataForge
 {
   [Export]
-  public class FileViewerFactory : IFileViewerFactory
+  public class DataForgeFileViewerFactory : IFileViewerFactory
   {
     private static readonly string[] Extensions = { ".dcb" };
     private readonly IMessageQueue _messages;
     private readonly DataForgeFileCache _dataForgeFileCache;
 
-    public FileViewerFactory(IMessageQueue messages, DataForgeFileCache dataForgeFileCache)
+    public DataForgeFileViewerFactory(IMessageQueue messages,
+                                      DataForgeFileCache dataForgeFileCache)
     {
       _messages = messages;
       _dataForgeFileCache = dataForgeFileCache;

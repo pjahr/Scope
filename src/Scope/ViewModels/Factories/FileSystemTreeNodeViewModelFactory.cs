@@ -1,21 +1,23 @@
 ﻿using Scope.Interfaces;
 using Scope.Models.Interfaces;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 
 namespace Scope.ViewModels.Factories
 {
-  internal class FileTreeNodeViewModelFactory : IFileTreeNodeViewModelFactory
+  [Export]
+  internal class FileSystemTreeNodeViewModelFactory : IFileSystemTreeNodeViewModelFactory
   {
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
     private readonly IFileSubStructureProvider[] _allFileSubStructureProviders;
 
-    public FileTreeNodeViewModelFactory(ISearch search,
-                                        ISearchOptions searchOptions,
-                                        IUiDispatch uiDispatch,
-                                        IFileSubStructureProvider[] allFileSubStructureProviders, idi)
+    public FileSystemTreeNodeViewModelFactory(ISearch search,
+                                              ISearchOptions searchOptions,
+                                              IUiDispatch uiDispatch,
+                                              IFileSubStructureProvider[] allFileSubStructureProviders)
     {
       _search = search;
       _searchOptions = searchOptions;
@@ -35,7 +37,17 @@ namespace Scope.ViewModels.Factories
                                       _search,
                                       _searchOptions,
                                       _uiDispatch,
-                                      matchingFileSubStructureProviders);
+                                      matchingFileSubStructureProviders,
+                                      this);
+    }
+
+    public DirectoryTreeNodeViewModel Create(IDirectory directory)
+    {
+      return new DirectoryTreeNodeViewModel(directory,
+                                            _search,
+                                            _searchOptions,
+                                            _uiDispatch,
+                                            this);
     }
   }
 }

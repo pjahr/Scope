@@ -63,11 +63,11 @@ namespace Scope.Tests.ViewModels
 
     private void GivenSut()
     {
-      IFileTreeNodeViewModelFactory factory
-        = new FileTreeNodeViewModelFactory(_search,
-                                           _searchOptions,
-                                           _uiDispatch,
-                                           _allFileSubStructureProviders);
+      IFileSystemTreeNodeViewModelFactory factory
+        = new FileSystemTreeNodeViewModelFactory(_search,
+                                                 _searchOptions,
+                                                 _uiDispatch,
+                                                 _allFileSubStructureProviders);
       _sut = factory.Create(_file);
     }
   }

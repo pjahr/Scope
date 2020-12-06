@@ -12,15 +12,13 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly IDirectoryTreeNodeViewModelFactory _directoryTreeNodeViewModelFactory;
-    private readonly IFileTreeNodeViewModelFactory _fileTreeNodeViewModelFactory;
+    private readonly IFileSystemTreeNodeViewModelFactory _fileSystemTreeNodeViewModelFactory;
 
     public DirectoryTreeNodeViewModel(IDirectory directory,
                                       ISearch search,
                                       ISearchOptions searchOptions,
                                       IUiDispatch uiDispatch,
-                                      IDirectoryTreeNodeViewModelFactory directoryTreeNodeViewModelFactory,
-                                      IFileTreeNodeViewModelFactory fileTreeNodeViewModelFactory)
+                                      IFileSystemTreeNodeViewModelFactory fileSystemTreeNodeViewModelFactory)
       : base(directory.Name,
              directory.Path,
              true)
@@ -30,8 +28,7 @@ namespace Scope.ViewModels
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-      _directoryTreeNodeViewModelFactory = directoryTreeNodeViewModelFactory;
-      _fileTreeNodeViewModelFactory = fileTreeNodeViewModelFactory;
+      _fileSystemTreeNodeViewModelFactory = fileSystemTreeNodeViewModelFactory;
 
       _search.Finished += FilterContent;
       _search.Finished += HighlightSearchTerm;
@@ -79,12 +76,12 @@ namespace Scope.ViewModels
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(_directoryTreeNodeViewModelFactory.Create(directory));
+        contents.Add(_fileSystemTreeNodeViewModelFactory.Create(directory));
       }
 
       foreach (var file in GetFiles())      
       {
-        contents.Add(_fileTreeNodeViewModelFactory.Create(file));
+        contents.Add(_fileSystemTreeNodeViewModelFactory.Create(file));
       }
 
       return contents.ToArray();

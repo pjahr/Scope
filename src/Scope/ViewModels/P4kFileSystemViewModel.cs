@@ -18,31 +18,25 @@ namespace Scope.ViewModels
     private readonly ICurrentItem _currentItem;
     private readonly IPinnedItems _selectedItems;
     private readonly IExtractP4kContent _extractP4KContent;
-    private readonly IDirectoryTreeNodeViewModelFactory _directoryTreeNodeViewModelFactory;
+    private readonly IFileSystemTreeNodeViewModelFactory _fileSystemTreeNodeViewModelFactory;
     private readonly ISearch _search;
-    private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly IFileTreeNodeViewModelFactory _fileTreeNodeViewModelFactory;
     
     public P4kFileSystemViewModel(IFileSystem fileSystem,
                                   ICurrentItem currentItem,
                                   IPinnedItems selectedItems,
                                   IExtractP4kContent extractP4KContent,
-                                  IDirectoryTreeNodeViewModelFactory directoryTreeNodeViewModelFactory,
-                                  IFileTreeNodeViewModelFactory fileTreeNodeViewModelFactory,
+                                  IFileSystemTreeNodeViewModelFactory fileSystemTreeNodeViewModelFactory,
                                   ISearch search,
-                                  ISearchOptions searchOptions,
                                   IUiDispatch uiDispatch)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;
       _selectedItems = selectedItems;
       _extractP4KContent = extractP4KContent;
-      _directoryTreeNodeViewModelFactory = directoryTreeNodeViewModelFactory;
+      _fileSystemTreeNodeViewModelFactory = fileSystemTreeNodeViewModelFactory;
       _search = search;
-      _searchOptions = searchOptions;
-      _uiDispatch = uiDispatch;
-      _fileTreeNodeViewModelFactory = fileTreeNodeViewModelFactory;     
+      _uiDispatch = uiDispatch;     
 
       RootItems = new ObservableCollection<TreeNodeViewModel>();
       SetCurrentItemCommand = new RelayCommand<object>(SetCurrentItem);
@@ -153,7 +147,7 @@ namespace Scope.ViewModels
     {
       foreach (var file in _fileSystem.Root.Files)
       {
-        RootItems.Add(_fileTreeNodeViewModelFactory.Create(file));
+        RootItems.Add(_fileSystemTreeNodeViewModelFactory.Create(file));
       }
     }
 
@@ -161,7 +155,7 @@ namespace Scope.ViewModels
     {
       foreach (var directory in _fileSystem.Root.Directories)
       {
-        RootItems.Add(_directoryTreeNodeViewModelFactory.Create(directory));
+        RootItems.Add(_fileSystemTreeNodeViewModelFactory.Create(directory));
       }
     }
 

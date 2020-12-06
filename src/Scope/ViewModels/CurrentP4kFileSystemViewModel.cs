@@ -1,10 +1,9 @@
 ﻿using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
-using System.Collections.Generic;
+using Scope.ViewModels.Factories;
 using System.ComponentModel;
 using System.ComponentModel.Composition;
-using System.Linq;
 
 namespace Scope.ViewModels
 {
@@ -16,34 +15,35 @@ namespace Scope.ViewModels
     private readonly IPinnedItems _selectedItems;
     private readonly IExtractP4kContent _extractP4KContent;
     private readonly ISearch _search;
-    private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly IFileSubStructureProvider[] _fileSubStructureProviders;
+    private readonly IFileSystemTreeNodeViewModelFactory _fileSystemTreeNodeViewModelFactory;
 
     public CurrentP4kFileSystemViewModel(ICurrentP4k currentP4k,
                                          ICurrentItem currentFile,
                                          IPinnedItems selectedItems,
                                          IExtractP4kContent extractP4KContent,
                                          ISearch search,
-                                         ISearchOptions searchOptions,
                                          IUiDispatch uiDispatch,
                                          SearchOptionsViewModel searchOptionsViewModel,
-                                         IEnumerable<IFileSubStructureProvider> fileSubStructureProviders = null)
+                                         IFileSystemTreeNodeViewModelFactory fileSystemTreeNodeViewModelFactory)
     {
       _currentP4K = currentP4k;
       _currentFile = currentFile;
       _selectedItems = selectedItems;
       _extractP4KContent = extractP4KContent;
       _search = search;
-      _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-      _fileSubStructureProviders = fileSubStructureProviders != null ? fileSubStructureProviders.ToArray() : new IFileSubStructureProvider[0];
       SearchOptionsViewModel = searchOptionsViewModel;
-
+      _fileSystemTreeNodeViewModelFactory = fileSystemTreeNodeViewModelFactory;
       Initialize();
 
       _currentP4K.Changed += Initialize;
     }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+    
+    public P4kFileSystemViewModel FileSystem { get; set; }
+    public SearchOptionsViewModel SearchOptionsViewModel { get; }
 
     private void Initialize()
     {
@@ -52,18 +52,13 @@ namespace Scope.ViewModels
                                                   _currentFile,
                                                   _selectedItems,
                                                   _extractP4KContent,
+                                                  _fileSystemTreeNodeViewModelFactory,
                                                   _search,
-                                                  _searchOptions,
-                                                  _uiDispatch,
-                                                  _fileSubStructureProviders)
+                                                  _uiDispatch)
                      : null;
 
       PropertyChanged.Raise(this, nameof(FileSystem));
     }
 
-    public P4kFileSystemViewModel FileSystem { get; set; }
-    public SearchOptionsViewModel SearchOptionsViewModel { get; }
-
-    public event PropertyChangedEventHandler PropertyChanged;
   }
 }

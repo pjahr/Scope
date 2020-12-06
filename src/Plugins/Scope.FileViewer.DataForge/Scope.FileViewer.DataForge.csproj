@@ -83,7 +83,7 @@
     <Compile Include="Models\ConversionType.cs" />
     <Compile Include="Models\DataType.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FileViewerFactory.cs" />
+    <Compile Include="DataForgeFileViewerFactory.cs" />
     <Compile Include="PluginResources.xaml.cs">
       <DependentUpon>PluginResources.xaml</DependentUpon>
     </Compile>
