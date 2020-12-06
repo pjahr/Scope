@@ -46,11 +46,6 @@ namespace Scope.ViewModels
       ToggleSelectionOfCurrentItemCommand = new RelayCommand(ToggleSelectionOfCurrentItem);
       ExtractCommand = new RelayCommand<object>(ExtractItem);
 
-      ExpandCommand = new RelayCommand<object>(async p =>
-      {
-        await ((TreeNodeViewModel)p).LoadChildrenAsync();
-      });
-
       CreateRootItems();
 
       _search.Finished += FilterRootItems;
@@ -106,7 +101,6 @@ namespace Scope.ViewModels
     public ICommand SetCurrentFileToNothingCommand { get; }
     public ICommand ToggleSelectionOfCurrentItemCommand { get; }
 
-    public ICommand ExpandCommand { get; }
     public ICommand ExtractCommand { get; }
 
     private void SetCurrentItem(object item)

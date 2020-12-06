@@ -8,8 +8,10 @@ namespace Scope.Views.Behaviors
   {
     public static readonly DependencyProperty KeyProperty =
       DependencyProperty.Register("Key", typeof(Key), typeof(CommandOnKey));
+
     public static readonly DependencyProperty CommandProperty =
       DependencyProperty.Register("Command", typeof(ICommand), typeof(CommandOnKey));
+
     public static readonly DependencyProperty CommandParameterProperty =
       DependencyProperty.Register("CommandParameter", typeof(object), typeof(CommandOnKey));
 

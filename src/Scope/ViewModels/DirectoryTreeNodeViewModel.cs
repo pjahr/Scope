@@ -19,7 +19,7 @@ namespace Scope.ViewModels
                                       ISearchOptions searchOptions,
                                       IUiDispatch uiDispatch,
                                       IEnumerable<IFileSubStructureProvider> fileSubStructureProviders)
-      : base(directory.Name, directory.Path)
+      : base(directory.Name, directory.Path, true)
     {
       Model = directory;
       _search = search;
@@ -62,40 +62,32 @@ namespace Scope.ViewModels
       _search.Finished -= HighlightSearchTerm;
       _search.ResultsCleared -= ResetName;
       _search.Began -= ResetChildren;
-    }
+    }   
 
-    public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
-    {
-      foreach (var item in Children)
-      {
-        item.Dispose();
-      }
-      Children.Clear();
-
-      foreach (var nodeVm in GetContents())
-      {
-        Children.Add(nodeVm);
-      }
-
-      return Task.FromResult(Children.ToList());
-    }
-
-    private List<TreeNodeViewModel> GetContents()
+    protected override  TreeNodeViewModel[] LoadChildren()
     {
       var contents = new List<TreeNodeViewModel>();
       var pathes = _search.FileResults.Select(r => r.File.Path).ToArray();
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders));
+        contents.Add(new DirectoryTreeNodeViewModel(directory,
+                                                    _search, 
+                                                    _searchOptions, 
+                                                    _uiDispatch, 
+                                                    _fileSubStructureProviders));
       }
 
       foreach (var file in GetFiles())
       {
-        contents.Add(new FileTreeNodeViewModel(file, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders.ToArray()));
+        contents.Add(new FileTreeNodeViewModel(file,
+                                               _search, 
+                                               _searchOptions, 
+                                               _uiDispatch,
+                                               _fileSubStructureProviders.ToArray()));
       }
 
-      return contents;
+      return contents.ToArray();
     }
 
     private IEnumerable<IFile> GetFiles()
@@ -105,13 +97,15 @@ namespace Scope.ViewModels
         return Model.Files;
       }
 
-      return Model.Files.Where(f => _search.ResultIds.Contains(f.Index));
+      return Model.Files.Where(f => _search.ResultIds
+                                           .Contains(f.Index));
     }
 
     private IEnumerable<IDirectory> GetDirectories()
     {
       return _search.FileResults.Any()
-               ? Model.Directories.Where(d => _search.ResultPaths.Any(path => path.StartsWith(d.Path)))
+               ? Model.Directories.Where(d => _search.ResultPaths
+                                                     .Any(path => path.StartsWith(d.Path)))
                : Model.Directories;
     }
 
@@ -149,7 +143,8 @@ namespace Scope.ViewModels
 
     private bool ContainsOrIsAnyFileSearchResult(TreeNodeViewModel child)
     {
-      return _search.FileResults.Any(m => m.File.Path.StartsWith(child.Path));
+      return _search.FileResults
+                    .Any(m => m.File.Path.StartsWith(child.Path));
     }
 
     public override string ToString()

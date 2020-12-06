@@ -37,21 +37,28 @@
           </ItemsPanelTemplate>
         </Setter.Value>
       </Setter>
+      
       <Setter
         Property="TreeView.Template">
         <Setter.Value>
+          
           <ControlTemplate
             TargetType="TreeView">
+            
             <ScrollViewer
               Focusable="False"
               CanContentScroll="True"
               Padding="3">
+              
               <ItemsPresenter
                 HorizontalAlignment="Stretch" />
             </ScrollViewer>
+            
           </ControlTemplate>
-        </Setter.Value>
+          
+        </Setter.Value>        
       </Setter>
+      
     </Style>
 
     <Style x:Key="SearchResultHighlight" TargetType="Run">
@@ -90,7 +97,7 @@
       ItemsSource="{Binding Children}">
 
       <DockPanel>
-        
+
         <Path
           Data="{StaticResource FileIcon}"
           Style="{StaticResource FileSystemEntryIcon}"
@@ -106,7 +113,7 @@
           TextAlignment="Left"
           DockPanel.Dock="Right"
           VerticalAlignment="Center"/>
-        
+
         <TextBlock
           Text="{Binding UncompressedSizeValue}"
           Margin="0 0 6 0"
@@ -122,7 +129,7 @@
           TextAlignment="Left"
           DockPanel.Dock="Right"          
           VerticalAlignment="Center"/>
-        
+
         <TextBlock
           Text="{Binding CompressedSizeValue}"
           Margin="0 0 6 0"
@@ -151,6 +158,11 @@
 
     </HierarchicalDataTemplate>
 
+    <DataTemplate
+      DataType="{x:Type vm:LoadingTreeNodeViewModel}">
+      <TextBlock Text="Loading..."/>
+    </DataTemplate>
+
     <DataTemplate DataType="{x:Type vm:SearchFoundNoMatchViewModel}">
       <StackPanel VerticalAlignment="Top" Margin="6">
         <TextBlock Text="No match found. "/>
@@ -173,7 +185,6 @@
     <SolidColorBrush
       x:Key="TreeViewItem.TreeArrow.Static.Checked.Fill"
       Color="#FF595959" />
-    
     <SolidColorBrush
       x:Key="TreeViewItem.TreeArrow.Static.Checked.Stroke"
       Color="#FF262626" />
@@ -322,7 +333,7 @@
           <Setter
             Property="Visibility"
             Value="Visible"/>
-          
+
         </MultiDataTrigger>
 
       </Style.Triggers>
@@ -362,24 +373,31 @@
     <Style
       x:Key="TreeViewItemStyle1"
       TargetType="{x:Type TreeViewItem}">
+      
       <Setter
         Property="Background"
         Value="Transparent" />
+      
       <Setter
         Property="HorizontalContentAlignment"
-        Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        Value="{Binding HorizontalContentAlignment,
+                        RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
       <Setter
         Property="VerticalContentAlignment"
-        Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+        Value="{Binding VerticalContentAlignment,
+                        RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
       <Setter
         Property="Padding"
         Value="1,0,0,0" />
+      
       <Setter
         Property="Foreground"
         Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+      
       <Setter
         Property="FocusVisualStyle"
         Value="{StaticResource TreeViewItemFocusVisual}" />
+      
       <Setter
         Property="Template">
         <Setter.Value>
@@ -398,11 +416,13 @@
                   Height="Auto" />
                 <RowDefinition />
               </Grid.RowDefinitions>
+              
               <ToggleButton
                 x:Name="Expander"
                 ClickMode="Press"
                 IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                 Style="{StaticResource ExpandCollapseToggleStyle}" />
+              
               <Border
                 x:Name="Bd"
                 Grid.Column="1"
@@ -414,7 +434,7 @@
 
                 <DockPanel>
 
-                 <Button
+                  <Button
                     Command="{Binding
                                RelativeSource={RelativeSource
                                                 Mode=FindAncestor,
@@ -424,9 +444,9 @@
                     Style="{StaticResource FsTreeViewItemActiveItemActionButton}"
                     DockPanel.Dock="Right">
 
-                   <Path
+                    <Path
                       Data="{StaticResource Extract}"
-                     Style="{StaticResource ActionIcon}"/>
+                      Style="{StaticResource ActionIcon}"/>
 
                     <Button.ToolTip>Extract this item</Button.ToolTip>
 
@@ -444,7 +464,7 @@
 
                     <Path
                       Data="{StaticResource Pin}"
-                     Style="{StaticResource ActionIcon}"/>
+                      Style="{StaticResource ActionIcon}"/>
 
                     <Button.ToolTip>Pin this item</Button.ToolTip>
 
@@ -539,7 +559,7 @@
 
   <Grid>
     <!-- The purpose of the grid is solely to allow the 'no match found' label to be placed over the tree view. -->
-    
+
     <TreeView
     ItemsSource="{Binding RootItems}"
     b:TreeViewSelectionChangedBehavior.ChangedCommand="{Binding SetCurrentItemCommand}"
@@ -547,56 +567,55 @@
     HorizontalContentAlignment="Stretch"
     Grid.IsSharedSizeScope="True">
 
-    <TreeView.Resources>
       <!-- Use a proxy to bind items to root properties of this collection -->
-      <views:BindingProxy
+      <!--<TreeView.Resources>
+        <views:BindingProxy
         x:Key="DataContextProxy"
         Data="{Binding}" />
 
-    </TreeView.Resources>
+      </TreeView.Resources>-->
 
-    <xaml:Interaction.Behaviors>
+      <xaml:Interaction.Behaviors>
 
-      <!--<b:BringVirtualTreeViewItemIntoViewBehavior
+        <!--<b:BringVirtualTreeViewItemIntoViewBehavior
         SelectedItem="{Binding SelectPathItem}" />-->
 
-      <b:CommandOnKey
-        Key="Space"
-        Command="{Binding ToggleSelectionOfCurrentItemCommand}" />
+        <b:CommandOnKey
+          Key="Space"
+          Command="{Binding ToggleSelectionOfCurrentItemCommand}" />
 
-    </xaml:Interaction.Behaviors>
+      </xaml:Interaction.Behaviors>
 
-    <TreeView.ItemContainerStyle>
+      <TreeView.ItemContainerStyle>
 
-      <Style
-        TargetType="{x:Type TreeViewItem}"
-        BasedOn="{StaticResource TreeViewItemStyle1}">
+        <Style
+          TargetType="{x:Type TreeViewItem}"
+          BasedOn="{StaticResource TreeViewItemStyle1}">
 
-        <Setter
-          Property="b:TreeViewItemExpanded.Command"
-          Value="{Binding Path=Data.ExpandCommand, 
-                          Source={StaticResource DataContextProxy}}" />
+          <Setter
+            Property="b:TreeViewItemExpanded.Command"
+            Value="{Binding ExpandCommand}" />
 
-        <Setter
-          Property="IsExpanded"
-          Value="{Binding IsExpanded, 
-                          Mode=TwoWay}" />
+          <Setter
+            Property="IsExpanded"
+            Value="{Binding IsExpanded, 
+                            Mode=OneWay}" />
 
-        <Setter
-          Property="IsSelected"
-          Value="{Binding IsSelected, 
-                          Mode=TwoWay,
-                          UpdateSourceTrigger=PropertyChanged}" />
-      </Style>
+          <Setter
+            Property="IsSelected"
+            Value="{Binding IsSelected, 
+                            Mode=TwoWay,
+                            UpdateSourceTrigger=PropertyChanged}" />
+        </Style>
 
-    </TreeView.ItemContainerStyle>
+      </TreeView.ItemContainerStyle>
 
-  </TreeView>
+    </TreeView>
 
     <!-- If bound property is null this is invisible.
          If not it displays the appropriate data template vor the vm.-->
     <ContentControl Content="{Binding SearchFoundNoMatch}"/>
-    
+
   </Grid>
 
 </UserControl>

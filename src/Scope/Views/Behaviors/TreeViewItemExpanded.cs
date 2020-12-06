@@ -68,7 +68,7 @@ namespace Scope.Views.Behaviors
         f = uiElement.DataContext as TreeNodeViewModel;
 
         // Message Expand only for those who have 1 dummy folder below
-        if (f.HasDummyChild == false)
+        if (f.HasChildren == false)
         {
           return;
         }
@@ -93,6 +93,7 @@ namespace Scope.Views.Behaviors
         // Execute the Command as bound delegate
         changedCommand.Execute(f);
       }
+      e.Handled = true;
     }
   }
 }

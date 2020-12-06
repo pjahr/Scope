@@ -197,6 +197,7 @@
     <Compile Include="ViewModels\FileViewerCollectionViewModel.cs" />
     <Compile Include="ViewModels\FileTreeNodeViewModel.cs" />
     <Compile Include="ViewModels\IncludedExtensionViewModel.cs" />
+    <Compile Include="ViewModels\LoadingTreeNodeViewModel.cs" />
     <Compile Include="ViewModels\MenuItemBase.cs" />
     <Compile Include="ViewModels\MainMenuViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />

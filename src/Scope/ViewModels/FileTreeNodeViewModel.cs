@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
 
@@ -18,7 +17,8 @@ namespace Scope.ViewModels
                                  ISearch search,
                                  ISearchOptions searchOptions,
                                  IUiDispatch uiDispatch,
-                                 IFileSubStructureProvider[] fileSubStructureProviders) : base(file.Name, file.Path)
+                                 IFileSubStructureProvider[] fileSubStructureProviders)
+      : base(file.Name, file.Path, fileSubStructureProviders.Any())
     {
       Model = file;
       Console.WriteLine($"VM: {Model.Name}");
@@ -36,7 +36,10 @@ namespace Scope.ViewModels
       UncompressedSizeValue = uncompressed[0];
       UncompressedSizeUnit = uncompressed[1];
 
-      _fileSubStructureProviders = fileSubStructureProviders.Where(f => f.ApplicableFileExtension == System.IO.Path.GetExtension(file.Name)).ToArray();
+      _fileSubStructureProviders = fileSubStructureProviders
+                                    .Where(f => f.ApplicableFileExtension
+                                                == System.IO.Path.GetExtension(file.Name))
+                                    .ToArray();
 
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
@@ -50,45 +53,37 @@ namespace Scope.ViewModels
     public string UncompressedSizeValue { get; }
     public string UncompressedSizeUnit { get; }
 
-    public override bool HasDummyChild => _fileSubStructureProviders.Any();
-
     protected override void OnDisposing()
     {
       Console.WriteLine($"Disposing node: {Model}");
+      _search.Finished += HighlightSearchTerm;
+      _search.ResultsCleared += ResetName;
     }
 
-    public override Task<List<TreeNodeViewModel>> LoadChildrenListAsync()
-    {
-      foreach (var item in Children)
-      {
-        item.Dispose();
-      }
-      Children.Clear();
-
-      foreach (var nodeVm in GetContents())
-      {
-        Children.Add(nodeVm);
-      }
-
-      return Task.FromResult(Children.ToList());
-    }
-
-    private List<TreeNodeViewModel> GetContents()
+    protected override TreeNodeViewModel[] LoadChildren()
     {
       var contents = new List<TreeNodeViewModel>();
       var pathes = _search.FileResults.Select(r => r.File.Path).ToArray();
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(new DirectoryTreeNodeViewModel(directory, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders));
+        contents.Add(new DirectoryTreeNodeViewModel(directory, 
+                                                    _search, 
+                                                    _searchOptions,
+                                                    _uiDispatch, 
+                                                    _fileSubStructureProviders));
       }
 
       foreach (var file in GetFiles())
       {
-        contents.Add(new FileTreeNodeViewModel(file, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders.ToArray()));
+        contents.Add(new FileTreeNodeViewModel(file, 
+                                               _search, 
+                                               _searchOptions, 
+                                               _uiDispatch, 
+                                               _fileSubStructureProviders.ToArray()));
       }
 
-      return contents;
+      return contents.ToArray();
     }
 
     private IEnumerable<IFile> GetFiles()
