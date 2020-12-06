@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
+using Scope.ViewModels.Factories;
 
 namespace Scope.ViewModels
 {
@@ -11,20 +12,29 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
+    private readonly IDirectoryTreeNodeViewModelFactory _directoryTreeNodeViewModelFactory;
+    private readonly IFileTreeNodeViewModelFactory _fileTreeNodeViewModelFactory;
     private readonly IFileSubStructureProvider[] _fileSubStructureProviders;
 
     public FileTreeNodeViewModel(IFile file,
                                  ISearch search,
                                  ISearchOptions searchOptions,
                                  IUiDispatch uiDispatch,
-                                 IFileSubStructureProvider[] fileSubStructureProviders)
-      : base(file.Name, file.Path, fileSubStructureProviders.Any())
+                                 IFileSubStructureProvider[] fileSubStructureProviders,
+                                 IDirectoryTreeNodeViewModelFactory directoryTreeNodeViewModelFactory,
+                                 IFileTreeNodeViewModelFactory fileTreeNodeViewModelFactory)
+      : base(file.Name,
+             file.Path,
+             fileSubStructureProviders.Any())
     {
       Model = file;
-      Console.WriteLine($"VM: {Model.Name}");
+
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
+      _directoryTreeNodeViewModelFactory = directoryTreeNodeViewModelFactory;
+      _fileTreeNodeViewModelFactory = fileTreeNodeViewModelFactory;
+
       var compressed = file.BytesCompressed.ToFileSize()
                            .Split(' ');
       CompressedSizeValue = compressed[0];
@@ -67,20 +77,12 @@ namespace Scope.ViewModels
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(new DirectoryTreeNodeViewModel(directory, 
-                                                    _search, 
-                                                    _searchOptions,
-                                                    _uiDispatch, 
-                                                    _fileSubStructureProviders));
+        contents.Add(_directoryTreeNodeViewModelFactory.Create(directory));
       }
 
       foreach (var file in GetFiles())
       {
-        contents.Add(new FileTreeNodeViewModel(file, 
-                                               _search, 
-                                               _searchOptions, 
-                                               _uiDispatch, 
-                                               _fileSubStructureProviders.ToArray()));
+        contents.Add(_fileTreeNodeViewModelFactory.Create(file));
       }
 
       return contents.ToArray();

@@ -8,6 +8,7 @@ using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 using Scope.ViewModels.Commands;
+using Scope.ViewModels.Factories;
 
 namespace Scope.ViewModels
 {
@@ -17,28 +18,31 @@ namespace Scope.ViewModels
     private readonly ICurrentItem _currentItem;
     private readonly IPinnedItems _selectedItems;
     private readonly IExtractP4kContent _extractP4KContent;
+    private readonly IDirectoryTreeNodeViewModelFactory _directoryTreeNodeViewModelFactory;
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly IFileSubStructureProvider[] _fileSubStructureProviders;
-
+    private readonly IFileTreeNodeViewModelFactory _fileTreeNodeViewModelFactory;
+    
     public P4kFileSystemViewModel(IFileSystem fileSystem,
                                   ICurrentItem currentItem,
                                   IPinnedItems selectedItems,
                                   IExtractP4kContent extractP4KContent,
+                                  IDirectoryTreeNodeViewModelFactory directoryTreeNodeViewModelFactory,
+                                  IFileTreeNodeViewModelFactory fileTreeNodeViewModelFactory,
                                   ISearch search,
                                   ISearchOptions searchOptions,
-                                  IUiDispatch uiDispatch,
-                                  IEnumerable<IFileSubStructureProvider> fileSubStructureProviders)
+                                  IUiDispatch uiDispatch)
     {
       _fileSystem = fileSystem;
       _currentItem = currentItem;
       _selectedItems = selectedItems;
       _extractP4KContent = extractP4KContent;
+      _directoryTreeNodeViewModelFactory = directoryTreeNodeViewModelFactory;
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-      _fileSubStructureProviders = fileSubStructureProviders.ToArray();
+      _fileTreeNodeViewModelFactory = fileTreeNodeViewModelFactory;     
 
       RootItems = new ObservableCollection<TreeNodeViewModel>();
       SetCurrentItemCommand = new RelayCommand<object>(SetCurrentItem);
@@ -100,7 +104,6 @@ namespace Scope.ViewModels
     public ICommand SetCurrentItemCommand { get; }
     public ICommand SetCurrentFileToNothingCommand { get; }
     public ICommand ToggleSelectionOfCurrentItemCommand { get; }
-
     public ICommand ExtractCommand { get; }
 
     private void SetCurrentItem(object item)
@@ -148,18 +151,17 @@ namespace Scope.ViewModels
 
     private void CreateContainedFiles()
     {
-      foreach (var vm in _fileSystem.Root.Files.Select(d => new FileTreeNodeViewModel(d, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders)))
+      foreach (var file in _fileSystem.Root.Files)
       {
-        RootItems.Add(vm);
+        RootItems.Add(_fileTreeNodeViewModelFactory.Create(file));
       }
     }
 
     private void CreateContainedDirectories()
     {
-      var rootDirectories = _fileSystem.Root.Directories.Select(d => new DirectoryTreeNodeViewModel(d, _search, _searchOptions, _uiDispatch, _fileSubStructureProviders));
-      foreach (var directory in rootDirectories)
+      foreach (var directory in _fileSystem.Root.Directories)
       {
-        RootItems.Add(directory);
+        RootItems.Add(_directoryTreeNodeViewModelFactory.Create(directory));
       }
     }
 

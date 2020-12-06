@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
+using Scope.ViewModels.Factories;
 
 namespace Scope.ViewModels
 {
@@ -12,20 +12,27 @@ namespace Scope.ViewModels
     private readonly ISearch _search;
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
-    private readonly IEnumerable<IFileSubStructureProvider> _fileSubStructureProviders;
+    private readonly IDirectoryTreeNodeViewModelFactory _directoryTreeNodeViewModelFactory;
+    private readonly IFileTreeNodeViewModelFactory _fileTreeNodeViewModelFactory;
 
     public DirectoryTreeNodeViewModel(IDirectory directory,
                                       ISearch search,
                                       ISearchOptions searchOptions,
                                       IUiDispatch uiDispatch,
-                                      IEnumerable<IFileSubStructureProvider> fileSubStructureProviders)
-      : base(directory.Name, directory.Path, true)
+                                      IDirectoryTreeNodeViewModelFactory directoryTreeNodeViewModelFactory,
+                                      IFileTreeNodeViewModelFactory fileTreeNodeViewModelFactory)
+      : base(directory.Name,
+             directory.Path,
+             true)
     {
       Model = directory;
+      
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-      _fileSubStructureProviders = fileSubStructureProviders;
+      _directoryTreeNodeViewModelFactory = directoryTreeNodeViewModelFactory;
+      _fileTreeNodeViewModelFactory = fileTreeNodeViewModelFactory;
+
       _search.Finished += FilterContent;
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
@@ -58,6 +65,7 @@ namespace Scope.ViewModels
     protected override void OnDisposing()
     {
       base.OnDisposing();
+
       _search.Finished -= FilterContent;
       _search.Finished -= HighlightSearchTerm;
       _search.ResultsCleared -= ResetName;
@@ -71,20 +79,12 @@ namespace Scope.ViewModels
 
       foreach (var directory in GetDirectories())
       {
-        contents.Add(new DirectoryTreeNodeViewModel(directory,
-                                                    _search, 
-                                                    _searchOptions, 
-                                                    _uiDispatch, 
-                                                    _fileSubStructureProviders));
+        contents.Add(_directoryTreeNodeViewModelFactory.Create(directory));
       }
 
-      foreach (var file in GetFiles())
+      foreach (var file in GetFiles())      
       {
-        contents.Add(new FileTreeNodeViewModel(file,
-                                               _search, 
-                                               _searchOptions, 
-                                               _uiDispatch,
-                                               _fileSubStructureProviders.ToArray()));
+        contents.Add(_fileTreeNodeViewModelFactory.Create(file));
       }
 
       return contents.ToArray();

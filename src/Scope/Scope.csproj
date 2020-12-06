@@ -193,6 +193,9 @@
     <Compile Include="ViewModels\DirectoryTreeNodeViewModel.cs" />
     <Compile Include="ViewModels\DisplayAboutDialogMenuItemViewModel.cs" />
     <Compile Include="ViewModels\ExitApplicationMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\Factories\DirectoryTreeNodeViewModelFactory.cs" />
+    <Compile Include="ViewModels\Factories\FileTreeNodeViewModelFactory.cs" />
+    <Compile Include="ViewModels\Factories\IFileSystemTreeNodeViewModelFactory.cs" />
     <Compile Include="ViewModels\FileItemViewModel.cs" />
     <Compile Include="ViewModels\FileViewerCollectionViewModel.cs" />
     <Compile Include="ViewModels\FileTreeNodeViewModel.cs" />
