@@ -144,7 +144,9 @@ namespace Scope.ViewModels
 
     private void HighlightSearchTerm()
     {
-      Name = ViewModelUtils.GetHighlightMarkup(Name, _search.FileResults.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray());
+      var fileResults = _search.FileResults.ToArray();
+      var searchTerms = fileResults.Select(r => r.Term).Distinct().OrderBy(t => t.Length).ToArray();
+      Name = ViewModelUtils.GetHighlightMarkup(Name, searchTerms);
     }
 
     private void ResetName()

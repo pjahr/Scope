@@ -24,6 +24,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scope.FileViewer.DDS", "Plu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scope.FileViewer.DataForge", "Plugins\Scope.FileViewer.DataForge\Scope.FileViewer.DataForge.csproj", "{F57B89A8-2846-473C-946C-9C24BB9AAB51}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scope.FileViewer.WEM", "Plugins\Scope.FileViewer.WEM\Scope.FileViewer.WEM.csproj", "{0A3F9528-BEC0-4B15-B739-BFED361A44A5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -62,6 +64,10 @@ Global
 		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Debug|x64.Build.0 = Debug|x64
 		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Release|x64.ActiveCfg = Release|x64
 		{F57B89A8-2846-473C-946C-9C24BB9AAB51}.Release|x64.Build.0 = Release|x64
+		{0A3F9528-BEC0-4B15-B739-BFED361A44A5}.Debug|x64.ActiveCfg = Debug|x64
+		{0A3F9528-BEC0-4B15-B739-BFED361A44A5}.Debug|x64.Build.0 = Debug|x64
+		{0A3F9528-BEC0-4B15-B739-BFED361A44A5}.Release|x64.ActiveCfg = Release|x64
+		{0A3F9528-BEC0-4B15-B739-BFED361A44A5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -70,6 +76,7 @@ Global
 		{CF56FE6D-58FC-4177-957D-542C6E6802A7} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 		{A100182E-4AE0-438A-B923-A7D722557523} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 		{F57B89A8-2846-473C-946C-9C24BB9AAB51} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
+		{0A3F9528-BEC0-4B15-B739-BFED361A44A5} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95680C4D-E13E-48B9-881C-B36A90D15804}

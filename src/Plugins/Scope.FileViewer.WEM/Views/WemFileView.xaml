@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="Scope.FileViewer.WEM.Views.WemFileView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Scope.FileViewer.WEM.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+  
+  <UserControl.Resources>
+    <Style TargetType="TextBlock">
+      <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style x:Key="Label" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="Gray"/>
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Margin" Value="0 12 0 0"/>
+    </Style>
+
+    <Style x:Key="Title" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="FontSize" Value="24"/>
+    </Style>
+
+    <Style x:Key="Value" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="White"/>
+      <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <PathGeometry
+      x:Key="IconPlay" 
+      Figures="M0,0L15.825011,8.0009766 31.650999,15.997986 15.825011,23.998993 0,32 0,15.997986z"/>
+
+    <PathGeometry
+      x:Key="IconStop"
+      Figures="M0,0L32,0 32,32 0,32z" />
+
+    <PathGeometry 
+      x:Key="IconSave"
+      Figures="M5.4189969,24.678986L5.4189969,27.915009 26.188982,27.915009 26.188982,24.678986z M8.2970601,0.038998604L12.289056,0.038998604 12.289056,8.1850023 8.2970601,8.1850023z M0,0L5.2730013,0 5.2730013,9.7799988 26.188982,9.7799988 26.188982,0 31.653999,0 31.653999,32 0,32z"/>
+
+    <PathGeometry 
+      x:Key="IconPause"
+      Figures="M50.5,4.7500001C25.232973,4.75 4.75,25.232973 4.7500001,50.5 4.75,75.767029 25.232973,96.25 50.5,96.25 75.767029,96.25 96.25,75.767029 96.25,50.5 96.25,25.232973 75.767029,4.75 50.5,4.7500001z M50.5,0C78.390381,0 101,22.609621 101,50.5 101,78.390381 78.390381,101 50.5,101 22.609621,101 0,78.390381 0,50.5 0,22.609621 22.609621,0 50.5,0z"/>
+
+  </UserControl.Resources>
+
+
+  <Grid Margin="24">
+    <StackPanel>
+
+      <TextBlock
+        Text="Internal file name" 
+        Style="{StaticResource Label}"/>
+      <TextBlock
+        Text="{Binding FileNameInternal}"
+        Style="{StaticResource Title}"/>
+      <TextBlock 
+        Text="Internal path" 
+        Style="{StaticResource Label}"/>
+      <TextBlock 
+        Text="{Binding PathInternal}"
+        Style="{StaticResource Value}"/>
+      <TextBlock 
+        Text="Last modification" 
+        Style="{StaticResource Label}"/>
+      <TextBlock 
+        Text="{Binding LastModified}"                 
+        Style="{StaticResource Value}"/>
+      <TextBlock 
+        Text="Internal file size"
+        Style="{StaticResource Label}"/>
+      <TextBlock 
+        Text="{Binding NumberOfBytesInternal.Result, StringFormat={}{0} bytes}"
+        Style="{StaticResource Value}"/>
+
+      <StackPanel Orientation="Horizontal"
+                  Margin="0 12 0 0">
+
+        <Grid>
+          <Button Command="{Binding PlayAudioCommand}"
+                Margin="0 0 6 0"
+                Padding="3"
+                Width="32"
+                Height="32"
+                ToolTip="Play the audio file"
+                Visibility="{Binding PlayVisible}">
+            <Path
+                    Data="{StaticResource IconPlay}"
+                    Fill="White"
+                    Stretch="Fill"/>
+          </Button>
+
+          <Button Command="{Binding StopPlayingAudioCommand}"
+                Margin="0 0 6 0"
+                Padding="3"
+                Width="32"
+                Height="32"
+                ToolTip="Play the audio file"
+                Visibility="{Binding StopVisible}">
+            <Path
+                        Data="{StaticResource IconStop}"
+                        Fill="White"
+                        Stretch="Fill"
+                        Margin="3"/>
+            <!-- looks better if its a bit smaller than play -->
+          </Button>
+        </Grid>
+
+        <Button Command="{Binding SaveAudioToFileCommand}"
+                Margin="0 0 6 0"
+                Padding="3"
+                Width="32"
+                Height="32"
+                ToolTip="Save the audio file to disk (.wav)">
+
+          <Path Data="{StaticResource IconSave}"
+                Fill="White"
+                Stretch="Fill"/>
+
+        </Button>
+
+      </StackPanel>
+
+    </StackPanel>
+
+  </Grid>
+</UserControl>

@@ -21,7 +21,7 @@ namespace Scope.ViewModels
                                          IEnumerable<IFileViewerFactory> fileViewerFactories = null)
     {
       _currentItem = currentItem;
-      _fileViewerFactories = fileViewerFactories;
+      _fileViewerFactories = fileViewerFactories ?? new IFileViewerFactory[0];
 
       Items = new ObservableCollection<FileItemViewModel>();
 

@@ -17,12 +17,12 @@ namespace Scope.ViewModels.Factories
     public FileSystemTreeNodeViewModelFactory(ISearch search,
                                               ISearchOptions searchOptions,
                                               IUiDispatch uiDispatch,
-                                              IFileSubStructureProvider[] allFileSubStructureProviders)
+                                              IFileSubStructureProvider[] allFileSubStructureProviders = null)
     {
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
-      _allFileSubStructureProviders = allFileSubStructureProviders;
+      _allFileSubStructureProviders = allFileSubStructureProviders ?? new IFileSubStructureProvider[0];
     }
 
     public FileTreeNodeViewModel Create(IFile file)

@@ -27,6 +27,14 @@ namespace Scope
                                   .ImplementedBy(typeof(FileSystem))
                                   .LifeStyle.Singleton);
 
+      // register plugins
+      container.Register(Classes.FromAssemblyInDirectory(new AssemblyFilter("Plugins"))
+                                .IncludeNonPublicTypes()
+                                .Pick()
+                                .If(t => t.GetCustomAttributes(false)
+                                          .Any(a => a is ExportAttribute))
+                                .WithServiceAllInterfaces());
+
       // register built-in app object graph
       container.Register(Classes.FromThisAssembly()
                                 .IncludeNonPublicTypes()
@@ -36,13 +44,6 @@ namespace Scope
                                 .WithServiceAllInterfaces()
                                 .LifestyleSingleton());
 
-      // register plugins
-      container.Register(Classes.FromAssemblyInDirectory(new AssemblyFilter("Plugins"))
-                                .IncludeNonPublicTypes()
-                                .Pick()
-                                .If(t => t.GetCustomAttributes(false)
-                                          .Any(a => a is ExportAttribute))
-                                .WithServiceAllInterfaces());
 
       _container = container;
 
