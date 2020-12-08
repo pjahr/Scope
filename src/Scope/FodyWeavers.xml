@@ -5,5 +5,8 @@
   xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
   <Costura
     IncludeDebugSymbols='false'>
+    <ExcludeAssemblies>
+      Scope.Interfaces
+    </ExcludeAssemblies>
   </Costura>
 </Weavers>

@@ -21,19 +21,12 @@ namespace Scope
 
       // enable injection of multiple services with the same interface
       container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-
+      
       // special register: 'real' file sytem
       container.Register(Component.For(typeof(IFileSystem))
                                   .ImplementedBy(typeof(FileSystem))
                                   .LifeStyle.Singleton);
 
-      // register plugins
-      container.Register(Classes.FromAssemblyInDirectory(new AssemblyFilter("Plugins"))
-                                .IncludeNonPublicTypes()
-                                .Pick()
-                                .If(t => t.GetCustomAttributes(false)
-                                          .Any(a => a is ExportAttribute))
-                                .WithServiceAllInterfaces());
 
       // register built-in app object graph
       container.Register(Classes.FromThisAssembly()
@@ -44,8 +37,17 @@ namespace Scope
                                 .WithServiceAllInterfaces()
                                 .LifestyleSingleton());
 
+      // register plugins
+      container.Register(Classes.FromAssemblyInDirectory(new AssemblyFilter("Plugins"))
+                                .IncludeNonPublicTypes()
+                                .Pick()
+                                .If(t => t.GetCustomAttributes(false)
+                                          .Any(a => a is ExportAttribute))
+                                .WithServiceAllInterfaces()
+                                .LifestyleSingleton()
+                                );
 
-      _container = container;
+      _container = container;      
 
       PluginResources = container.ResolveAll<IResourceDictionary>();
       MainWindow = _container.Resolve<AppWindow>();
