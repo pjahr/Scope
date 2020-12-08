@@ -2,6 +2,7 @@
 using NAudio.Wave;
 using Nito.Mvvm;
 using Scope.FileViewer.WEM.Models;
+using Scope.Interfaces;
 using System;
 using System.ComponentModel;
 using System.Threading;
@@ -10,7 +11,7 @@ using System.Windows;
 
 namespace Scope.FileViewer.WEM.ViewModels
 {
-  internal class WemFileViewModel
+  internal class WemFileViewModel : IFileViewer
   {
     private readonly WemFileViewer _model;
     private bool _playing;
@@ -72,6 +73,8 @@ namespace Scope.FileViewer.WEM.ViewModels
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopVisible)));
       }
     }
+
+    public string Header { get; }
 
     private async Task PlayAudioAsync()
     {
@@ -139,6 +142,11 @@ namespace Scope.FileViewer.WEM.ViewModels
       //MainWindow.SetStatus($"Loaded data.");
 
       return n;
+    }
+
+    public void Dispose()
+    {
+      throw new NotImplementedException();
     }
   }
 }

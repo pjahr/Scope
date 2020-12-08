@@ -91,6 +91,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PluginResources.xaml.cs">
+      <DependentUpon>PluginResources.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WemFileViewerFactory.cs" />
     <Compile Include="Models\External.cs" />
     <Compile Include="Models\WemFileViewer.cs" />
@@ -101,6 +104,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="PluginResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\WemFileView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
