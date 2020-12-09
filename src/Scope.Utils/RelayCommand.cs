@@ -1,10 +1,9 @@
-﻿using Scope.Utils;
-using System;
+﻿using System;
 using System.Windows.Input;
 
-namespace Scope.ViewModels.Commands
+namespace Scope.Utils
 {
-  internal class RelayCommand : ICommand
+  public class RelayCommand : ICommand
   {
     private readonly Action _action;
     private bool _isEnabled = true;
@@ -40,7 +39,7 @@ namespace Scope.ViewModels.Commands
     }
   }
 
-  internal class RelayCommand<T> : ICommand
+  public class RelayCommand<T> : ICommand
   {
     private readonly Action<T> _action;
 

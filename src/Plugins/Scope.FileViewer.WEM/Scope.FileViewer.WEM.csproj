@@ -96,7 +96,7 @@
     </Compile>
     <Compile Include="WemFileViewerFactory.cs" />
     <Compile Include="Models\External.cs" />
-    <Compile Include="Models\WemFileViewer.cs" />
+    <Compile Include="Models\WemFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\WemFileViewModel.cs" />
     <Compile Include="Views\WemFileView.xaml.cs">

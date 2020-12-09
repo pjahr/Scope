@@ -209,7 +209,6 @@
     <Compile Include="ViewModels\OpenRedditMenuItemViewModel.cs" />
     <Compile Include="ViewModels\OpenP4kFileMenuItemViewModel.cs" />
     <Compile Include="ViewModels\P4kFileSystemViewModel.cs" />
-    <Compile Include="ViewModels\Commands\RelayCommand.cs" />
     <Compile Include="ViewModels\RootMenuItemViewModel.cs" />
     <Compile Include="ViewModels\PinnedDirectoryViewModel.cs" />
     <Compile Include="ViewModels\PinnedFileViewModel.cs" />

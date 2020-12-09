@@ -1,4 +1,5 @@
 ﻿using Scope.FileViewer.WEM.Models;
+using Scope.FileViewer.WEM.ViewModels;
 using Scope.Interfaces;
 using System.ComponentModel.Composition;
 using System.Linq;
@@ -9,10 +10,16 @@ namespace Scope.FileViewer.WEM
   public class WemFileViewerFactory : IFileViewerFactory
   {
     private static readonly string[] Extensions;
+    private readonly IMessageQueue _messageQueue;
 
     static WemFileViewerFactory()
     {
       Extensions = new[] { ".wem" };
+    }
+
+    public WemFileViewerFactory(IMessageQueue messageQueue)
+    {
+      _messageQueue = messageQueue;
     }
 
     public bool CanHandle(IFile file)
@@ -22,7 +29,8 @@ namespace Scope.FileViewer.WEM
 
     public IFileViewer Create(IFile file)
     {
-      return new WemFileViewer(file);
+      var model = new WemFile(file, _messageQueue);
+      return new WemFileViewModel(model);
     }
   }
 }

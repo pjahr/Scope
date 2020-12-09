@@ -3,31 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Scope.FileViewer.WEM.Views"
+             xmlns:vm="clr-namespace:Scope.FileViewer.WEM.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450"
-             d:DesignWidth="800">
-  
-  <UserControl.Resources>
-    <Style TargetType="TextBlock">
-      <Setter Property="Foreground" Value="White"/>
-    </Style>
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance vm:WemFileViewModel, IsDesignTimeCreatable=False}" >
 
-    <Style x:Key="Label" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="Gray"/>
-      <Setter Property="FontSize" Value="10"/>
-      <Setter Property="Margin" Value="0 12 0 0"/>
-    </Style>
-
-    <Style x:Key="Title" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="White"/>
-      <Setter Property="FontSize" Value="24"/>
-    </Style>
-
-    <Style x:Key="Value" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="White"/>
-      <Setter Property="FontSize" Value="16"/>
-    </Style>
+  <UserControl.Resources>   
 
     <PathGeometry
       x:Key="IconPlay" 
@@ -47,67 +29,45 @@
 
   </UserControl.Resources>
 
-
   <Grid Margin="24">
+
     <StackPanel>
 
-      <TextBlock
-        Text="Internal file name" 
-        Style="{StaticResource Label}"/>
-      <TextBlock
-        Text="{Binding FileNameInternal}"
-        Style="{StaticResource Title}"/>
-      <TextBlock 
-        Text="Internal path" 
-        Style="{StaticResource Label}"/>
-      <TextBlock 
-        Text="{Binding PathInternal}"
-        Style="{StaticResource Value}"/>
-      <TextBlock 
-        Text="Last modification" 
-        Style="{StaticResource Label}"/>
-      <TextBlock 
-        Text="{Binding LastModified}"                 
-        Style="{StaticResource Value}"/>
-      <TextBlock 
-        Text="Internal file size"
-        Style="{StaticResource Label}"/>
-      <TextBlock 
-        Text="{Binding NumberOfBytesInternal.Result, StringFormat={}{0} bytes}"
-        Style="{StaticResource Value}"/>
+      <TextBlock Text="{Binding Error}" Foreground="Red"/>
 
       <StackPanel Orientation="Horizontal"
                   Margin="0 12 0 0">
 
-        <Grid>
-          <Button Command="{Binding PlayAudioCommand}"
+        <Button Command="{Binding PlayAudioCommand}"
                 Margin="0 0 6 0"
                 Padding="3"
                 Width="32"
                 Height="32"
-                ToolTip="Play the audio file"
-                Visibility="{Binding PlayVisible}">
-            <Path
-                    Data="{StaticResource IconPlay}"
-                    Fill="White"
-                    Stretch="Fill"/>
-          </Button>
+                ToolTip="Play the audio file" 
+                Visibility="{Binding PlayVisible, Mode=OneWay}" >
+          <Path
+              Data="{StaticResource IconPlay}"
+              Fill="Gray"
+              Stretch="Fill"/>
+          
+        </Button>
 
-          <Button Command="{Binding StopPlayingAudioCommand}"
+        <Button Command="{Binding StopPlayingAudioCommand}"
                 Margin="0 0 6 0"
                 Padding="3"
                 Width="32"
                 Height="32"
-                ToolTip="Play the audio file"
-                Visibility="{Binding StopVisible}">
-            <Path
-                        Data="{StaticResource IconStop}"
-                        Fill="White"
-                        Stretch="Fill"
-                        Margin="3"/>
-            <!-- looks better if its a bit smaller than play -->
-          </Button>
-        </Grid>
+                ToolTip="Stop playing the audio file"
+                Visibility="{Binding StopVisible, Mode=OneWay}">
+
+          <Path
+              Data="{StaticResource IconStop}"
+              Fill="Gray"
+              Stretch="Fill"
+              Margin="3"/>
+          <!-- looks better if its a bit smaller than play -->
+
+        </Button>
 
         <Button Command="{Binding SaveAudioToFileCommand}"
                 Margin="0 0 6 0"
@@ -117,7 +77,7 @@
                 ToolTip="Save the audio file to disk (.wav)">
 
           <Path Data="{StaticResource IconSave}"
-                Fill="White"
+                Fill="Gray"
                 Stretch="Fill"/>
 
         </Button>

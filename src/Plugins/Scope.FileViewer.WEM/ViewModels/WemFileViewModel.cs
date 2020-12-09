@@ -8,55 +8,38 @@ using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
+using Scope.Utils;
 
 namespace Scope.FileViewer.WEM.ViewModels
 {
-  internal class WemFileViewModel : IFileViewer
+  internal class WemFileViewModel : IFileViewer, INotifyPropertyChanged
   {
-    private readonly WemFileViewer _model;
-    private bool _playing;
+    private readonly WemFile _model;
 
-    private readonly CancellationTokenSource _cts = new CancellationTokenSource();
-    private readonly CancellationToken _ct;
+    private CancellationTokenSource _cts = new CancellationTokenSource();
+    private bool _playing = false;
+    private string _oggFilePath;
 
-    internal WemFileViewModel(WemFileViewer model)
+    internal WemFileViewModel(WemFile model)
     {
       _model = model;
-      FileNameInternal = _model.FileName;
-      PathInternal = "";//_model.PathInternal;
-      LastModified = "";//$"{_model.LastModified}";
 
-      Playing = false;
-      _ct = _cts.Token;
+      Error = "";
 
-      NumberOfBytesInternal = NotifyTask.Create(LoadDataAsync);
-      OggFilePath = NotifyTask.Create(SaveAudioToTemporaryFile);
-      PlayAudioCommand = new AsyncCommand(async () =>
-      {
-        try
-        {
-          await PlayAudioAsync();
-        }
-        catch (OperationCanceledException)
-        {
-        }
-
-      });
-      StopPlayingAudioCommand = new AsyncCommand(async () => await StopAudioAsync());
-      SaveAudioToFileCommand = new AsyncCommand(async () => await SaveAudioToFileAsync());
+      PlayAudioCommand = new AsyncCommand(PlayAudioAsync);
+      StopPlayingAudioCommand = new AsyncCommand(StopAudioAsync);
+      SaveAudioToFileCommand = new AsyncCommand(SaveAudioToFileAsync);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public string FileNameInternal { get; }
-    public string PathInternal { get; }
-    public string LastModified { get; }
-    public NotifyTask<int> NumberOfBytesInternal { get; private set; }
-    public NotifyTask<string> OggFilePath { get; private set; }
-    public IAsyncCommand PlayAudioCommand { get; private set; }
-    public IAsyncCommand StopPlayingAudioCommand { get; private set; }
-    public IAsyncCommand SaveAudioToFileCommand { get; }
+    public AsyncCommand PlayAudioCommand { get; private set; }
+    public AsyncCommand StopPlayingAudioCommand { get; private set; }
+    public AsyncCommand SaveAudioToFileCommand { get; }
 
+    public string Header { get; }
+    public string Error { get; private set; }
     public Visibility PlayVisible { get; private set; }
     public Visibility StopVisible { get; private set; }
 
@@ -66,42 +49,76 @@ namespace Scope.FileViewer.WEM.ViewModels
       set
       {
         _playing = value;
-        PlayVisible = _playing ? Visibility.Hidden : Visibility.Visible;
-        StopVisible = _playing ? Visibility.Visible : Visibility.Hidden;
+        PlayVisible = _playing ? Visibility.Collapsed : Visibility.Visible;
+        StopVisible = _playing ? Visibility.Visible : Visibility.Collapsed;
 
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PlayVisible)));
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(StopVisible)));
+        PropertyChanged.Raise(this, nameof(PlayVisible));
+        PropertyChanged.Raise(this, nameof(StopVisible));
       }
-    }
-
-    public string Header { get; }
+    }    
 
     private async Task PlayAudioAsync()
     {
-      using (var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(OggFilePath.Result))
+      if (_oggFilePath==null)
+      {
+        await LoadDataAsync();
+        _oggFilePath = await SaveAudioToTemporaryFile();
+      }
+
+      if (_oggFilePath=="")
+      {
+        return;
+      }
+
+      Playing = true;
+
+      _cts = new CancellationTokenSource();
+
+      using (var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(_oggFilePath))
       using (var waveOut = new WaveOutEvent())
       {
         waveOut.Init(vorbisStream);
         waveOut.PlaybackStopped += Stop;
-        Playing = true;
+        var ct = _cts.Token;
         await Task.Run(() =>
         {
           waveOut.Play();
           while (Playing)
           {
-            if (_ct.IsCancellationRequested)
+            if (ct.IsCancellationRequested)
             {
-              _ct.ThrowIfCancellationRequested();
+              waveOut.Stop();
             }
             Thread.Sleep(20);
           }
-        }, _ct);
+        }, ct);
       }
     }
 
     private async Task StopAudioAsync()
     {
       await Task.Run(() => _cts.Cancel());
+    }
+
+    private void Stop(object sender, StoppedEventArgs e)
+    {
+      Playing = false;
+    }
+
+    private async Task<string> SaveAudioToTemporaryFile()
+    {
+      string pathToTmpfile = "";
+
+      try
+      {
+        pathToTmpfile = await _model.ConvertAsync();
+      }
+      catch (Exception e)
+      {
+        Error = $"The file could not be converted.\r\n{e.Message}";
+      }
+
+      return pathToTmpfile;
     }
 
     private async Task SaveAudioToFileAsync()
@@ -116,21 +133,11 @@ namespace Scope.FileViewer.WEM.ViewModels
         return;
       }
 
-      using (var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(OggFilePath.Result))
+      using (var vorbisStream = new NAudio.Vorbis.VorbisWaveReader(_oggFilePath))
       using (var waveOut = new WaveOutEvent())
       {
         await Task.Run(() => WaveFileWriter.CreateWaveFile(saveFileDialog.FileName, vorbisStream));
       }
-    }
-
-    private void Stop(object sender, StoppedEventArgs e)
-    {
-      Playing = false;
-    }
-
-    private async Task<string> SaveAudioToTemporaryFile()
-    {
-      return await _model.ConvertAsync();
     }
 
     private async Task<int> LoadDataAsync()
@@ -146,7 +153,8 @@ namespace Scope.FileViewer.WEM.ViewModels
 
     public void Dispose()
     {
-      throw new NotImplementedException();
+      _cts.Cancel();
+      _cts.Dispose();
     }
   }
 }

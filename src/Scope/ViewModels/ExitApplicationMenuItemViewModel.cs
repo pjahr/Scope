@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using Scope.ViewModels.Commands;
+using Scope.Utils;
 
 namespace Scope.ViewModels
 {

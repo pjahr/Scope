@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using Scope.Models.Interfaces;
-using Scope.ViewModels.Commands;
+using Scope.Utils;
 
 namespace Scope.ViewModels
 {
