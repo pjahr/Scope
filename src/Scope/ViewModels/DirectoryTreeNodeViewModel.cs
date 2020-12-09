@@ -24,7 +24,7 @@ namespace Scope.ViewModels
              true)
     {
       Model = directory;
-      
+
       _search = search;
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
@@ -67,9 +67,9 @@ namespace Scope.ViewModels
       _search.Finished -= HighlightSearchTerm;
       _search.ResultsCleared -= ResetName;
       _search.Began -= ResetChildren;
-    }   
+    }
 
-    protected override  TreeNodeViewModel[] LoadChildren()
+    protected override TreeNodeViewModel[] LoadChildren()
     {
       var contents = new List<TreeNodeViewModel>();
       var pathes = _search.FileResults.Select(r => r.File.Path).ToArray();
@@ -79,7 +79,7 @@ namespace Scope.ViewModels
         contents.Add(_fileSystemTreeNodeViewModelFactory.Create(directory));
       }
 
-      foreach (var file in GetFiles())      
+      foreach (var file in GetFiles())
       {
         contents.Add(_fileSystemTreeNodeViewModelFactory.Create(file));
       }
@@ -89,21 +89,20 @@ namespace Scope.ViewModels
 
     private IEnumerable<IFile> GetFiles()
     {
-      if (!_search.FileResults.Any())
-      {
-        return Model.Files;
-      }
+      var allFiles = Model.Files.OrderBy(f => f.Name);
 
-      return Model.Files.Where(f => _search.ResultIds
-                                           .Contains(f.Index));
+      return _search.FileResults.Any()
+              ? allFiles.Where(f => _search.ResultIds.Contains(f.Index))
+              : allFiles;
     }
 
     private IEnumerable<IDirectory> GetDirectories()
     {
+      var allDirectories = Model.Directories.OrderBy(d => d.Name);
+
       return _search.FileResults.Any()
-               ? Model.Directories.Where(d => _search.ResultPaths
-                                                     .Any(path => path.StartsWith(d.Path)))
-               : Model.Directories;
+               ? allDirectories.Where(d => _search.ResultPaths.Any(path => path.StartsWith(d.Path)))
+               : allDirectories;
     }
 
     private void FilterContent()
@@ -121,7 +120,7 @@ namespace Scope.ViewModels
           break;
       }
     }
-        
+
     private void RemoveContentsThatDoNotMatchSearchTerm()
     {
       if (!_search.FileResults.Any())

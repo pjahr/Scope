@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
-using Scope.ViewModels.Commands;
 using Scope.ViewModels.Factories;
 
 namespace Scope.ViewModels
@@ -145,7 +142,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedFiles()
     {
-      foreach (var file in _fileSystem.Root.Files)
+      foreach (var file in _fileSystem.Root.Files.OrderBy(f=>f.Name))
       {
         RootItems.Add(_fileSystemTreeNodeViewModelFactory.Create(file));
       }
@@ -153,7 +150,7 @@ namespace Scope.ViewModels
 
     private void CreateContainedDirectories()
     {
-      foreach (var directory in _fileSystem.Root.Directories)
+      foreach (var directory in _fileSystem.Root.Directories.OrderBy(d => d.Name))
       {
         RootItems.Add(_fileSystemTreeNodeViewModelFactory.Create(directory));
       }
