@@ -71,7 +71,7 @@ namespace Scope.ViewModels.Commands
       await _currentP4K.ChangeAsync(file);
     }
 
-    private void UpdateCanExecuteWhenTaskIsComplete(object sender, PropertyChangedEventArgs _)
+    private void UpdateCanExecuteWhenTaskIsComplete(object sender, PropertyChangedEventArgs e)
     {
       var task = (NotifyTask)sender;
       if (!task.IsCompleted)
@@ -79,11 +79,16 @@ namespace Scope.ViewModels.Commands
         return;
       }
 
+      if (e.PropertyName != "IsCompleted")
+      {
+        return; // even if this method is unhooked in the next line, it will still execute 3 additional times (because the task raises them async faster then the unhooking?)
+      }
+
       task.PropertyChanged -= UpdateCanExecuteWhenTaskIsComplete; // unhook itself
 
       CanExecuteChanged.Raise(this); // raise event so that consumers (buttons) can reactivate
 
-      _messages.Add($"Loaded {_currentP4K.FileName}.({_.PropertyName}, {task.Status})");
+      _messages.Add($"Loaded {_currentP4K.FileName}.");
       _progress.Stop();
     }
   }
