@@ -7,7 +7,6 @@ namespace Scope.Models
 {
   internal class P4kFileSystem : IFileSystem
   {
-    private readonly Func<int, IFile> _getFileByIndex;
     private readonly IReadOnlyList<IFile> _allFiles;
 
     public P4kFileSystem(IDirectory root,
@@ -29,5 +28,10 @@ namespace Scope.Models
 
     public IDirectory Root { get; }
     public int TotalNumberOfFiles { get; }
+
+    public IFile GetFile(string path)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

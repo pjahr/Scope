@@ -7,5 +7,6 @@ namespace Scope.Models.Interfaces
     IDirectory Root { get; }
     int TotalNumberOfFiles { get; }
     IFile this[int index] { get; }
+    IFile? GetFile(string path);
   }
 }
