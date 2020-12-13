@@ -21,7 +21,7 @@
         Value="True" />
       <Setter
         Property="VirtualizingStackPanel.VirtualizationMode"
-        Value="Standard" />
+        Value="Standard" /> <!-- changed from 'Recycling' as this led to mixed up items after many different items were traversed.-->
       <Setter
         Property="TreeView.SnapsToDevicePixels"
         Value="True" />
