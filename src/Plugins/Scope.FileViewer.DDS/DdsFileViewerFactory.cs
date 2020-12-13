@@ -5,14 +5,16 @@ using Scope.Interfaces;
 namespace Scope.FileViewer.DDS
 {
   [Export]
-  public class FileViewerFactory : IFileViewerFactory
+  public class DdsFileViewerFactory : IFileViewerFactory
   {
     private static readonly string[] Extensions;
 
-    static FileViewerFactory()
+    static DdsFileViewerFactory()
     {
       Extensions = new[] {".dds"};
     }
+
+    public FileCategory Category => FileCategory.Image;
 
     public bool CanHandle(IFile file)
     {

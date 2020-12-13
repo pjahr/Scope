@@ -8,11 +8,11 @@ using Scope.Utils;
 namespace Scope.FileViewer.Text
 {
   [Export]
-  public class FileViewerFactory : IFileViewerFactory
+  public class TextFileViewerFactory : IFileViewerFactory
   {
     private readonly Dictionary<string, Func<IFile, IFileViewer>> _factories;
 
-    public FileViewerFactory()
+    public TextFileViewerFactory()
     {
       _factories = new Dictionary<string, Func<IFile, IFileViewer>>
                    {
@@ -27,6 +27,8 @@ namespace Scope.FileViewer.Text
                      {"id", f => new TextFileViewModel(f)}
                    };
     }
+
+    public FileCategory Category => FileCategory.Text;
 
     public bool CanHandle(IFile file)
     {

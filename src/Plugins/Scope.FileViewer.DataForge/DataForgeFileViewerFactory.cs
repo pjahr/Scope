@@ -22,6 +22,8 @@ namespace Scope.FileViewer.DataForge
       _dataForgeFileCache = dataForgeFileCache;
     }
 
+    public FileCategory Category => FileCategory.Container;
+
     public bool CanHandle(IFile file)
     {
       return Extensions.Any(e => file.Name.EndsWith(e));

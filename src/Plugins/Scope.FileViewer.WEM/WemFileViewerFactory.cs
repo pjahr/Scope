@@ -22,6 +22,8 @@ namespace Scope.FileViewer.WEM
       _messageQueue = messageQueue;
     }
 
+    public FileCategory Category => FileCategory.Audio;
+
     public bool CanHandle(IFile file)
     {
       return Extensions.Any(e => file.Name.EndsWith(e));

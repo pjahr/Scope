@@ -63,7 +63,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="DdsFileViewer.cs" />
-    <Compile Include="FileViewerFactory.cs" />
+    <Compile Include="DdsFileViewerFactory.cs" />
     <Compile Include="PluginResources.xaml.cs">
       <DependentUpon>PluginResources.xaml</DependentUpon>
     </Compile>

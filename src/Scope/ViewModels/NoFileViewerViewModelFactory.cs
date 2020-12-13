@@ -13,6 +13,8 @@ namespace Scope.ViewModels
       return true;
     }
 
+    public FileCategory Category => FileCategory.Other;
+
     public IFileViewer Create(IFile file)
     {
       return new NoFileViewerViewModel(file);

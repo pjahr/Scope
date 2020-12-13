@@ -16,5 +16,10 @@
     /// file.
     /// </summary>
     IFileViewer Create(IFile file);
+
+    /// <summary>
+    /// The file category, the matching files belong to.
+    /// </summary>
+    FileCategory Category { get; }
   }
 }

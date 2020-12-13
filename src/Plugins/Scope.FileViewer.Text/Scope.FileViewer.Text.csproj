@@ -67,7 +67,7 @@
     <Compile Include="ViewModels\CryXmlTextFileViewModel.cs" />
     <Compile Include="ViewModels\JsonTextFileViewModel.cs" />
     <Compile Include="ViewModels\TextFileViewModel.cs" />
-    <Compile Include="FileViewerFactory.cs" />
+    <Compile Include="TextFileViewerFactory.cs" />
     <Compile Include="Views\TextFileView.cs">
       <DependentUpon>TextFileView.xaml</DependentUpon>
       <SubType>Code</SubType>
