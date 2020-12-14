@@ -17,6 +17,11 @@ namespace Scope.Tests
 
     public IDirectory Root { get; }
     public int TotalNumberOfFiles { get; }
+
+    public IFile GetFile(string path)
+    {
+      throw new System.NotImplementedException();
+    }
   }
 
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Scope.Interfaces;
+using System.IO;
 using System.Linq;
 
 namespace Scope.Utils
@@ -10,6 +11,11 @@ namespace Scope.Utils
       var beginOfFileName = path.LastIndexOf('/') + 1;
       return new string(path.Skip(beginOfFileName)
                             .ToArray());
+    }
+
+    public static string GetExtension(this IFile file)
+    {
+      return file.Path.GetExtension();
     }
 
     public static string GetExtension(this string path)

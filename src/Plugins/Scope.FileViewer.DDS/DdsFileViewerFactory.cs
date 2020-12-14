@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.Composition;
 using System.Linq;
 using Scope.Interfaces;
+using Scope.Utils;
 
 namespace Scope.FileViewer.DDS
 {
@@ -8,10 +9,16 @@ namespace Scope.FileViewer.DDS
   public class DdsFileViewerFactory : IFileViewerFactory
   {
     private static readonly string[] Extensions;
+    private readonly IFileService _fileService;
 
     static DdsFileViewerFactory()
     {
-      Extensions = new[] {".dds"};
+      Extensions = new[] {".dds", ".1", ".2", ".3", ".4", ".5", ".6", ".7", ".8", ".a", ".1a", ".2a", ".3a", ".4a", ".5a", ".6a", ".7a", ".8a" };
+    }
+
+    public DdsFileViewerFactory(IFileService fileService)
+    {
+      _fileService = fileService;
     }
 
     public FileCategory Category => FileCategory.Image;
@@ -23,7 +30,16 @@ namespace Scope.FileViewer.DDS
 
     public IFileViewer Create(IFile file)
     {
-      return new DdsFileViewer(file);
+      if (file.GetExtension() == "dds")
+      {
+        return new DdsFileViewer(file);
+      }
+
+      var baseFilePath = file.Path.Substring(0, file.Path.LastIndexOf('.'));
+
+      var baseFile = _fileService.Get(baseFilePath);
+
+      return new DdsFileViewer(new MergedDdsFile(file, baseFile));
     }
   }
 }

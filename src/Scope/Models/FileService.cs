@@ -1,13 +1,10 @@
 ﻿using Scope.Interfaces;
 using Scope.Models.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.Composition;
 
 namespace Scope.Models
 {
+  [Export]
   internal class FileService : IFileService
   {
     private readonly ICurrentP4k _currentP4k;

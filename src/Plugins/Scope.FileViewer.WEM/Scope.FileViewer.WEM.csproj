@@ -86,7 +86,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WEMSharp">
-      <HintPath>..\..\packages\WEMSharp 1.0\WEMSharp.dll</HintPath>
+      <HintPath>..\..\packages\WEMSharp.1.0.0\WEMSharp.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>

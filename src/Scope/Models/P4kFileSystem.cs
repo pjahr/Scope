@@ -2,6 +2,7 @@
 using Scope.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Scope.Models
 {
@@ -29,9 +30,22 @@ namespace Scope.Models
     public IDirectory Root { get; }
     public int TotalNumberOfFiles { get; }
 
-    public IFile GetFile(string path)
+    public IFile? GetFile(string path)
     {
-      throw new NotImplementedException();
+      var parts = path.Split('/');
+      var directory = Root;
+      for (int i = 0; i < parts.Length-1; i++)
+      {
+        var child = directory.Directories.SingleOrDefault(d => d.Name == parts[i]);
+        if (child==null)
+        {
+          return null;
+        }
+        directory = child;
+      }
+
+      var file = directory.Files.SingleOrDefault(f => f.Name == parts.Last());
+      return file;
     }
   }
 }

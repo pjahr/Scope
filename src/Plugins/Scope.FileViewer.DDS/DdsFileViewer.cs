@@ -40,32 +40,30 @@ namespace Scope.FileViewer.DDS
         return;
       }
 
-      _gcHandle.Free();
+      _gcHandle.Free();      
     }
 
     private Image CreateImage(IImage image)
     {
       var pinnedArray = GCHandle.Alloc(image.Data, GCHandleType.Pinned);
       var source = BitmapSource.Create(image.Width,
-                                        image.Height,
-                                        96.0,
-                                        96.0,
-                                        PixelFormat(image),
-                                        null,
-                                        pinnedArray.AddrOfPinnedObject(),
-                                        image.DataLen,
-                                        image.Stride);
+                                       image.Height,
+                                       96.0,
+                                       96.0,
+                                       PixelFormat(image),
+                                       null,
+                                       pinnedArray.AddrOfPinnedObject(),
+                                       image.DataLen,
+                                       image.Stride);
 
       _gcHandle = pinnedArray;
 
       return new Image
-             {
-               Source = source,
-               Width = image.Width,
-               Height = image.Height,
-               MaxHeight = image.Height,
-               MaxWidth = image.Width
-             };
+      {
+        Source = source,
+        HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch,
+        VerticalAlignment = System.Windows.VerticalAlignment.Stretch
+      };
     }
 
     private static PixelFormat PixelFormat(IImage image)
