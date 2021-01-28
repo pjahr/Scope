@@ -10,7 +10,7 @@ namespace Scope
       // This provides the UI Dispatcher globally (for UI thread marshalling when modifying UI controls from background threads or async tasks).
       // 
       // Please don't use this static class anywhere else (global state introduces dangerously hard coupling).
-      // If needed, inject an instance of IUiDispatch and use its .Do(...) methid instead. 
+      // If needed, inject an instance of IUiDispatch and use its .Do(...) method instead. 
       DispatcherHelper.Initialize();
     }
 
