@@ -7,10 +7,6 @@ using System.Linq;
 
 namespace Scope.FileViewer.DataForge.Models
 {
-
-  /// <summary>
-  /// Currently this is just a copy of allurans code adjusted to my coding style... 
-  /// </summary>
   public class DataForgeFile
   {
     private IMessageQueue _messages;
