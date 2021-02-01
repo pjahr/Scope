@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{656D67F2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryXmlConverter", "CryXmlConverter\CryXmlConverter.csproj", "{94ABC48A-48F8-41B9-86D9-3EB0C6F4054E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scope.FileViewer.ChCr", "Plugins\Scope.FileViewer.ChCr\Scope.FileViewer.ChCr.csproj", "{D3E417A8-DA38-445D-AC64-72E29EBD1D68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,14 @@ Global
 		{94ABC48A-48F8-41B9-86D9-3EB0C6F4054E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94ABC48A-48F8-41B9-86D9-3EB0C6F4054E}.Release|x64.ActiveCfg = Release|Any CPU
 		{94ABC48A-48F8-41B9-86D9-3EB0C6F4054E}.Release|x64.Build.0 = Release|Any CPU
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Debug|x64.ActiveCfg = Debug|x64
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Debug|x64.Build.0 = Debug|x64
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Release|Any CPU.ActiveCfg = Release|x64
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Release|Any CPU.Build.0 = Release|x64
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Release|x64.ActiveCfg = Release|x64
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +129,7 @@ Global
 		{0A3F9528-BEC0-4B15-B739-BFED361A44A5} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 		{7937E5F6-4D16-48CE-A8CE-BDD2B62A7EB1} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 		{94ABC48A-48F8-41B9-86D9-3EB0C6F4054E} = {656D67F2-89AC-4F85-9007-DB0FD29E38DD}
+		{D3E417A8-DA38-445D-AC64-72E29EBD1D68} = {BF70F8AE-2C7B-43F6-86A3-8F89F21323D3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95680C4D-E13E-48B9-881C-B36A90D15804}
