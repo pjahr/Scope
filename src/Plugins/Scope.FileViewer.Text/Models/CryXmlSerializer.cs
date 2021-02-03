@@ -8,99 +8,6 @@ namespace Scope.FileViewer.Text.Models
 {
   public static class CryXmlSerializer
   {
-    //public static long ReadInt64(this BinaryReader br, ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
-    //{
-    //  var bytes = new byte[] {
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //        };
-
-    //  if (byteOrder == ByteOrderEnum.LittleEndian)
-    //    bytes = bytes.Reverse().ToArray();
-
-    //  return BitConverter.ToInt64(bytes, 0);
-    //}
-
-    public static int ReadInt(this BinaryReader r,
-                              ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
-    {
-      var bytes = new[] { r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte() };
-
-      if (byteOrder == ByteOrderEnum.LittleEndian)
-      {
-        bytes = bytes.Reverse()
-                     .ToArray();
-      }
-
-      return BitConverter.ToInt32(bytes, 0);
-    }
-
-    public static short ReadInt16(this BinaryReader r,
-                                  ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
-    {
-      var bytes = new[] { r.ReadByte(), r.ReadByte() };
-
-      if (byteOrder == ByteOrderEnum.LittleEndian)
-      {
-        bytes = bytes.Reverse()
-                     .ToArray();
-      }
-
-      return BitConverter.ToInt16(bytes, 0);
-    }
-
-    //public static ulong ReadUInt64(this BinaryReader br, ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
-    //{
-    //  var bytes = new byte[] {
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //        };
-
-    //  if (byteOrder == ByteOrderEnum.LittleEndian)
-    //    bytes = bytes.Reverse().ToArray();
-
-    //  return BitConverter.ToUInt64(bytes, 0);
-    //}
-
-    public static uint ReadUInt32(this BinaryReader r,
-                                  ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
-    {
-      var bytes = new[] { r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte() };
-
-      if (byteOrder == ByteOrderEnum.LittleEndian)
-      {
-        bytes = bytes.Reverse()
-                     .ToArray();
-      }
-
-      return BitConverter.ToUInt32(bytes, 0);
-    }
-
-    //public static ushort ReadUInt16(this BinaryReader br, ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
-    //{
-    //  var bytes = new byte[] {
-    //            br.ReadByte(),
-    //            br.ReadByte(),
-    //        };
-
-    //  if (byteOrder == ByteOrderEnum.LittleEndian)
-    //    bytes = bytes.Reverse().ToArray();
-
-    //  return BitConverter.ToUInt16(bytes, 0);
-    //}
-
     public static XmlDocument ReadFile(string file,
                                        ByteOrderEnum byteOrder = ByteOrderEnum.AutoDetect,
                                        bool writeLog = false)
@@ -115,12 +22,7 @@ namespace Scope.FileViewer.Text.Models
       using (BinaryReader r = new BinaryReader(stream))
       {
         stream.Position = 0;
-        var peek = r.PeekChar();
-
-        //if (peek == '<')
-        //{
-        //  return null; // File is already XML
-        //}
+        var peek = r.PeekChar();        
 
         if (peek != 'C')
         {

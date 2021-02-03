@@ -8,11 +8,11 @@ using Scope.Utils;
 namespace Scope.FileViewer.Text
 {
   [Export]
-  public class TextFileViewerFactory : IFileViewerFactory
+  public class ChCrFileViewerFactory : IFileViewerFactory
   {
     private readonly Dictionary<string, Func<IFile, IFileViewer>> _factories;
 
-    public TextFileViewerFactory()
+    public ChCrFileViewerFactory()
     {
       _factories = new Dictionary<string, Func<IFile, IFileViewer>>
                    {

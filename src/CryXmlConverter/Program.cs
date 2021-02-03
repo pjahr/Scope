@@ -1,4 +1,5 @@
 ﻿using Scope.FileViewer.Text.Models;
+using System;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -16,13 +17,22 @@ namespace CryXmlConverter
 
         using (var s = File.OpenRead(path))
         {
-          var header = new byte[4];
-          s.Read(header, 0, 4);
-          var headerText = Encoding.UTF8.GetString(header);
-          x = CryXmlSerializer.ReadStream(s);
-        }
+          var first10Bytes = new byte[10];
+          s.Read(first10Bytes, 0, 10);
+          var headerText = Encoding.UTF8.GetString(first10Bytes);
+                    
+          if (headerText.StartsWith("CryXmlB"))
+          {
+            x = CryXmlSerializer.ReadStream(s);
+            x.Save($"{path}.xml");
+          }
 
-        x.Save($"{path}.xml");
+          if (headerText.StartsWith("CrChF"))
+          {
+            x = ChCrXmlSerializer.ReadStream(s);
+            x.Save($"{path}.xml");
+          }
+        }
       }
     }
   }

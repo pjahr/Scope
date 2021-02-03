@@ -7,8 +7,6 @@ namespace Scope.FileViewer.Text.Models
     /// <summary>
     /// Read a NULL-Terminated string from the stream
     /// </summary>
-    /// <param name="binaryReader"></param>
-    /// <returns></returns>
     public static string ReadCString(this BinaryReader binaryReader)
     {
       int stringLength = 0;
