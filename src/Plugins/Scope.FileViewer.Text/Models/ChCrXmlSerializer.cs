@@ -45,5 +45,7 @@ namespace Scope.FileViewer.Text.Models
         throw new NotImplementedException();
       }
     }
+
+    private 
   }
 }
