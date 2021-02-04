@@ -1,26 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
-using Scope.FileViewer.DataForge.ViewModels;
 using Scope.Interfaces;
 
 namespace Scope.FileViewer.DataForge
 {
   [Export]
-  internal class FileSubStructureProvider : IFileSubStructureProvider
+  public class FileSubStructureProvider : IFileSubStructureProvider
   {
-    private readonly DataForgeFileCache _dataForgeFileCache;
+    private readonly DataForgeFileProvider _fileProvider;
 
     public string ApplicableFileExtension => ".dcb";
 
-    public FileSubStructureProvider(DataForgeFileCache dataForgeFileCache)
+    public FileSubStructureProvider(DataForgeFileProvider dataForgeFileProvider)
     {
-      _dataForgeFileCache = dataForgeFileCache;
+      _fileProvider = dataForgeFileProvider;
     }
 
     public IReadOnlyCollection<IDirectory> GetDirectories(IFile file)
     {
-      var df = _dataForgeFileCache[file];
+      var df = _fileProvider.Get(file, out string _);
       var rootDirectories = df.Directories.Keys.Where(key => !key.Contains('\\'))
                                                .Select(key => df.Directories[key]);
 
@@ -29,7 +28,7 @@ namespace Scope.FileViewer.DataForge
 
     public IReadOnlyCollection<IFile> GetFiles(IFile file)
     {
-      var df = _dataForgeFileCache[file];
+      var df = _fileProvider.Get(file, out string _);
       var rootDirectories = df.Files.Keys.Where(key => !key.Contains('/'))
                                          .Select(key => df.Files[key]);
 

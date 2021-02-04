@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using Scope.FileViewer.DataForge.Models;
+﻿using Scope.FileViewer.DataForge.Models;
 using Scope.Interfaces;
 
 namespace Scope.FileViewer.DataForge.ViewModels

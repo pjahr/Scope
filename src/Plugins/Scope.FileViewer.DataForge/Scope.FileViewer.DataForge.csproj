@@ -60,6 +60,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="DataForgeFileProvider.cs" />
     <Compile Include="FileSubStructureProvider.cs" />
     <Compile Include="Models\ClassMapping.cs" />
     <Compile Include="Models\DataMapping.cs" />
@@ -71,7 +72,6 @@
     <Compile Include="Models\ReadType.cs" />
     <Compile Include="Models\SpyBinaryReader.cs" />
     <Compile Include="Models\Struct.cs" />
-    <Compile Include="ViewModels\DataForgeFileCache.cs" />
     <Compile Include="ViewModels\DataForgeFileViewer.cs" />
     <Compile Include="Models\Pointer.cs" />
     <Compile Include="Models\PropertyDefinition.cs" />

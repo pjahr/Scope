@@ -1,5 +1,7 @@
 ﻿using Scope.Interfaces;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace Scope.FileViewer.DataForge.Models
 {
@@ -10,12 +12,45 @@ namespace Scope.FileViewer.DataForge.Models
 
     public File(string name, string path, Struct dataForgeItem)
     {
-      Name = name;
+      Name = $"{name}.json";
       Path = path;
       _dataForgeItem = dataForgeItem;
-      _bytes = new byte[0];
+
+      var json = ToJson(dataForgeItem);
+      _bytes = Encoding.UTF8.GetBytes(json);
+
       BytesUncompressed = _bytes.Length;
       BytesCompressed = _bytes.Length;
+    }
+
+    private string ToJson(Struct dfi)
+    {
+      var b = new StringBuilder();
+      b.Append("{\r\n");
+
+      int i = 1;
+
+      b.Append($"{Indent(i)}name: { dfi.Name}\r\n");
+
+      foreach (var property in dfi.Properties)
+      {
+        b.Append(Serialize(property, i));
+      }
+
+      b.Append("}\r\n");
+
+      return b.ToString();
+    }
+
+    private string Indent(int i)
+    {
+      return Enumerable.Repeat(" ", i)
+                       .Aggregate((c, n) => $"{c}{n}");
+    }
+
+    private static string Serialize(Property property, int indent)
+    {
+      return $"{property.Name}: { property.Value}\r\n";
     }
 
     public int Index { get; }

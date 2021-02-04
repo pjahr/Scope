@@ -8,11 +8,9 @@ namespace Scope.FileViewer.Text.Models
 {
   public static class CryXmlSerializer
   {
-    public static XmlDocument ReadFile(string file,
-                                       ByteOrderEnum byteOrder = ByteOrderEnum.AutoDetect,
-                                       bool writeLog = false)
+    public static XmlDocument ReadFile(string file)
     {
-      return ReadStream(File.OpenRead(file), byteOrder, writeLog);
+      return ReadStream(File.OpenRead(file));
     }
 
     public static XmlDocument ReadStream(Stream stream,

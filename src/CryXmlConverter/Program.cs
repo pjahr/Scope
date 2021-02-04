@@ -29,8 +29,12 @@ namespace CryXmlConverter
 
           if (headerText.StartsWith("CrChF"))
           {
-            x = ChCrXmlSerializer.ReadStream(s);
-            x.Save($"{path}.xml");
+            var contents = DeserializeChCr.Deserialize(s);
+
+            for (int i = 0; i < contents.Length; i++)
+            {
+              File.WriteAllText($"{path}{i}.txt", contents[i]);
+            }            
           }
         }
       }
