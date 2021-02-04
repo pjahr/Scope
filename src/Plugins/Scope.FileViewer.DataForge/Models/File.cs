@@ -50,7 +50,39 @@ namespace Scope.FileViewer.DataForge.Models
 
     private static string Serialize(Property property, int indent)
     {
-      return $"{property.Name}: { property.Value}\r\n";
+      switch (property.Type)
+      {
+        case DataType.Reference:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+        case DataType.WeakPointer:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+        case DataType.StrongPointer:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+        case DataType.Class:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+        case DataType.Enum:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+        case DataType.Guid:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+        case DataType.Locale:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+        case DataType.Double:          
+        case DataType.Single:          
+        case DataType.String:          
+        case DataType.UInt64:          
+        case DataType.UInt32:          
+        case DataType.UInt16:          
+        case DataType.Byte:          
+        case DataType.Int64:          
+        case DataType.Int32:          
+        case DataType.Int16:          
+        case DataType.SByte:
+          return $"{property.Name}: \"{ property.Value}\"\r\n"; // value surounded by ""
+        case DataType.Boolean:
+          return $"{property.Name}: {property.Value}\r\n"; // no ""
+        default:
+          return $"{property.Name}: \"Unknown DataType\"\r\n";
+      }      
     }
 
     public int Index { get; }
