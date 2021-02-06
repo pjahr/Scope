@@ -1,4 +1,5 @@
 ﻿using Scope.Interfaces;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace Scope.FileViewer.DataForge.Models
 
       foreach (var property in dfi.Properties)
       {
-        b.Append(Serialize(property, i));
+        Serialize(property, i, b);
       }
 
       b.Append("}\r\n");
@@ -42,48 +43,63 @@ namespace Scope.FileViewer.DataForge.Models
       return b.ToString();
     }
 
-    private string Indent(int i)
+    private static string Indent(int i)
     {
       return Enumerable.Repeat(" ", i)
                        .Aggregate((c, n) => $"{c}{n}");
     }
 
-    private static string Serialize(Property property, int indent)
-    {
-      switch (property.Type)
-      {
-        case DataType.Reference:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-        case DataType.WeakPointer:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-        case DataType.StrongPointer:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-        case DataType.Class:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-        case DataType.Enum:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-        case DataType.Guid:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-        case DataType.Locale:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-        case DataType.Double:          
-        case DataType.Single:          
-        case DataType.String:          
-        case DataType.UInt64:          
-        case DataType.UInt32:          
-        case DataType.UInt16:          
-        case DataType.Byte:          
-        case DataType.Int64:          
-        case DataType.Int32:          
-        case DataType.Int16:          
-        case DataType.SByte:
-          return $"{property.Name}: \"{ property.Value}\"\r\n"; // value surounded by ""
-        case DataType.Boolean:
-          return $"{property.Name}: {property.Value}\r\n"; // no ""
-        default:
-          return $"{property.Name}: \"Unknown DataType\"\r\n";
-      }      
-    }
+    private static void Serialize(Property p, int i, StringBuilder b)
+        {
+            switch (p.Type)
+            {
+                case DataType.Class:
+                    b.Append($"{Indent(i)}{p.Name}: \"TODO: Class\"\r\n");
+                    break;
+                case DataType.Reference:
+                case DataType.WeakPointer:
+                case DataType.StrongPointer:
+                case DataType.Enum:
+                case DataType.Guid:
+                case DataType.Locale:
+                case DataType.Double:
+                case DataType.Single:
+                case DataType.String:
+                case DataType.UInt64:
+                case DataType.UInt32:
+                case DataType.UInt16:
+                case DataType.Byte:
+                case DataType.Int64:
+                case DataType.Int32:
+                case DataType.Int16:
+                case DataType.SByte:
+                    SerializeSingleValueProperty(p, i + 1, b);
+                    break;
+                case DataType.Boolean:
+                    b.Append( $"{Indent(i)}{p.Name}: {p.Value}\r\n");
+                    break;
+                default:
+                    b.Append($"{Indent(i)}{p.Name}: \"Unknown DataType\"\r\n");
+                    break;
+            }
+        }
+
+        private static void SerializeSingleValueProperty(Property p, int i, StringBuilder b)
+        {
+            if(p.IsList)
+            {
+                b.Append($"{Indent(i)}[\r\n");
+
+                foreach (var item in (List<Property>)p.Value)
+                {
+                    SerializeSingleValueProperty(item, i + 1, b);
+                }
+
+                b.Append($"\r\n{Indent(i)}]");
+            }
+            b.Append($"{Indent(i)}{p.Name}: \"{ p.Value}\"\r\n");
+        }
+
 
     public int Index { get; }
     public string Name { get; }
