@@ -13,7 +13,6 @@ namespace Scope.FileViewer.DataForge.Models
 
     private bool IsLegacy { get; }
     private int FileVersion { get; }
-
     public StructDefinition[] StructDefinitionTable { get; private set; }
     public PropertyDefinition[] PropertyDefinitionTable { get; private set; }
     public EnumDefinition[] EnumDefinitionTable { get; private set; }
@@ -42,10 +41,8 @@ namespace Scope.FileViewer.DataForge.Models
     public double[] DoubleValues { get; set; }
     public Pointer[] StrongValues { get; set; }
     public Pointer[] WeakValues { get; set; }
-
     public Dictionary<uint, string> ValueMap { get; set; }
     public Dictionary<uint, List<Struct>> DataMap { get; set; }
-
     public List<ClassMapping> ClassMappings { get; set; }
     public List<ClassMapping> StrongMappings { get; set; }
     public List<ClassMapping> WeakMappings1 { get; set; }

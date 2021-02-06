@@ -51,6 +51,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private static void Serialize(Property p, int i, StringBuilder b)
         {
+            i++;
             switch (p.Type)
             {
                 case DataType.Class:
@@ -95,7 +96,7 @@ namespace Scope.FileViewer.DataForge.Models
                     SerializeSingleValueProperty(item, i + 1, b);
                 }
 
-                b.Append($"\r\n{Indent(i)}]");
+                b.Append($"{Indent(i)}]\r\n");
             }
             b.Append($"{Indent(i)}{p.Name}: \"{ p.Value}\"\r\n");
         }
