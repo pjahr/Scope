@@ -13,6 +13,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private bool IsLegacy { get; }
     private int FileVersion { get; }
+
     public StructDefinition[] StructDefinitionTable { get; private set; }
     public PropertyDefinition[] PropertyDefinitionTable { get; private set; }
     public EnumDefinition[] EnumDefinitionTable { get; private set; }
@@ -41,8 +42,10 @@ namespace Scope.FileViewer.DataForge.Models
     public double[] DoubleValues { get; set; }
     public Pointer[] StrongValues { get; set; }
     public Pointer[] WeakValues { get; set; }
+
     public Dictionary<uint, string> ValueMap { get; set; }
     public Dictionary<uint, List<Struct>> DataMap { get; set; }
+
     public List<ClassMapping> ClassMappings { get; set; }
     public List<ClassMapping> StrongMappings { get; set; }
     public List<ClassMapping> WeakMappings1 { get; set; }
@@ -192,23 +195,7 @@ namespace Scope.FileViewer.DataForge.Models
               && this.DataMap[classMapping.StructIndex].Count > classMapping.RecordIndex)
         {
           var value = DataMap[classMapping.StructIndex][classMapping.RecordIndex];
-
-          var property = new Property()
-          {
-            Name = value.Name,
-            Value = value,
-            Type = DataType.Class,
-            IsList = false
-          };
-
-          var propertyIndex = classMapping.PropertyContainer.IndexOf(classMapping.Property);
-
-          if (propertyIndex == -1)
-          {
-            throw new InvalidDataException();
-          }
-
-          classMapping.PropertyContainer[propertyIndex] = property;
+          ReplaceProperty(classMapping, value);
         }
         else
         {
@@ -226,8 +213,8 @@ namespace Scope.FileViewer.DataForge.Models
         }
         else
         {
-          var s = DataMap[strong.StructType][(Int32)strong.Index];
-          dataMapping.Property.Value = s;
+          var value = DataMap[strong.StructType][(Int32)strong.Index];
+          ReplaceProperty(dataMapping, value);
         }
       }
 
@@ -241,7 +228,8 @@ namespace Scope.FileViewer.DataForge.Models
         }
         else
         {
-          dataMapping.Property.Value = DataMap[weak.StructType][(Int32)weak.Index];
+          var value = DataMap[weak.StructType][(Int32)weak.Index];
+          ReplaceProperty(dataMapping, value);
         }
       }
 
@@ -262,6 +250,26 @@ namespace Scope.FileViewer.DataForge.Models
           dataMapping.Property.Value = DataMap[dataMapping.StructIndex][dataMapping.RecordIndex];
         }
       }
+    }
+
+    private static void ReplaceProperty(ClassMapping classMapping, Struct value)
+    {
+      var propertyIndex = classMapping.PropertyContainer.IndexOf(classMapping.Property);
+
+      if (propertyIndex == -1)
+      {
+        throw new InvalidDataException();
+      }
+
+      var property = new Property()
+      {
+        Name = value.Name,
+        Value = value,
+        Type = DataType.Class,
+        IsList = false
+      };
+
+      classMapping.PropertyContainer[propertyIndex] = property;
     }
 
     private void GenerateFiles()

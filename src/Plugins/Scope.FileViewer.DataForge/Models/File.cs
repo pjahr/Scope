@@ -17,89 +17,111 @@ namespace Scope.FileViewer.DataForge.Models
       Path = path;
       _dataForgeItem = dataForgeItem;
 
-      var json = ToJson(dataForgeItem);
+      var b = new StringBuilder();
+      int i = 0;
+      var json = Serialize(dataForgeItem, i, b);
       _bytes = Encoding.UTF8.GetBytes(json);
 
       BytesUncompressed = _bytes.Length;
       BytesCompressed = _bytes.Length;
     }
 
-    private string ToJson(Struct dfi)
+    private static string Serialize(Struct s, int i, StringBuilder b)
     {
-      var b = new StringBuilder();
-      b.Append("{\r\n");
+      b.Append($"{Indent(i)}{{\r\n");
 
-      int i = 1;
+      b.Append($"{Indent(i + 1)}name: { s.Name}\r\n");
 
-      b.Append($"{Indent(i)}name: { dfi.Name}\r\n");
-
-      foreach (var property in dfi.Properties)
+      foreach (var property in s.Properties)
       {
-        Serialize(property, i, b);
+        Serialize(property, i + 1, b);
       }
 
-      b.Append("}\r\n");
+      b.Append($"{Indent(i)}}}\r\n");
 
       return b.ToString();
     }
 
     private static string Indent(int i)
     {
-      return Enumerable.Repeat(" ", i)
-                       .Aggregate((c, n) => $"{c}{n}");
+      return Enumerable.Repeat("  ", i)
+                       .Aggregate("",(c, n) => $"{c}{n}");
     }
 
     private static void Serialize(Property p, int i, StringBuilder b)
-        {
-            i++;
-            switch (p.Type)
+    {
+      switch (p.Type)
+      {
+        case DataType.Class:
+
+          if (p.IsList)
+          {
+            b.Append($"{Indent(i)}[\r\n");
+
+            foreach (var item in (List<Property>)p.Value)
             {
-                case DataType.Class:
-                    b.Append($"{Indent(i)}{p.Name}: \"TODO: Class\"\r\n");
-                    break;
-                case DataType.Reference:
-                case DataType.WeakPointer:
-                case DataType.StrongPointer:
-                case DataType.Enum:
-                case DataType.Guid:
-                case DataType.Locale:
-                case DataType.Double:
-                case DataType.Single:
-                case DataType.String:
-                case DataType.UInt64:
-                case DataType.UInt32:
-                case DataType.UInt16:
-                case DataType.Byte:
-                case DataType.Int64:
-                case DataType.Int32:
-                case DataType.Int16:
-                case DataType.SByte:
-                    SerializeSingleValueProperty(p, i + 1, b);
-                    break;
-                case DataType.Boolean:
-                    b.Append( $"{Indent(i)}{p.Name}: {p.Value}\r\n");
-                    break;
-                default:
-                    b.Append($"{Indent(i)}{p.Name}: \"Unknown DataType\"\r\n");
-                    break;
+              b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
+              b.Append($"{Indent(i)}{{");
+              Serialize((Struct)item.Value, i+2, b);
+              b.Append($"{Indent(i)}}}");
             }
+
+            b.Append($"{Indent(i)}]\r\n");
+          }
+          else
+          {
+            b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
+            b.Append($"{Indent(i)}{{");
+            Serialize((Struct)p.Value, i+1, b);
+            b.Append($"{Indent(i)}}}");
+          }          
+          break;
+        case DataType.Reference:
+        case DataType.WeakPointer:
+        case DataType.StrongPointer:
+        case DataType.Enum:
+        case DataType.Guid:
+        case DataType.Locale:
+        case DataType.Double:
+        case DataType.Single:
+        case DataType.String:
+        case DataType.UInt64:
+        case DataType.UInt32:
+        case DataType.UInt16:
+        case DataType.Byte:
+        case DataType.Int64:
+        case DataType.Int32:
+        case DataType.Int16:
+        case DataType.SByte:
+          SerializeSingleValueProperty(p, i + 1, b);
+          break;
+        case DataType.Boolean:
+          b.Append($"{Indent(i)}{p.Name}: {p.Value}\r\n");
+          break;
+        default:
+          b.Append($"{Indent(i)}{p.Name}: \"Unknown DataType\"\r\n");
+          break;
+      }
+    }
+
+    private static void SerializeSingleValueProperty(Property p, int i, StringBuilder b)
+    {
+      if (p.IsList)
+      {
+        b.Append($"{Indent(i)}[\r\n");
+
+        foreach (var item in (List<Property>)p.Value)
+        {
+          SerializeSingleValueProperty(item, i + 1, b);
         }
 
-        private static void SerializeSingleValueProperty(Property p, int i, StringBuilder b)
-        {
-            if(p.IsList)
-            {
-                b.Append($"{Indent(i)}[\r\n");
-
-                foreach (var item in (List<Property>)p.Value)
-                {
-                    SerializeSingleValueProperty(item, i + 1, b);
-                }
-
-                b.Append($"{Indent(i)}]\r\n");
-            }
-            b.Append($"{Indent(i)}{p.Name}: \"{ p.Value}\"\r\n");
-        }
+        b.Append($"{Indent(i)}]\r\n");
+      }
+      else
+      {
+        b.Append($"{Indent(i)}{p.Name}: \"{ p.Value}\"\r\n");
+      }
+    }
 
 
     public int Index { get; }
