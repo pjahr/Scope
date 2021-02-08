@@ -1,0 +1,99 @@
+<EntityClassDefinition.ActorBlockHelper Category="Default"
+                                      	Icon=""
+                                      	Invisible="0"
+                                      	BBoxSelection="0"
+                                      	lifetimePolicy="00000000-0000-0000-0000-000000000000"
+                                      	__type="EntityClassDefinition"
+                                      	__ref="04cd25f7-e0c6-4564-95ae-ecfc998e285f"
+                                      	__path="libs/foundry/records/actor/actorblockhelper.xml">
+	<tags/>
+	<StaticEntityClassData/>
+	<Components>
+		<BlockingHelperComponentParams __type="DataForgeComponentParams"
+                             			__polymorphicType="BlockingHelperComponentParams">
+			<offsetL x="0,13"
+       				y="0,08"
+       				z="0"
+       				__type="Vec3" />
+			<orientationL x="90"
+            				y="0"
+            				z="90"
+            				__type="Ang3" />
+			<offsetR x="0,13"
+       				y="0,08"
+       				z="0"
+       				__type="Vec3" />
+			<orientationR x="90"
+            				y="0"
+            				z="90"
+            				__type="Ang3" />
+		</BlockingHelperComponentParams>
+		<SGeometryResourceParams cacheResources="0"
+                       			__type="DataForgeComponentParams"
+                       			__polymorphicType="SGeometryResourceParams">
+			<ModelTag>
+			</ModelTag>
+			<Geometry Tags=""
+        				ScaleMultiplier="1"
+        				__type="SGeometryNodeParams">
+				<Geometry Slot="Main"
+        					MaterialAttachments=""
+        					ProxyCDFPath=""
+        					ModifiersPath=""
+        					AttachFlags="0"
+        					DeformerType="Standard"
+        					ProtosBShapeExclude="0"
+        					VisTP="0"
+        					VisFP="0"
+        					VisShadow="0"
+        					VisSecondaryViews="1"
+        					WrinkleMap="0"
+        					BBoxJoint=""
+        					BBoxRadius="0"
+        					Wear="0"
+        					Dirt="0"
+        					Interference="0"
+        					Damage="0"
+        					viewDistRatio="00000000-0000-0000-0000-000000000000"
+        					__type="SGeometryDataParams">
+					<Material path="objects/tech_helpers/actor/actor_block.mtl"
+        						__type="GlobalResourceBase"
+        						__polymorphicType="GlobalResourceMaterial" />
+					<Geometry path="objects/tech_helpers/actor/actor_block_1_a.cgf"
+        						__type="GlobalResourceBase"
+        						__polymorphicType="GlobalResourceGeometry" />
+				</Geometry>
+				<SubGeometry/>
+			</Geometry>
+			<Material Tags=""
+        				__type="SMaterialNodeParams">
+				<Material path=""
+        					__type="GlobalResourceBase"
+        					__polymorphicType="GlobalResourceMaterial" />
+				<materialVariants/>
+			</Material>
+		</SGeometryResourceParams>
+		<SEntityPhysicsControllerParams __type="DataForgeComponentParams"
+                              			__polymorphicType="SEntityPhysicsControllerParams">
+			<PhysType>
+				<SEntityRigidPhysicsControllerParams Mass="0"
+                                   					maxLoggedCollisions="1"
+                                   					PushableByPlayers="1"
+                                   					NeverAffectTriggers="0"
+                                   					UseManualGridTransition="0"
+                                   					BlocksNavigation="1"
+                                   					NoRecomputeMass="0"
+                                   					physicalizeAllSlots="1"
+                                   					__type="SEntityBasePhysicsControllerParams"
+                                   					__polymorphicType="SEntityRigidPhysicsControllerParams">
+					<breakableParams>
+					</breakableParams>
+					<gameCollisionClass>
+					</gameCollisionClass>
+					<grid>
+					</grid>
+				</SEntityRigidPhysicsControllerParams>
+			</PhysType>
+		</SEntityPhysicsControllerParams>
+	</Components>
+</EntityClassDefinition.ActorBlockHelper>

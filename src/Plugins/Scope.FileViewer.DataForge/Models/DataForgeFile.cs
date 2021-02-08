@@ -168,8 +168,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private void MapData(BinaryReader r)
     {
-      var structs = new List<Struct>();
-      Console.WriteLine(structs.Count);
+      
       foreach (var dataMapping in DataMappingTable)
       {
         DataMap[dataMapping.StructIndex] = new List<Struct>();
@@ -191,8 +190,8 @@ namespace Scope.FileViewer.DataForge.Models
           //    this._xmlDocument.CreateElement("null"),
           //    dataMapping.Item1);
         }
-        else if (this.DataMap.ContainsKey(classMapping.StructIndex)
-              && this.DataMap[classMapping.StructIndex].Count > classMapping.RecordIndex)
+        else if (DataMap.ContainsKey(classMapping.StructIndex)
+              && DataMap[classMapping.StructIndex].Count > classMapping.RecordIndex)
         {
           var value = DataMap[classMapping.StructIndex][classMapping.RecordIndex];
           ReplaceProperty(classMapping, value);
@@ -241,7 +240,7 @@ namespace Scope.FileViewer.DataForge.Models
         }
         else if (dataMapping.RecordIndex == -1)
         {
-          var s = this.DataMap[dataMapping.StructIndex].FirstOrDefault();
+          var s = DataMap[dataMapping.StructIndex].FirstOrDefault();
           var v = s ?? (object)"MISSING VALUE";
           dataMapping.Property.Value = v;
         }

@@ -26,11 +26,22 @@ namespace Scope.FileViewer.DataForge.Models
       BytesCompressed = _bytes.Length;
     }
 
+    public int Index { get; }
+    public string Name { get; }
+    public string Path { get; }
+    public long BytesCompressed { get; }
+    public long BytesUncompressed { get; }
+
+    public Stream Read()
+    {
+      return new MemoryStream(_bytes);
+    }
+
     private static string Serialize(Struct s, int i, StringBuilder b)
     {
       b.Append($"{Indent(i)}{{\r\n");
 
-      b.Append($"{Indent(i + 1)}name: { s.Name}\r\n");
+      b.Append($"{Indent(i + 1)}\"name\": \"{ s.Name}\"\r\n");
 
       foreach (var property in s.Properties)
       {
@@ -45,7 +56,7 @@ namespace Scope.FileViewer.DataForge.Models
     private static string Indent(int i)
     {
       return Enumerable.Repeat("  ", i)
-                       .Aggregate("",(c, n) => $"{c}{n}");
+                       .Aggregate("", (c, n) => $"{c}{n}");
     }
 
     private static void Serialize(Property p, int i, StringBuilder b)
@@ -56,13 +67,14 @@ namespace Scope.FileViewer.DataForge.Models
 
           if (p.IsList)
           {
+            b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
             b.Append($"{Indent(i)}[\r\n");
 
             foreach (var item in (List<Property>)p.Value)
             {
               b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
               b.Append($"{Indent(i)}{{");
-              Serialize((Struct)item.Value, i+2, b);
+              Serialize((Struct)item.Value, i + 2, b);
               b.Append($"{Indent(i)}}}");
             }
 
@@ -72,9 +84,9 @@ namespace Scope.FileViewer.DataForge.Models
           {
             b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
             b.Append($"{Indent(i)}{{");
-            Serialize((Struct)p.Value, i+1, b);
+            Serialize((Struct)p.Value, i + 1, b);
             b.Append($"{Indent(i)}}}");
-          }          
+          }
           break;
         case DataType.Reference:
         case DataType.WeakPointer:
@@ -96,7 +108,7 @@ namespace Scope.FileViewer.DataForge.Models
           SerializeSingleValueProperty(p, i + 1, b);
           break;
         case DataType.Boolean:
-          b.Append($"{Indent(i)}{p.Name}: {p.Value}\r\n");
+          b.Append($"{Indent(i)}\"{p.Name}\": {p.Value}\r\n");
           break;
         default:
           b.Append($"{Indent(i)}{p.Name}: \"Unknown DataType\"\r\n");
@@ -108,31 +120,20 @@ namespace Scope.FileViewer.DataForge.Models
     {
       if (p.IsList)
       {
+        b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
         b.Append($"{Indent(i)}[\r\n");
 
         foreach (var item in (List<Property>)p.Value)
         {
-          SerializeSingleValueProperty(item, i + 1, b);
+          SerializeSingleValueProperty(item, i, b);
         }
 
         b.Append($"{Indent(i)}]\r\n");
       }
       else
       {
-        b.Append($"{Indent(i)}{p.Name}: \"{ p.Value}\"\r\n");
+        b.Append($"{Indent(i)}\"{p.Name}\": \"{p.Value}\"\r\n");
       }
-    }
-
-
-    public int Index { get; }
-    public string Name { get; }
-    public string Path { get; }
-    public long BytesCompressed { get; }
-    public long BytesUncompressed { get; }
-
-    public Stream Read()
-    {
-      return new MemoryStream(_bytes);
     }
   }
 }
