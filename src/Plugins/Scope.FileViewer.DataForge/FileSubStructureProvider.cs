@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
+using Scope.FileViewer.DataForge.Models;
 using Scope.Interfaces;
 
 namespace Scope.FileViewer.DataForge
@@ -17,22 +20,15 @@ namespace Scope.FileViewer.DataForge
       _fileProvider = dataForgeFileProvider;
     }
 
-    public IReadOnlyCollection<IDirectory> GetDirectories(IFile file)
+    public async Task<IDirectory> GetAsDirectoryAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      var df = _fileProvider.Get(file, out string _);
+      var df = await _fileProvider.GetAsync(file, progress);
       var rootDirectories = df.Directories.Keys.Where(key => !key.Contains('\\'))
                                                .Select(key => df.Directories[key]);
-
-      return new List<IDirectory>(rootDirectories);
-    }
-
-    public IReadOnlyCollection<IFile> GetFiles(IFile file)
-    {
-      var df = _fileProvider.Get(file, out string _);
-      var rootDirectories = df.Files.Keys.Where(key => !key.Contains('/'))
+      var rootFiles = df.Files.Keys.Where(key => !key.Contains('/'))
                                          .Select(key => df.Files[key]);
 
-      return new List<IFile>(rootDirectories);
+      return new Directory(file.Name, file.Path, rootDirectories, rootFiles);
     }
   }
 }

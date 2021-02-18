@@ -1,4 +1,6 @@
 ﻿using Scope.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace Scope.ViewModels
 {
@@ -13,11 +15,11 @@ namespace Scope.ViewModels
       return true;
     }
 
-    public FileCategory Category => FileCategory.Other;
+    public FileCategory Category => FileCategory.Other;    
 
-    public IFileViewer Create(IFile file)
+    public Task<IFileViewer> CreateAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      return new NoFileViewerViewModel(file);
+      return Task.FromResult((IFileViewer)new NoFileViewerViewModel(file));
     }
   }
 }

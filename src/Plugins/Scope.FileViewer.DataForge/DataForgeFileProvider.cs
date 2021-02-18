@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.IO;
+using System.Threading.Tasks;
 using Scope.FileViewer.DataForge.Models;
 using Scope.Interfaces;
 
@@ -18,34 +19,35 @@ namespace Scope.FileViewer.DataForge
       _messages = messages;
     }
 
-    public DataForgeFile? Get(IFile file, out string errorMessage)
+    public Task<DataForgeFile?> GetAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      errorMessage = "";
-
       if (_currentFile == file)
       {
-        return _current;
+        return Task.FromResult(_current);
       }
 
-      // HACK(PJ): load only once for now. Caching for open p4k most likely. 
-      try
+      return Task.Run(() =>
       {
-        using (var s = file.Read())
-        using (var r = new BinaryReader(s))
+        // HACK(PJ): load only once for now. Caching for open p4k most likely. 
+        try
         {
+          using var s = file.Read();
+          using var r = new BinaryReader(s);
+
           _currentFile = file;
-          _current = new DataForgeFile(r, _messages);
+          _current = new DataForgeFile(r, _messages, progress);
+
           return _current;
         }
-      }
-      catch (Exception e)
-      {
-        errorMessage =
-          $"There was an error opening {file.Name}.\r\n\r\n{e.Message}\r\n\r\n{e.StackTrace}";
+        catch (Exception e)
+        {
+          var errorMessage = $"There was an error opening {file.Name}.\r\n\r\n{e.Message}\r\n\r\n{e.StackTrace}";
+          progress.Report(new ProgressReport(0.0, errorMessage));
 
-        _messages.Add(errorMessage);
-        return null;
-      }
+          _messages.Add(errorMessage);
+          return null;
+        }
+      });
     }
   }
 }

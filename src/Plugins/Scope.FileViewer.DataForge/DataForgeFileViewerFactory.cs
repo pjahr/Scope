@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 using Scope.FileViewer.DataForge.ViewModels;
 using Scope.Interfaces;
 
@@ -23,10 +25,11 @@ namespace Scope.FileViewer.DataForge
       return Extensions.Any(e => file.Name.EndsWith(e));
     }
 
-    public IFileViewer Create(IFile file)
+    
+    public async Task<IFileViewer> CreateAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      var df = _provider.Get(file, out string errorMessage);
-      return new DataForgeFileViewer(df, errorMessage);
+      var df = await _provider.GetAsync(file, progress);
+      return new DataForgeFileViewer(df, "");
     }
   }
 }

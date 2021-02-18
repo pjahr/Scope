@@ -1,4 +1,7 @@
-﻿namespace Scope.Interfaces
+﻿using System;
+using System.Threading.Tasks;
+
+namespace Scope.Interfaces
 {
   /// <summary>
   /// Creates the view model for a file viewer (<see cref="IFileViewer"/>).
@@ -15,7 +18,7 @@
     /// Creates a new instance of a <see cref="IFileViewer"/> that can handle the given
     /// file.
     /// </summary>
-    IFileViewer Create(IFile file);
+    Task<IFileViewer> CreateAsync(IFile file, IProgress<ProgressReport> progress);
 
     /// <summary>
     /// The file category, the matching files belong to.

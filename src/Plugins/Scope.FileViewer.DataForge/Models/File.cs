@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Scope.FileViewer.DataForge.Models
 {
-  internal class File : IFile
+  public class File : IFile
   {
     private readonly byte[] _bytes;
     private readonly Struct _dataForgeItem;

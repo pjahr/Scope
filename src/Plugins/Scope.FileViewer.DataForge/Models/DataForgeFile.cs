@@ -22,7 +22,7 @@ namespace Scope.FileViewer.DataForge.Models
     private StringLookup[] EnumOptionTable { get; set; }
 
     private string[] ValueTable { get; set; }
-    public Dictionary<string, IFile> Files { get; set; }
+    public Dictionary<string, File> Files { get; set; }
     internal Dictionary<string, Directory> Directories { get; private set; }
     public Reference[] ReferenceValues { get; set; }
     public Guid[] GuidValues { get; set; }
@@ -53,11 +53,11 @@ namespace Scope.FileViewer.DataForge.Models
 
     public DataForgeFile(BinaryReader r,
                          IMessageQueue messages,
-                         bool legacy = false)
+                         IProgress<ProgressReport> progress)
     {
       _messages = messages;
 
-      IsLegacy = legacy;
+      IsLegacy = false;
 
       var temp00 = r.ReadInt32(); // ?
 
@@ -273,7 +273,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private void GenerateFiles()
     {
-      Files = new Dictionary<string, IFile>();
+      Files = new Dictionary<string, File>();
       Directories = new Dictionary<string, Directory>();
 
       foreach (var record in RecordDefinitionTable)

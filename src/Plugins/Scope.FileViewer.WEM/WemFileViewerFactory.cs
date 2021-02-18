@@ -1,8 +1,10 @@
 ﻿using Scope.FileViewer.WEM.Models;
 using Scope.FileViewer.WEM.ViewModels;
 using Scope.Interfaces;
+using System;
 using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Scope.FileViewer.WEM
 {
@@ -29,10 +31,9 @@ namespace Scope.FileViewer.WEM
       return Extensions.Any(e => file.Name.EndsWith(e));
     }
 
-    public IFileViewer Create(IFile file)
+    public Task<IFileViewer> CreateAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      var model = new WemFile(file, _messageQueue);
-      return new WemFileViewModel(model);
+      return Task.FromResult((IFileViewer)new WemFileViewModel(new WemFile(file, _messageQueue)));
     }
   }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Threading.Tasks;
 using Scope.FileViewer.Text.ViewModels;
 using Scope.Interfaces;
 using Scope.Utils;
@@ -35,9 +36,9 @@ namespace Scope.FileViewer.Text
       return _factories.ContainsKey(file.Name.GetExtension());
     }
 
-    public IFileViewer Create(IFile file)
+    public Task<IFileViewer> CreateAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      return _factories[file.Name.GetExtension().ToLower()](file);
+      return Task.FromResult(_factories[file.Name.GetExtension().ToLower()](file));
     }
   }
 }

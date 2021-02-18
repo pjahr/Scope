@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.Composition;
+﻿using System;
+using System.ComponentModel.Composition;
 using System.Linq;
+using System.Threading.Tasks;
 using Scope.Interfaces;
 
 namespace Scope.FileViewer.BNK
@@ -11,7 +13,7 @@ namespace Scope.FileViewer.BNK
 
     static FileViewerFactory()
     {
-      Extensions = new[] {".bnk"};
+      Extensions = new[] { ".bnk" };
     }
 
     public FileCategory Category => FileCategory.Other;
@@ -21,9 +23,9 @@ namespace Scope.FileViewer.BNK
       return Extensions.Any(e => file.Name.EndsWith(e));
     }
 
-    public IFileViewer Create(IFile file)
+    public Task<IFileViewer> CreateAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      return new BnkFileViewer(file);
+      return Task.FromResult((IFileViewer)new BnkFileViewer(file));
     }
   }
 }
