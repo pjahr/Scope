@@ -14,7 +14,7 @@ namespace Scope.ViewModels
       Header = _file.Name;
       Path = _file.Path;
 
-      Viewer = factory.CreateAsync(_file);
+      //Viewer = factory.CreateAsync(_file, new Progress<ProgressReport>());
     }
 
     public string Header { get; }

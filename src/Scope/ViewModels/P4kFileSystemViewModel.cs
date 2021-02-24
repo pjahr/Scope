@@ -35,7 +35,7 @@ namespace Scope.ViewModels
       _search = search;
       _uiDispatch = uiDispatch;     
 
-      RootItems = new ObservableCollection<TreeNodeViewModel>();
+      RootItems = new ObservableCollection<ITreeNodeViewModel>();
       SetCurrentItemCommand = new RelayCommand<object>(SetCurrentItem);
       SetCurrentFileToNothingCommand = new RelayCommand(_currentItem.Clear);
       ToggleSelectionOfCurrentItemCommand = new RelayCommand(ToggleSelectionOfCurrentItem);
@@ -90,7 +90,7 @@ namespace Scope.ViewModels
       PropertyChanged.Raise(this, nameof(SearchFoundNoMatch));
     }
 
-    public ObservableCollection<TreeNodeViewModel> RootItems { get; private set; }
+    public ObservableCollection<ITreeNodeViewModel> RootItems { get; private set; }
 
     public ICommand SetCurrentItemCommand { get; }
     public ICommand SetCurrentFileToNothingCommand { get; }

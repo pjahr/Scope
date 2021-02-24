@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Scope.Utils;
-using Scope.ViewModels.Commands;
 
 namespace Scope.ViewModels
 {
-  public class TreeNodeViewModel : INotifyPropertyChanged, IDisposable
+  public interface ITreeNodeViewModel : INotifyPropertyChanged, IDisposable
+  {
+    string Path { get; }
+
+  }
+
+  public class TreeNodeViewModel : ITreeNodeViewModel
   {
     protected static readonly LoadingTreeNodeViewModel Loading = new LoadingTreeNodeViewModel();
 
-    private readonly ObservableCollection<TreeNodeViewModel> _children;
+    private readonly ObservableCollection<ITreeNodeViewModel> _children;
     private bool _isExpanded;
     private bool _isSelected;
     private string _name;
@@ -28,7 +31,7 @@ namespace Scope.ViewModels
       _name = name;
       _path = path;
       _hasChildren = hasChildren;
-      _children = new ObservableCollection<TreeNodeViewModel>();
+      _children = new ObservableCollection<ITreeNodeViewModel>();
 
       ExpandCommand = new RelayCommand(async () => await LoadChildrenAsync());
 
@@ -42,7 +45,7 @@ namespace Scope.ViewModels
 
     public ICommand ExpandCommand { get; }
     public string Path => _path;
-    public ObservableCollection<TreeNodeViewModel> Children => _children;
+    public ObservableCollection<ITreeNodeViewModel> Children => _children;
     public virtual bool HasChildren => _hasChildren;
 
     protected void ResetChildren()
@@ -105,7 +108,7 @@ namespace Scope.ViewModels
       IsSelected = isSelected;
     }
 
-    protected virtual TreeNodeViewModel[] LoadChildren() { return new TreeNodeViewModel[0]; }
+    protected virtual ITreeNodeViewModel[] LoadChildren() { return new TreeNodeViewModel[0]; }
 
     protected virtual void OnDisposing() { }
 
@@ -119,7 +122,7 @@ namespace Scope.ViewModels
       Children.Clear();
       Children.Add(Loading);
 
-      TreeNodeViewModel[] children = new TreeNodeViewModel[0];
+      ITreeNodeViewModel[] children = new ITreeNodeViewModel[0];
       try
       {
         children = await Task.Run(() => LoadChildren());

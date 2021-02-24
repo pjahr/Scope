@@ -1,8 +1,8 @@
 ﻿namespace Scope.ViewModels
 {
-  public class LoadingTreeNodeViewModel :TreeNodeViewModel
+  public class LoadingTreeNodeViewModel : TreeNodeViewModel
   {
-    public LoadingTreeNodeViewModel():base("Loading...", "")
+    public LoadingTreeNodeViewModel() : base("Loading...", "")
     {
 
     }

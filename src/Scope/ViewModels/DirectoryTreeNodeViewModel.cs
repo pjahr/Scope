@@ -69,9 +69,9 @@ namespace Scope.ViewModels
       _search.Began -= ResetChildren;
     }
 
-    protected override TreeNodeViewModel[] LoadChildren()
+    protected override ITreeNodeViewModel[] LoadChildren()
     {
-      var contents = new List<TreeNodeViewModel>();
+      var contents = new List<ITreeNodeViewModel>();
       var pathes = _search.FileResults.Select(r => r.File.Path).ToArray();
 
       foreach (var directory in GetDirectories())
@@ -137,7 +137,7 @@ namespace Scope.ViewModels
       }
     }
 
-    private bool ContainsOrIsAnyFileSearchResult(TreeNodeViewModel child)
+    private bool ContainsOrIsAnyFileSearchResult(ITreeNodeViewModel child)
     {
       return _search.FileResults
                     .Any(m => m.File.Path.StartsWith(child.Path));
