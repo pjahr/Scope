@@ -112,7 +112,6 @@ namespace Scope.ViewModels
 
     protected virtual void OnDisposing() { }
 
-
     private async Task LoadChildrenAsync() 
     {
       if (!HasChildren)

@@ -24,7 +24,7 @@ namespace Scope.ViewModels
 
     public void Dispose()
     {
-      Viewer.Dispose();
+      Viewer?.Dispose();
     }
   }
 }

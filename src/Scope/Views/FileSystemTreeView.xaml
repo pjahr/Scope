@@ -21,7 +21,8 @@
         Value="True" />
       <Setter
         Property="VirtualizingStackPanel.VirtualizationMode"
-        Value="Standard" /> <!-- changed from 'Recycling' as this led to mixed up items after many different items were traversed.-->
+        Value="Standard" />
+      <!-- changed from 'Recycling' as this led to mixed up items after many different items were traversed.-->
       <Setter
         Property="TreeView.SnapsToDevicePixels"
         Value="True" />
@@ -37,28 +38,28 @@
           </ItemsPanelTemplate>
         </Setter.Value>
       </Setter>
-      
+
       <Setter
         Property="TreeView.Template">
         <Setter.Value>
-          
+
           <ControlTemplate
             TargetType="TreeView">
-            
+
             <ScrollViewer
               Focusable="False"
               CanContentScroll="True"
               Padding="3">
-              
+
               <ItemsPresenter
                 HorizontalAlignment="Stretch" />
             </ScrollViewer>
-            
+
           </ControlTemplate>
-          
-        </Setter.Value>        
+
+        </Setter.Value>
       </Setter>
-      
+
     </Style>
 
     <Style x:Key="SearchResultHighlight" TargetType="Run">
@@ -247,10 +248,13 @@
                 </Path.RenderTransform>
               </Path>
             </Border>
+            
             <ControlTemplate.Triggers>
+              
               <Trigger
                 Property="IsChecked"
                 Value="True">
+                
                 <Setter
                   Property="RenderTransform"
                   TargetName="ExpandPath">
@@ -261,6 +265,7 @@
                       CenterX="3" />
                   </Setter.Value>
                 </Setter>
+                
                 <Setter
                   Property="Fill"
                   TargetName="ExpandPath"
@@ -270,6 +275,7 @@
                   TargetName="ExpandPath"
                   Value="{StaticResource TreeViewItem.TreeArrow.Static.Checked.Stroke}" />
               </Trigger>
+              
               <Trigger
                 Property="IsMouseOver"
                 Value="True">
@@ -282,6 +288,7 @@
                   TargetName="ExpandPath"
                   Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Fill}" />
               </Trigger>
+              
               <MultiTrigger>
                 <MultiTrigger.Conditions>
                   <Condition
@@ -300,6 +307,7 @@
                   TargetName="ExpandPath"
                   Value="{StaticResource TreeViewItem.TreeArrow.MouseOver.Checked.Fill}" />
               </MultiTrigger>
+              
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Setter.Value>
@@ -373,11 +381,11 @@
     <Style
       x:Key="TreeViewItemStyle1"
       TargetType="{x:Type TreeViewItem}">
-      
+
       <Setter
         Property="Background"
         Value="Transparent" />
-      
+
       <Setter
         Property="HorizontalContentAlignment"
         Value="{Binding HorizontalContentAlignment,
@@ -389,20 +397,21 @@
       <Setter
         Property="Padding"
         Value="1,0,0,0" />
-      
+
       <Setter
         Property="Foreground"
         Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-      
+
       <Setter
         Property="FocusVisualStyle"
         Value="{StaticResource TreeViewItemFocusVisual}" />
-      
+
       <Setter
         Property="Template">
         <Setter.Value>
           <ControlTemplate
             TargetType="{x:Type TreeViewItem}">
+
             <Grid>
               <Grid.ColumnDefinitions>
                 <ColumnDefinition
@@ -416,13 +425,13 @@
                   Height="Auto" />
                 <RowDefinition />
               </Grid.RowDefinitions>
-              
+
               <ToggleButton
                 x:Name="Expander"
                 ClickMode="Press"
                 IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
                 Style="{StaticResource ExpandCollapseToggleStyle}" />
-              
+
               <Border
                 x:Name="Bd"
                 Grid.Column="1"
@@ -477,13 +486,19 @@
                     SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
 
                 </DockPanel>
+
               </Border>
+
               <ItemsPresenter
                 x:Name="ItemsHost"
                 Grid.Row="1"
                 Grid.Column="1" />
+
             </Grid>
+
             <ControlTemplate.Triggers>
+
+              <!-- collapse ItemsHost when not expanded-->
               <Trigger
                 Property="IsExpanded"
                 Value="false">
@@ -492,14 +507,17 @@
                   TargetName="ItemsHost"
                   Value="Collapsed" />
               </Trigger>
-              <Trigger
+
+              <!-- do not show expander when there are no items -->
+              <!--<Trigger
                 Property="HasItems"
                 Value="false">
                 <Setter
                   Property="Visibility"
                   TargetName="Expander"
                   Value="Hidden" />
-              </Trigger>
+              </Trigger>-->
+
               <Trigger
                 Property="IsSelected"
                 Value="true">
@@ -511,6 +529,7 @@
                   Property="Foreground"
                   Value="Black" />
               </Trigger>
+
               <MultiTrigger>
                 <MultiTrigger.Conditions>
                   <Condition
@@ -528,6 +547,8 @@
                   Property="Foreground"
                   Value="{DynamicResource {x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}}" />
               </MultiTrigger>
+
+              <!-- 'gray out' when item is disabled-->
               <Trigger
                 Property="IsEnabled"
                 Value="false">
@@ -535,10 +556,12 @@
                   Property="Foreground"
                   Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
               </Trigger>
+
             </ControlTemplate.Triggers>
           </ControlTemplate>
         </Setter.Value>
       </Setter>
+
       <Style.Triggers>
         <Trigger
           Property="VirtualizingPanel.IsVirtualizing"

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Nito.Mvvm;
 using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
@@ -38,6 +39,11 @@ namespace Scope.ViewModels
     {
       Model = file;
 
+      _fileSubStructureProviders = fileSubStructureProviders
+                                    .Where(f => f.ApplicableFileExtension
+                                                == System.IO.Path.GetExtension(file.Name))
+                                    .ToArray();
+
       _hasChildren = fileSubStructureProviders.Any();
       _path = file.Path;
       _name = file.Name;
@@ -57,13 +63,11 @@ namespace Scope.ViewModels
       UncompressedSizeValue = uncompressed[0];
       UncompressedSizeUnit = uncompressed[1];
 
-      _fileSubStructureProviders = fileSubStructureProviders
-                                    .Where(f => f.ApplicableFileExtension
-                                                == System.IO.Path.GetExtension(file.Name))
-                                    .ToArray();
 
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
+
+      ExpandCommand = new AsyncCommand(LoadChildrenAsync);
 
       HighlightSearchTerm();
     }
@@ -267,7 +271,5 @@ namespace Scope.ViewModels
     {
       return $"{Name} ({Path})";
     }
-
-
   }
 }
