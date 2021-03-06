@@ -45,6 +45,7 @@ namespace Scope.FileViewer.DataForge
           progress.Report(new ProgressReport(0.0, errorMessage));
 
           _messages.Add(errorMessage);
+
           return null;
         }
       });

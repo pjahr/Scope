@@ -10,7 +10,7 @@ namespace Scope.ViewModels
   public interface ITreeNodeViewModel : INotifyPropertyChanged, IDisposable
   {
     string Path { get; }
-
+    bool HasChildren { get; }
   }
 
   public class TreeNodeViewModel : ITreeNodeViewModel

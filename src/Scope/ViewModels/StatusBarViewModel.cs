@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using Scope.Interfaces;
 using Scope.Models.Interfaces;
 using Scope.Utils;
 using Scope.ViewModels.Commands;
@@ -18,13 +19,14 @@ namespace Scope.ViewModels
   {
     private readonly IMessages _messages;
     private readonly IProgress _progress;
-
+    private readonly IUiDispatch _uiDispatch;
     private Paragraph _logText;
 
-    public StatusBarViewModel(IMessages messages, IProgress progress)
+    public StatusBarViewModel(IMessages messages, IProgress progress, IUiDispatch uiDispatch)
     {
       _messages = messages;
       _progress = progress;
+      _uiDispatch = uiDispatch;
 
       _logText = new Paragraph { FontFamily = new FontFamily("Consolas"), FontSize = 10 };
       Messages = new FlowDocument(_logText);
@@ -73,13 +75,17 @@ namespace Scope.ViewModels
 
     private void DisplayMessage()
     {
-      LastMessage = _messages.Items.Last()
-                             .Text;
+      _uiDispatch.Do(() =>
+      {
 
-      _logText.Inlines.Add($"{LastMessage}\r\n");
-      
-      
-      PropertyChanged.Raise(this, nameof(LastMessage));
+        LastMessage = _messages.Items.Last()
+                               .Text;
+
+        _logText.Inlines.Add($"{LastMessage}\r\n");
+
+
+        PropertyChanged.Raise(this, nameof(LastMessage));
+      });
     }
 
   }

@@ -51,6 +51,7 @@ namespace Scope.ViewModels
       _searchOptions = searchOptions;
       _uiDispatch = uiDispatch;
       _fileSystemTreeNodeViewModelFactory = fileSystemTreeNodeViewModelFactory;
+      _children = new ObservableCollection<ITreeNodeViewModel>();
 
       var compressed = file.BytesCompressed.ToFileSize()
                            .Split(' ');
@@ -67,9 +68,14 @@ namespace Scope.ViewModels
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
 
-      ExpandCommand = new AsyncCommand(LoadChildrenAsync);
+      ExpandCommand = new RelayCommand(async () => await LoadChildrenAsync());
 
       HighlightSearchTerm();
+
+      if (HasChildren)
+      {
+        Children.Add(Loading);
+      }
     }
 
     public void Dispose()
@@ -91,7 +97,6 @@ namespace Scope.ViewModels
     public string CompressedSizeUnit { get; }
     public string UncompressedSizeValue { get; }
     public string UncompressedSizeUnit { get; }
-
 
     public bool IsExpanded
     {

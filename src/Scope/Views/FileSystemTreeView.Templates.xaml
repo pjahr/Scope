@@ -1,0 +1,120 @@
+﻿<ResourceDictionary
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:local="clr-namespace:Scope.Views"
+  xmlns:xaml="http://schemas.microsoft.com/xaml/behaviors"
+  xmlns:vm="clr-namespace:Scope.ViewModels"
+  xmlns:b="clr-namespace:Scope.Views.Behaviors"
+  xmlns:views="clr-namespace:Scope.Views">
+
+  <ResourceDictionary.MergedDictionaries>
+    <ResourceDictionary Source="FileSystemTreeView.Styles.xaml"/>
+  </ResourceDictionary.MergedDictionaries>
+
+  <HierarchicalDataTemplate
+      DataType="{x:Type vm:DirectoryTreeNodeViewModel}"
+      ItemsSource="{Binding Children}">
+
+    <StackPanel
+      Orientation="Horizontal">
+
+      <Path
+        Data="{StaticResource DirectoryIcon}"
+        Style="{StaticResource FileSystemEntryIcon}" />
+
+      <TextBlock>
+
+        <xaml:Interaction.Behaviors>
+
+          <b:TextBlockHighlightWordsInSquareBrackets
+            FormattedText="{Binding Name}"
+            FormattedTextStyle="{StaticResource SearchResultHighlight}"/>
+
+        </xaml:Interaction.Behaviors>
+
+      </TextBlock>
+
+    </StackPanel>
+
+  </HierarchicalDataTemplate>
+
+  <HierarchicalDataTemplate
+    DataType="{x:Type vm:FileTreeNodeViewModel}"
+    ItemsSource="{Binding Children}">
+
+    <DockPanel>
+
+      <Path
+        Data="{StaticResource FileIcon}"
+        Style="{StaticResource FileSystemEntryIcon}"
+        DockPanel.Dock="Left"
+          />
+
+      <!-- file size parts docked rightlast item in DockPanel takes remaining space
+             from rightmost inwards -->
+      <TextBlock
+        Text="{Binding UncompressedSizeUnit}"
+        Margin="0 0 6 0"
+        Width="18"
+        TextAlignment="Left"
+        DockPanel.Dock="Right"
+        VerticalAlignment="Center"/>
+
+      <TextBlock
+        Text="{Binding UncompressedSizeValue}"
+        Margin="0 0 6 0"
+        Width="30"
+        TextAlignment="Right"
+        DockPanel.Dock="Right"
+        VerticalAlignment="Center"/>
+
+      <TextBlock
+        Text="{Binding CompressedSizeUnit}"
+        Margin="0 0 6 0"
+        Width="18"
+        TextAlignment="Left"
+        DockPanel.Dock="Right"
+        VerticalAlignment="Center"/>
+
+      <TextBlock
+        Text="{Binding CompressedSizeValue}"
+        Margin="0 0 6 0"
+        Width="30"
+        TextAlignment="Right"
+        DockPanel.Dock="Right"
+        VerticalAlignment="Center"/>
+
+      <!--last item in DockPanel takes remaining space-->
+      <TextBlock
+        Margin="0 0 6 0"
+        DockPanel.Dock="Left"
+        VerticalAlignment="Center" >
+
+        <xaml:Interaction.Behaviors>
+
+          <b:TextBlockHighlightWordsInSquareBrackets
+            FormattedText="{Binding Name}"
+            FormattedTextStyle="{StaticResource SearchResultHighlight}"/>
+
+        </xaml:Interaction.Behaviors>
+
+      </TextBlock>
+
+    </DockPanel>
+
+  </HierarchicalDataTemplate>
+
+  <!-- A special FS tree node for an intermediary exisiting 'Loading...' node-->
+  <DataTemplate
+    DataType="{x:Type vm:LoadingTreeNodeViewModel}">
+    <TextBlock Text="Loading..."/>
+  </DataTemplate>
+
+  <DataTemplate DataType="{x:Type vm:SearchFoundNoMatchViewModel}">
+    <StackPanel VerticalAlignment="Top" Margin="6">
+      <TextBlock Text="No match found. "/>
+      <TextBlock Text="Check your search terms or options."/>
+    </StackPanel>
+  </DataTemplate>
+
+</ResourceDictionary>

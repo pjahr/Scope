@@ -61,11 +61,11 @@ namespace Scope.Views.Behaviors
         return;
       }
 
-      TreeNodeViewModel f = null;
+      ITreeNodeViewModel f = null;
 
-      if (uiElement.DataContext is TreeNodeViewModel)
+      if (uiElement.DataContext is ITreeNodeViewModel)
       {
-        f = uiElement.DataContext as TreeNodeViewModel;
+        f = uiElement.DataContext as ITreeNodeViewModel;
 
         // Message Expand only for those who have 1 dummy folder below
         if (f.HasChildren == false)
