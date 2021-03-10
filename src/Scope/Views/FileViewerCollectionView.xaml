@@ -21,7 +21,7 @@
         <DataTemplate>
           <Grid>
             <ContentControl
-              Content="{Binding Viewer}"
+              Content="{Binding Viewer.Result}"
               Focusable="False" />
           </Grid>
         </DataTemplate>

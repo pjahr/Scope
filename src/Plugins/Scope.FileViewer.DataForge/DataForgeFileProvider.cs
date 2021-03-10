@@ -13,19 +13,33 @@ namespace Scope.FileViewer.DataForge
     private readonly IMessageQueue _messages;
     IFile _currentFile;
     DataForgeFile _current;
+    private Task<DataForgeFile> _currentlyLoading;
 
     public DataForgeFileProvider(IMessageQueue messages)
     {
       _messages = messages;
     }
 
-    public Task<DataForgeFile?> GetAsync(IFile file, IProgress<ProgressReport> progress)
+    public Task<DataForgeFile> GetAsync(IFile file, IProgress<ProgressReport> progress)
     {
-      if (_currentFile == file)
+      if (_currentFile == file && _current != null)
       {
+        // was previously successfully loaded
         return Task.FromResult(_current);
       }
 
+      if (_currentlyLoading==null)
+      {
+        // never loaded, create inital loading task
+        _currentlyLoading = CreateLoadDataForgeFileTask(file, progress);
+      }
+
+      // loading in progress
+      return _currentlyLoading;
+    }
+
+    private Task<DataForgeFile> CreateLoadDataForgeFileTask(IFile file, IProgress<ProgressReport> progress)
+    {
       return Task.Run(() =>
       {
         // HACK(PJ): load only once for now. Caching for open p4k most likely. 

@@ -34,7 +34,7 @@
 
       <!--p4k fs tree-->
       <RowDefinition
-        Height="*"/>
+        Height="2*"/>
 
       <!--splitter (horizontal)-->
       <RowDefinition
@@ -42,7 +42,7 @@
 
       <!--pinned items-->
       <RowDefinition
-        Height="2*" 
+        Height="*" 
         MinHeight="24"  />
 
       <!--status bar-->

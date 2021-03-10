@@ -69,7 +69,10 @@ namespace Scope.ViewModels
 
     private void ToggleLogIsShown()
     {
-      FullLogIsShown = FullLogIsShown == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
+      FullLogIsShown = FullLogIsShown == Visibility.Visible
+                                          ? Visibility.Collapsed
+                                          : Visibility.Visible;
+
       PropertyChanged.Raise(this, nameof(FullLogIsShown));
     }
 
@@ -77,12 +80,10 @@ namespace Scope.ViewModels
     {
       _uiDispatch.Do(() =>
       {
-
         LastMessage = _messages.Items.Last()
                                .Text;
 
         _logText.Inlines.Add($"{LastMessage}\r\n");
-
 
         PropertyChanged.Raise(this, nameof(LastMessage));
       });
