@@ -168,7 +168,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private void MapData(BinaryReader r)
     {
-      
+
       foreach (var dataMapping in DataMappingTable)
       {
         DataMap[dataMapping.StructIndex] = new List<Struct>();
@@ -292,7 +292,7 @@ namespace Scope.FileViewer.DataForge.Models
 
         GeneratePathIfNecessary(path);
 
-        Directories[path].Add(file);        
+        Directories[path].Add(file);
       }
 
       Console.WriteLine($"Generated {Files.Count} files in {Directories.Count} directories.");
@@ -319,12 +319,16 @@ namespace Scope.FileViewer.DataForge.Models
     private void GeneratePathIfNecessary(string path)
     {
       int i;
-      Directory lastDirectory=null;
+      Directory lastDirectory = null;
       while (true)
       {
         if (!Directories.ContainsKey(path))
         {
-          var directory = new Directory(path, path);
+          // cut name from path
+          var indexOfLastBackslash = path.LastIndexOf('\\') + 1;
+          var name = path.Substring(indexOfLastBackslash, path.Length - indexOfLastBackslash);
+
+          var directory = new Directory(name, path);
           if (lastDirectory != null)
           {
             directory.Add(lastDirectory);
@@ -334,7 +338,7 @@ namespace Scope.FileViewer.DataForge.Models
         }
         else
         {
-          if (lastDirectory!=null)
+          if (lastDirectory != null)
           {
             Directories[path].Add(lastDirectory);
           }
