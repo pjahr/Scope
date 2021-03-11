@@ -13,6 +13,11 @@ namespace Scope.FileViewer.DataForge.Models
 
     public File(string name, string path, Struct dataForgeItem)
     {
+      if (name.Contains("AIShip_CrewProfiles_Human_OMC_Gunner_Gunner_Generic_01"));
+      {
+
+      }
+
       Name = $"{name}.json";
       Path = path;
       _dataForgeItem = dataForgeItem;

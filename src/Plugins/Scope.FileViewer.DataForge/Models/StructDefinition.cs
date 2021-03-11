@@ -54,10 +54,6 @@ namespace Scope.FileViewer.DataForge.Models
                                attributes);
       }
 
-      if (name== "MeleeAttackInfo")
-      {
-
-      }
       var result = new Struct { Name = Name };
       var properties = new List<Property>();
 
@@ -83,6 +79,8 @@ namespace Scope.FileViewer.DataForge.Models
 
             var property = new Property() { Name = propertyDefinition.Name, Type = DataType.StrongPointer, Value = "some reference" };
             properties.Add(property);
+
+            Console.WriteLine($"{Name} | Ref: S{structIndex} R{recordIndex}");
 
             df.ClassMappings.Add(new ClassMapping
             {

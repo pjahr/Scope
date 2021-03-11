@@ -63,12 +63,7 @@ namespace Scope.FileViewer.DataForge.Models
 
       FileVersion = r.ReadInt32();
 
-      ClassMappings = new List<ClassMapping>();
-      StrongMappings = new List<ClassMapping>();
-      WeakMappings1 = new List<ClassMapping>();
-      WeakMappings2 = new List<ClassMapping>();
-      DataMap = new Dictionary<uint, List<Struct>>();
-
+      
       if (!IsLegacy) // seams to be obsolete
       {
         var atemp1 = r.ReadUInt16();
@@ -110,6 +105,13 @@ namespace Scope.FileViewer.DataForge.Models
       var unknown = (IsLegacy) ? 0 : r.ReadUInt32(); // obsolete?
 
       // read all the item types using the respective item counts
+
+      ClassMappings = new List<ClassMapping>();
+      StrongMappings = new List<ClassMapping>();
+      WeakMappings1 = new List<ClassMapping>();
+      WeakMappings2 = new List<ClassMapping>();
+      DataMap = new Dictionary<uint, List<Struct>>();
+
 
       Profile(() => StructDefinitionTable = structDefinitionCount.ToArray(() => new StructDefinition(r, V)), "Reading structs");
 
