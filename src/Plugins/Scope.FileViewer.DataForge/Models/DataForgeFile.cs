@@ -21,14 +21,14 @@ namespace Scope.FileViewer.DataForge.Models
     private Record[] RecordDefinitionTable { get; set; }
     private StringLookup[] EnumOptionTable { get; set; }
 
-    private string[] ValueTable { get; set; }
+    //private string[] ValueTable { get; set; }
     public Dictionary<string, File> Files { get; set; }
     internal Dictionary<string, Directory> Directories { get; private set; }
     public Reference[] ReferenceValues { get; set; }
     public Guid[] GuidValues { get; set; }
     public StringLookup[] StringValues { get; set; }
-    public uint[] LocaleValues { get; set; }
-    public uint[] EnumValues { get; set; }
+    public StringLookup[] LocaleValues { get; set; }
+    public StringLookup[] EnumValues { get; set; }
     public sbyte[] Int8Values { get; set; }
     public short[] Int16Values { get; set; }
     public int[] Int32Values { get; set; }
@@ -138,8 +138,8 @@ namespace Scope.FileViewer.DataForge.Models
 
       Profile(() => GuidValues = guidValueCount.ToArray(r.ReadGuid), "Reading Guids");
       Profile(() => StringValues = stringValueCount.ToArray(() => new StringLookup(r, V)), "Reading Strings");
-      Profile(() => LocaleValues = localeValueCount.ToArray(r.ReadUInt32), "Reading Locales");
-      Profile(() => EnumValues = enumValueCount.ToArray(r.ReadUInt32), "Reading Enum values");
+      Profile(() => LocaleValues = localeValueCount.ToArray(() => new StringLookup(r, V)), "Reading Locales");
+      Profile(() => EnumValues = enumValueCount.ToArray(() => new StringLookup(r, V)), "Reading Enum values");
       Profile(() => StrongValues = strongValueCount.ToArray(() => new Pointer(r)), "Reading strong pointers");
       Profile(() => WeakValues = weakValueCount.ToArray(() => new Pointer(r)), "Reading weak pointers");
 
@@ -154,7 +154,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private void ReadValues(BinaryReader r, uint textLength)
     {
-      var values = new List<string>();
+      //var values = new List<string>();
       var maxPosition = r.BaseStream.Position + textLength;
       var startPosition = r.BaseStream.Position;
       ValueMap = new Dictionary<uint, string>();
@@ -162,10 +162,10 @@ namespace Scope.FileViewer.DataForge.Models
       {
         var offset = r.BaseStream.Position - startPosition;
         var value = r.ReadNullTerminatedString();
-        values.Add(value);
+        //values.Add(value);
         ValueMap[(uint)offset] = value;
       }
-      ValueTable = values.ToArray();
+      //ValueTable = values.ToArray();
     }
 
     private void MapData(BinaryReader r)
@@ -302,6 +302,11 @@ namespace Scope.FileViewer.DataForge.Models
 
     private File CreateFile(Record record, string recordName, string filePath)
     {
+      if (recordName.Contains("AmmoParams"))
+      {
+
+      }
+
       File file;
 
       if (Files.ContainsKey(filePath))
@@ -311,13 +316,16 @@ namespace Scope.FileViewer.DataForge.Models
       else
       {
         //TODO: What is with the millions of other items in those lists? 
-        file = new File(recordName, filePath, DataMap[record.StructIndex].First());
+        file = new File(recordName, filePath, DataMap[record.StructIndex][record.VariantIndex]);
         Files.Add(filePath, file);
       }
 
       return file;
     }
 
+    /// <summary>
+    /// Traverses the given path string and adds mentioned directories to the tree if they do not already exist.
+    /// </summary>
     private void GeneratePathIfNecessary(string path)
     {
       int i;
@@ -354,7 +362,12 @@ namespace Scope.FileViewer.DataForge.Models
       }
     }
 
-    // TODO: Explain Shortcuts
+    // INFO:
+    // The ValueMap dictionary is read after the other items are deserialized.
+    // Many of the created items reference those values by their keys.
+    // To retrieve the values from inside the items (e.g. on property access), this
+    // methods are injected into the items so that they can use them to provide the
+    // actual data (some string instead of an int key).
     private string V(uint id) => ValueMap[id];
     private string VS(uint id) => ValueMap[StructDefinitionTable[id].NameOffset];
 

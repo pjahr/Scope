@@ -12,5 +12,10 @@ namespace Scope.FileViewer.DataForge.Models
 
     public uint StructType { get; }
     public uint Index { get; }
+
+    public override string ToString()
+    {
+      return $"{Index} ({StructType})";
+    }
   }
 }

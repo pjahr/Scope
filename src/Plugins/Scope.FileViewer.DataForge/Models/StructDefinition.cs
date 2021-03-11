@@ -33,7 +33,6 @@ namespace Scope.FileViewer.DataForge.Models
       var baseStruct = this;
       var propertyDefinitions = new List<PropertyDefinition>();
 
-
       // TODO: Do we need to handle property overrides (original comment, investigate)
 
       // TODO: Include 1st call in while loop (same call inside)?
