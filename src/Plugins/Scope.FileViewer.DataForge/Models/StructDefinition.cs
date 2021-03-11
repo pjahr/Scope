@@ -118,7 +118,7 @@ namespace Scope.FileViewer.DataForge.Models
 
                 break;
 
-              case DataType.Enum: //TODO uint, value is retrieved from ValueMap
+              case DataType.Enum:
                 elements.Add(new Property { Name = propName, Type = propType, Value = df.EnumValues[firstIndex + i]});
 
                 break;

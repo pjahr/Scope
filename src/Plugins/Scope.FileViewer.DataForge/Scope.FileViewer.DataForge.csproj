@@ -67,7 +67,6 @@
     <Compile Include="Models\Directory.cs" />
     <Compile Include="Models\EnumDefinition.cs" />
     <Compile Include="Models\DataForgeFile.cs" />
-    <Compile Include="Models\EnumValue.cs" />
     <Compile Include="Models\File.cs" />
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\ReadType.cs" />
