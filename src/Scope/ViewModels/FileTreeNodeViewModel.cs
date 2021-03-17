@@ -29,6 +29,8 @@ namespace Scope.ViewModels
     private string _name;
     private bool _isExpanded;
     private bool _isSelected;
+    private bool _isLoadingChildren;
+    private RelayCommand _expandCommand;
 
     public FileTreeNodeViewModel(IFile file,
                                  ISearch search,
@@ -68,8 +70,8 @@ namespace Scope.ViewModels
       _search.Finished += HighlightSearchTerm;
       _search.ResultsCleared += ResetName;
 
-      ExpandCommand = new RelayCommand(async () => await LoadChildrenAsync());
-
+      _expandCommand = new RelayCommand(async () => await LoadChildrenAsync());
+      
       HighlightSearchTerm();
 
       if (HasChildren)
@@ -87,7 +89,7 @@ namespace Scope.ViewModels
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public ICommand ExpandCommand { get; }
+    public ICommand ExpandCommand => _expandCommand;
     public string Path => _path;
     public ObservableCollection<ITreeNodeViewModel> Children => _children;
     public bool HasChildren => _hasChildren;
@@ -144,6 +146,21 @@ namespace Scope.ViewModels
       }
     }
 
+    public bool IsLoadingChildren
+    {
+      get => _isLoadingChildren;
+      set
+      {
+        if (value == _isLoadingChildren)
+        {
+          return;
+        }
+
+        _isLoadingChildren = value;
+        PropertyChanged.Raise(this, nameof(IsLoadingChildren));
+      }
+    }
+
     public void SetExpand(bool isExpanded)
     {
       IsExpanded = isExpanded;
@@ -167,6 +184,8 @@ namespace Scope.ViewModels
       }
       Children.Clear();
       Children.Add(Loading);
+
+      IsLoadingChildren = true;
 
       var directories = new List<DirectoryTreeNodeViewModel>();
       var files = new List<FileTreeNodeViewModel>();
@@ -208,6 +227,8 @@ namespace Scope.ViewModels
         {
           Children.Add(file);
         }
+
+        IsLoadingChildren = false;
       }
     }
 

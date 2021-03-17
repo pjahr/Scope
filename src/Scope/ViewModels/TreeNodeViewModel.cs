@@ -42,7 +42,10 @@ namespace Scope.ViewModels
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
-
+    protected void RaisePropertyChanged(string name)
+    {
+      PropertyChanged.Raise(this, name);
+    }
     public ICommand ExpandCommand { get; }
     public string Path => _path;
     public ObservableCollection<ITreeNodeViewModel> Children => _children;

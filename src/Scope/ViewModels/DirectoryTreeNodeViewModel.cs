@@ -13,6 +13,7 @@ namespace Scope.ViewModels
     private readonly ISearchOptions _searchOptions;
     private readonly IUiDispatch _uiDispatch;
     private readonly IFileSystemTreeNodeViewModelFactory _fileSystemTreeNodeViewModelFactory;
+    private bool _isLoadingChildren;
 
     public DirectoryTreeNodeViewModel(IDirectory directory,
                                       ISearch search,
@@ -59,6 +60,22 @@ namespace Scope.ViewModels
 
     public IDirectory Model { get; }
 
+    public bool IsLoadingChildren
+    {
+      get => _isLoadingChildren;
+      set
+      {
+        if (value == _isLoadingChildren)
+        {
+          return;
+        }
+
+        _isLoadingChildren = value;
+
+        RaisePropertyChanged(nameof(IsLoadingChildren));
+      }
+    }
+
     protected override void OnDisposing()
     {
       base.OnDisposing();
@@ -71,6 +88,7 @@ namespace Scope.ViewModels
 
     protected override ITreeNodeViewModel[] LoadChildren()
     {
+      IsLoadingChildren = true;
       var contents = new List<ITreeNodeViewModel>();
       var pathes = _search.FileResults.Select(r => r.File.Path).ToArray();
 
@@ -83,7 +101,7 @@ namespace Scope.ViewModels
       {
         contents.Add(_fileSystemTreeNodeViewModelFactory.Create(file));
       }
-
+      IsLoadingChildren = false;
       return contents.ToArray();
     }
 
