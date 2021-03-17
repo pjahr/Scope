@@ -30,7 +30,8 @@
       x:Key="TreeViewItem.TreeArrow.Static.Stroke"
       Color="#FF818181" />
 
-  <c:BoolToHidden x:Key="BoolToHidden"/>
+  <c:VisibleOrHidden x:Key="VisibleOrHidden"/>
+  <c:HiddenOrVisible x:Key="HiddenOrVisible"/>
 
   <Style
       x:Key="TreeViewItemFocusVisual">
@@ -248,7 +249,7 @@
             TargetType="{x:Type TreeViewItem}">
 
           <Grid>
-            
+
             <Grid.ColumnDefinitions>
               <ColumnDefinition
                   MinWidth="19"
@@ -256,7 +257,7 @@
               <ColumnDefinition
                   Width="*" />
             </Grid.ColumnDefinitions>
-            
+
             <Grid.RowDefinitions>
               <RowDefinition
                   Height="Auto" />
@@ -264,17 +265,46 @@
             </Grid.RowDefinitions>
 
             <Grid>
-              
-              <ToggleButton
-                  x:Name="Expander"
-                  ClickMode="Press"
-                  IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
-                  Style="{StaticResource ExpandCollapseToggleStyle}" />
 
-              <Rectangle Fill="Blue"
-                         Visibility="{Binding IsLoadingChildren, Converter={StaticResource BoolToHidden}}"
-                         Width="10"
-                         Height="10"/>
+              <ToggleButton
+                x:Name="Expander"
+                ClickMode="Press"
+                IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}"
+                Style="{StaticResource ExpandCollapseToggleStyle}" 
+                Visibility="{Binding IsLoadingChildren, Converter={StaticResource HiddenOrVisible}}"/>
+
+              <Border
+                x:Name="LoadingChildrenIndicator"
+                BorderThickness="2 0 2 0"
+                BorderBrush="Gray"
+                Visibility="{Binding IsLoadingChildren, Converter={StaticResource VisibleOrHidden}}"
+                Width="10"
+                Height="2"
+                RenderTransformOrigin="0.5 0.5">
+                <Border.RenderTransform>
+                  <RotateTransform x:Name="MyAnimatedTransform"
+                                   Angle="0"/>
+                </Border.RenderTransform>
+                <Border.Triggers>
+
+                  <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+
+                      <Storyboard>
+
+                        <DoubleAnimation
+                                Storyboard.TargetName="MyAnimatedTransform"
+                                Storyboard.TargetProperty="(RotateTransform.Angle)"
+                                To="-360"
+                                Duration="0:0:0.5"
+                                RepeatBehavior="Forever"/>
+
+                      </Storyboard>
+
+                    </BeginStoryboard>
+                  </EventTrigger>
+                </Border.Triggers>
+              </Border>
             </Grid>
 
             <Border
@@ -362,6 +392,9 @@
                   TargetName="Expander"
                   Value="Hidden" />
             </Trigger>
+
+
+            <!-- highlight background when item is selected -->
 
             <Trigger
                 Property="IsSelected"
@@ -478,11 +511,11 @@
   <Style
     x:Key="SearchResultHighlight"
     TargetType="Run">
-    
+
     <Setter 
       Property="Background"
       Value="Yellow" />
-    
+
   </Style>
 
 

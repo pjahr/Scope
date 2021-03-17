@@ -241,7 +241,7 @@
     <Compile Include="Views\Behaviors\CommandOnKey.cs" />
     <Compile Include="Views\Behaviors\CommandOnReceiveKeyboardFocus.cs" />
     <Compile Include="Views\BindingProxy.cs" />
-    <Compile Include="Views\Converters\BoolToHidden.cs" />
+    <Compile Include="Views\Converters\VisibleOrHidden.cs" />
     <Compile Include="Views\Converters\EnumMatchToBooleanConverter.cs" />
     <Compile Include="Views\CurrentP4kFsView.xaml.cs">
       <DependentUpon>CurrentP4kFsView.xaml</DependentUpon>

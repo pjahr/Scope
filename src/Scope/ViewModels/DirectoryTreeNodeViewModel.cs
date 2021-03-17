@@ -149,9 +149,10 @@ namespace Scope.ViewModels
       var contentsToRemove = Children.Where(c => !ContainsOrIsAnyFileSearchResult(c))
                                      .ToArray();
 
+      throw new NotImplementedException();
       foreach (var content in contentsToRemove)
       {
-        _uiDispatch.Do(() => Children.Remove(content));
+        //_uiDispatch.Do(() => Children.Remove(content));
       }
     }
 

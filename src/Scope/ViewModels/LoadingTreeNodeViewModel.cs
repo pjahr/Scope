@@ -4,7 +4,8 @@
   {
     public LoadingTreeNodeViewModel() : base("Loading...", "")
     {
-
     }
+
+    public bool IsLoadingChildren => false;
   }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ namespace Scope.ViewModels
   {
     protected static readonly LoadingTreeNodeViewModel Loading = new LoadingTreeNodeViewModel();
 
-    private readonly ObservableCollection<ITreeNodeViewModel> _children;
+    private IReadOnlyCollection<ITreeNodeViewModel> _children;
     private bool _isExpanded;
     private bool _isSelected;
     private string _name;
@@ -37,7 +38,7 @@ namespace Scope.ViewModels
 
       if (_hasChildren)
       {
-        Children.Add(Loading);
+        _children= new[] { Loading};
       }
     }
 
@@ -48,12 +49,21 @@ namespace Scope.ViewModels
     }
     public ICommand ExpandCommand { get; }
     public string Path => _path;
-    public ObservableCollection<ITreeNodeViewModel> Children => _children;
     public virtual bool HasChildren => _hasChildren;
 
     protected void ResetChildren()
     {
       ExpandCommand.Execute(null);
+    }
+
+    public IReadOnlyCollection<ITreeNodeViewModel> Children
+    {
+      get => _children;
+      set
+      {
+        _children = value;
+        PropertyChanged.Raise(this, nameof(Children));
+      }
     }
 
     public bool IsExpanded
@@ -121,8 +131,6 @@ namespace Scope.ViewModels
       {
         return;
       }
-      Children.Clear();
-      Children.Add(Loading);
 
       ITreeNodeViewModel[] children = new ITreeNodeViewModel[0];
       try
@@ -135,11 +143,7 @@ namespace Scope.ViewModels
       }
       finally
       {
-        Children.Remove(Loading);
-        foreach (var child in children)
-        {
-          Children.Add(child);
-        }
+        Children = children;
       }
     }
 
