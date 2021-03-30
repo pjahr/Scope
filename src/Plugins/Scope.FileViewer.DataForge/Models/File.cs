@@ -70,9 +70,7 @@ namespace Scope.FileViewer.DataForge.Models
         case DataType.Class:
           SerializeComplexProperty(p, i, b);
           break;
-        case DataType.WeakPointer:
-          SerializeComplexProperty(p, i, b);
-          break;
+        case DataType.WeakPointer:         
         case DataType.StrongPointer:
         case DataType.Reference:
           b.Append("\r\n# REFERENCE ################\r\n");
