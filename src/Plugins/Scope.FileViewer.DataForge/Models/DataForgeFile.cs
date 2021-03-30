@@ -302,7 +302,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private File CreateFile(Record record, string recordName, string filePath)
     {
-      if (recordName.Contains("AmmoParams"))
+      if (filePath.Contains("libs/foundry/records/audio/breathing/breathingstylesuites/AudioBreathStyleSuite.Default.df"))
       {
 
       }

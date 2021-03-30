@@ -13,7 +13,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     public File(string name, string path, Struct dataForgeItem)
     {
-      if (name.Contains("AIShip_CrewProfiles_Human_OMC_Gunner_Gunner_Generic_01"));
+      if (name.Contains("AIShip_CrewProfiles_Human_OMC_Gunner_Gunner_Generic_01"))
       {
 
       }
@@ -60,8 +60,7 @@ namespace Scope.FileViewer.DataForge.Models
 
     private static string Indent(int i)
     {
-      return Enumerable.Repeat("  ", i)
-                       .Aggregate("", (c, n) => $"{c}{n}");
+      return new string(' ', i * 2);
     }
 
     private static void Serialize(Property p, int i, StringBuilder b)
@@ -69,33 +68,17 @@ namespace Scope.FileViewer.DataForge.Models
       switch (p.Type)
       {
         case DataType.Class:
-
-          if (p.IsList)
-          {
-            b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-            b.Append($"{Indent(i)}[\r\n");
-
-            foreach (var item in (List<Property>)p.Value)
-            {
-              b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-              b.Append($"{Indent(i)}{{");
-              Serialize((Struct)item.Value, i + 2, b);
-              b.Append($"{Indent(i)}}}");
-            }
-
-            b.Append($"{Indent(i)}]\r\n");
-          }
-          else
-          {
-            b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-            b.Append($"{Indent(i)}{{");
-            Serialize((Struct)p.Value, i + 1, b);
-            b.Append($"{Indent(i)}}}");
-          }
+          SerializeComplexProperty(p, i, b);
           break;
-        case DataType.Reference:
         case DataType.WeakPointer:
+          SerializeComplexProperty(p, i, b);
+          break;
         case DataType.StrongPointer:
+        case DataType.Reference:
+          b.Append("\r\n# REFERENCE ################\r\n");
+          SerializeElementaryProperty(p, i, b);
+          b.Append("\r\n############################\r\n");
+          break;
         case DataType.Enum:
         case DataType.Guid:
         case DataType.Locale:
@@ -110,7 +93,7 @@ namespace Scope.FileViewer.DataForge.Models
         case DataType.Int32:
         case DataType.Int16:
         case DataType.SByte:
-          SerializeSingleValueProperty(p, i + 1, b);
+          SerializeElementaryProperty(p, i + 1, b);
           break;
         case DataType.Boolean:
           b.Append($"{Indent(i)}\"{p.Name}\": {p.Value}\r\n");
@@ -121,7 +104,38 @@ namespace Scope.FileViewer.DataForge.Models
       }
     }
 
-    private static void SerializeSingleValueProperty(Property p, int i, StringBuilder b)
+    private static void SerializeComplexProperty(Property p, int i, StringBuilder b)
+    {
+      if (i > 1000)
+      {
+        return;
+      }
+
+      if (p.IsList)
+      {
+        b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
+        b.Append($"{Indent(i)}[\r\n");
+
+        foreach (var item in (List<Property>)p.Value)
+        {
+          b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
+          b.Append($"{Indent(i)}{{");
+          Serialize((Struct)item.Value, i + 2, b);
+          b.Append($"{Indent(i)}}}");
+        }
+
+        b.Append($"{Indent(i)}]\r\n");
+      }
+      else
+      {
+        b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
+        b.Append($"{Indent(i)}{{");
+        Serialize((Struct)p.Value, i + 1, b);
+        b.Append($"{Indent(i)}}}");
+      }
+    }
+
+    private static void SerializeElementaryProperty(Property p, int i, StringBuilder b)
     {
       if (p.IsList)
       {
@@ -130,7 +144,7 @@ namespace Scope.FileViewer.DataForge.Models
 
         foreach (var item in (List<Property>)p.Value)
         {
-          SerializeSingleValueProperty(item, i, b);
+          SerializeElementaryProperty(item, i, b);
         }
 
         b.Append($"{Indent(i)}]\r\n");
