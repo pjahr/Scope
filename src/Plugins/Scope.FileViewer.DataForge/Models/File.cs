@@ -104,11 +104,6 @@ namespace Scope.FileViewer.DataForge.Models
 
     private static void SerializeComplexProperty(Property p, int i, StringBuilder b)
     {
-      if (i > 1000)
-      {
-        return;
-      }
-
       if (p.IsList)
       {
         b.Append($"{Indent(i)}\"{p.Name}\": \r\n");

@@ -24,7 +24,7 @@ namespace Scope.FileViewer.Text
                      {"cfg", f => new TextFileViewModel(f)},
                      {"cfgf", f => new TextFileViewModel(f)},
                      {"cfgm", f => new TextFileViewModel(f)},
-                     {"ini", f => new TextFileViewModel(f)},
+                     {"ini", f => new TextFileViewModel(f)},                     
                      {"id", f => new TextFileViewModel(f)}
                    };
     }

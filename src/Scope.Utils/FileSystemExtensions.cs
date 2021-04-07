@@ -18,6 +18,9 @@ namespace Scope.Utils
       return file.Path.GetExtension();
     }
 
+    /// <summary>
+    /// Returns the file extension (without the '.') in lowercase letters.
+    /// </summary>
     public static string GetExtension(this string path)
     {
       var i = path.LastIndexOf('.') + 1;
@@ -27,20 +30,19 @@ namespace Scope.Utils
       }
 
       var extension = path.Substring(i, path.Length - i);
-      return extension;
+      return extension.ToLower();
     }
 
     public static byte[] ReadAllBytes(this Stream s)
     {
-      using (MemoryStream ms = new MemoryStream())
-      {
-        long oldPosition = s.Position;
-        s.Position = 0;
-        s.CopyTo(ms);
-        s.Position = oldPosition;
+      using MemoryStream ms = new MemoryStream();
 
-        return ms.ToArray();
-      }
+      long oldPosition = s.Position;
+      s.Position = 0;
+      s.CopyTo(ms);
+      s.Position = oldPosition;
+
+      return ms.ToArray();
     }
   }
 }
