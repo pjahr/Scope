@@ -126,7 +126,7 @@ namespace Scope.Models
       using (var s = f.Read())
       {
         //TODO: this will prevent case-sensitive search
-        text = Encoding.UTF8.GetString(s.ReadAllBytes())
+        text = Encoding.UTF8.GetString(s.ReadAllBytesAndResetPosition())
                               .ToLowerInvariant();
       }
 

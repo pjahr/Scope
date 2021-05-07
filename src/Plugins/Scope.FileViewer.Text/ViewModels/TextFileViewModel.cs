@@ -13,7 +13,7 @@ namespace Scope.FileViewer.Text.ViewModels
       string text;
       using (var s = file.Read())
       {
-        text = Encoding.UTF8.GetString(s.ReadAllBytes());
+        text = Encoding.UTF8.GetString(s.ReadAllBytesAndResetPosition());
       }
 
       var p = new Paragraph {FontFamily = new FontFamily("Consolas"), FontSize = 10};

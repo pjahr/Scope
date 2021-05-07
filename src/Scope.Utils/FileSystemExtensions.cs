@@ -33,7 +33,7 @@ namespace Scope.Utils
       return extension.ToLower();
     }
 
-    public static byte[] ReadAllBytes(this Stream s)
+    public static byte[] ReadAllBytesAndResetPosition(this Stream s)
     {
       using MemoryStream ms = new MemoryStream();
 
@@ -42,6 +42,13 @@ namespace Scope.Utils
       s.CopyTo(ms);
       s.Position = oldPosition;
 
+      return ms.ToArray();
+    }
+
+    public static byte[] ReadAllBytes(this Stream s)
+    {
+      using MemoryStream ms = new MemoryStream();      
+      s.CopyTo(ms);
       return ms.ToArray();
     }
   }
