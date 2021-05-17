@@ -1,4 +1,4 @@
-﻿namespace Scope.FileViewer.ChCr.Models
+﻿namespace Scope.Deserialization
 {
   public class CryXmlNode
   {

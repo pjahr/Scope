@@ -1,4 +1,4 @@
-﻿namespace Scope.FileViewer.Text.Models
+﻿namespace Scope.Deserialization
 {
   public enum ByteOrderEnum
   {

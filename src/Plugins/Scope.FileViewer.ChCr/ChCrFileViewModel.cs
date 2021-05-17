@@ -3,7 +3,7 @@ using System.Text;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml;
-using Scope.FileViewer.ChCr.Models;
+using Scope.Deserialization;
 using Scope.Interfaces;
 
 namespace Scope.FileViewer.ChCr

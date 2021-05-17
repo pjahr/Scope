@@ -56,14 +56,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Models\ByteOrderEnum.cs" />
-    <Compile Include="Models\DeserializeChCr.cs" />
-    <Compile Include="Models\CryXmlNode.cs" />
-    <Compile Include="Models\CryXmlReference.cs" />
-    <Compile Include="Models\CryXmlSerializer.cs" />
-    <Compile Include="Models\CryXmlValue.cs" />
-    <Compile Include="Models\Deserialize.cs" />
-    <Compile Include="Models\Extensions.cs" />
     <Compile Include="SeachableFileType.cs" />
     <Compile Include="SearchProvider.cs" />
     <Compile Include="ViewModels\CryXmlTextFileViewModel.cs" />
@@ -107,6 +99,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\Scope.Deserialization\Scope.Deserialization.csproj">
+      <Project>{377CA05C-01B3-4F16-ABCB-085D95790FF2}</Project>
+      <Name>Scope.Deserialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Scope.PluginApi\Scope.Interfaces.csproj">
       <Project>{2754b0bb-5940-4fd7-bf44-3cd427e56174}</Project>
       <Name>Scope.Interfaces</Name>

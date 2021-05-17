@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace Scope.FileViewer.Text.Models
+namespace Scope.Deserialization
 {
   public static class Deserialize
   {

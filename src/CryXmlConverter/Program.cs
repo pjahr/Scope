@@ -1,4 +1,4 @@
-﻿using Scope.FileViewer.Text.Models;
+﻿using Scope.Deserialization;
 using System;
 using System.IO;
 using System.Text;

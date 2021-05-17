@@ -3,7 +3,7 @@ using System.Text;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Xml;
-using Scope.FileViewer.Text.Models;
+using Scope.Deserialization;
 using Scope.Interfaces;
 
 namespace Scope.FileViewer.Text.ViewModels
@@ -13,8 +13,6 @@ namespace Scope.FileViewer.Text.ViewModels
     public CryXmlTextFileViewModel(IFile file)
     {
       XmlDocument x;
-
-
 
       using (var s = file.Read())
       {

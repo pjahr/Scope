@@ -1,8 +1,8 @@
 ﻿using System.IO;
 
-namespace Scope.FileViewer.Text.Models
+namespace Scope.Deserialization
 {
-  public static class Extensions
+  public static class BinaryReaderExtensions
   {
     /// <summary>
     /// Read a NULL-Terminated string from the stream

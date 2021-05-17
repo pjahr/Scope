@@ -195,6 +195,10 @@
       <Project>{cf56fe6d-58fc-4177-957d-542c6e6802a7}</Project>
       <Name>Scope.FileViewer.Text</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scope.Deserialization\Scope.Deserialization.csproj">
+      <Project>{377CA05C-01B3-4F16-ABCB-085D95790FF2}</Project>
+      <Name>Scope.Deserialization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />

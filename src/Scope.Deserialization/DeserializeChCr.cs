@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Xml;
-using static Scope.FileViewer.Text.Models.ByteOrderEnum;
 
-namespace Scope.FileViewer.Text.Models
+namespace Scope.Deserialization
 {
   public static class DeserializeChCr
   {
@@ -89,7 +87,5 @@ namespace Scope.FileViewer.Text.Models
       CryXml = 4,
       Json = 17
     }
-
-
   }
 }

@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 
-namespace Scope.FileViewer.Text.Models
+namespace Scope.Deserialization
 {
   public static class CryXmlSerializer
   {
@@ -19,13 +19,10 @@ namespace Scope.FileViewer.Text.Models
     {
       using (BinaryReader r = new BinaryReader(stream))
       {
-        stream.Position = 0;
-        var peek = r.PeekChar();        
 
-        if (peek != 'C')
-        {
-          throw new FormatException("Unknown File Format");
-        }
+
+
+        stream.Position = 0;
 
         string header = r.ReadFString(7);
 
