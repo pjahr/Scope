@@ -17,7 +17,7 @@ namespace Scope.FileViewer.Text
     {
       _factories = new Dictionary<string, Func<IFile, IFileViewer>>
                    {
-                     {"pla", f => new ChCrFileViewModel(f)},
+                     {"___", f => new ChCrFileViewModel(f)},
                    };
     }
 

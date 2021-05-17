@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -68,13 +69,26 @@ namespace Scope.Deserialization
         switch (Type)
         {
           case ChunkType.Unknow:
+            Debug.WriteLine("ChCr: Unknown chunk. Ignoring.");
             break;
+
           case ChunkType.CryXml:
+
+            r.BaseStream.Seek(Offset, SeekOrigin.Begin);
+            var x = CryXmlSerializer.ReadStream(r.BaseStream);
+            StringBuilder text = new StringBuilder();
+            using (TextWriter writer = new StringWriter(text))
+            {
+              x.Save(writer);
+            }
+            Content = text.ToString();
             break;
+
           case ChunkType.Json:
             r.BaseStream.Seek(Offset, SeekOrigin.Begin);
             Content = Encoding.UTF8.GetString(r.ReadBytes(Size));
             break;
+
           default:
             break;
         }

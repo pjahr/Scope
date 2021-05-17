@@ -19,11 +19,6 @@ namespace Scope.Deserialization
     {
       using (BinaryReader r = new BinaryReader(stream))
       {
-
-
-
-        stream.Position = 0;
-
         string header = r.ReadFString(7);
 
         if (header == "CryXml" || header == "CryXmlB")

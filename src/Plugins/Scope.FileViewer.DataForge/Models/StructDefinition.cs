@@ -79,7 +79,7 @@ namespace Scope.FileViewer.DataForge.Models
             var property = new Property() { Name = propertyDefinition.Name, Type = DataType.StrongPointer, Value = "some reference" };
             properties.Add(property);
 
-            Console.WriteLine($"{Name} | Ref: S{structIndex} R{recordIndex}");
+            //Console.WriteLine($"{Name} | Ref: S{structIndex} R{recordIndex}");
 
             df.ClassMappings.Add(new ClassMapping
             {

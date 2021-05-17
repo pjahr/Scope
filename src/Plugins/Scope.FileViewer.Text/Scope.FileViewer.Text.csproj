@@ -58,6 +58,7 @@
     </Page>
     <Compile Include="SeachableFileType.cs" />
     <Compile Include="SearchProvider.cs" />
+    <Compile Include="ViewModels\ChCrTextFileViewModel.cs" />
     <Compile Include="ViewModels\CryXmlTextFileViewModel.cs" />
     <Compile Include="ViewModels\JsonTextFileViewModel.cs" />
     <Compile Include="ViewModels\TextFileViewModel.cs" />
