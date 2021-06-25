@@ -10,20 +10,20 @@ namespace Scope.Deserialization
   {
     public static XmlDocument ReadFile(string file)
     {
-      return ReadStream(File.OpenRead(file));
+      return ReadStream(File.OpenRead(file), writeLog:true);
     }
 
     public static XmlDocument ReadStream(Stream stream,
-                                         ByteOrderEnum byteOrder = ByteOrderEnum.AutoDetect,
+                                         ByteOrderEnum byteOrder = ByteOrderEnum.LittleEndian,
                                          bool writeLog = false)
     {
       using (BinaryReader r = new BinaryReader(stream))
       {
-        string header = r.ReadFString(7);
+        string header = r.ReadFString(8);
 
         if (header == "CryXml" || header == "CryXmlB")
         {
-          r.ReadCString();
+          //var cString = r.ReadCString();
         }
         else if (header == "CRY3SDK")
         {
@@ -34,18 +34,18 @@ namespace Scope.Deserialization
           throw new FormatException("Unknown File Format");
         }
 
-        var headerLength = r.BaseStream.Position;
+        //var headerLength = r.BaseStream.Position;
 
-        byteOrder = ByteOrderEnum.BigEndian;
+        //byteOrder = ByteOrderEnum.BigEndian;
 
         var fileLength = r.ReadInt(byteOrder);
 
-        if (fileLength != r.BaseStream.Length)
-        {
-          r.BaseStream.Seek(headerLength, SeekOrigin.Begin);
-          byteOrder = ByteOrderEnum.LittleEndian;
-          fileLength = r.ReadInt(byteOrder);
-        }
+        //if (fileLength != r.BaseStream.Length)
+        //{
+        //  r.BaseStream.Seek(headerLength, SeekOrigin.Begin);
+        //  byteOrder = ByteOrderEnum.LittleEndian;
+        //  fileLength = r.ReadInt(byteOrder);
+        //}
 
         var nodeTableOffset = r.ReadInt(byteOrder);
         var nodeTableCount = r.ReadInt(byteOrder);
@@ -53,11 +53,11 @@ namespace Scope.Deserialization
 
         var attributeTableOffset = r.ReadInt(byteOrder);
         var attributeTableCount = r.ReadInt(byteOrder);
-        var referenceTableSize = 8;
+        //var referenceTableSize = 8;
 
         var childTableOffset = r.ReadInt(byteOrder);
         var childTableCount = r.ReadInt(byteOrder);
-        var length3 = 4;
+        //var length3 = 4;
 
         var stringTableOffset = r.ReadInt(byteOrder);
         var stringTableCount = r.ReadInt(byteOrder);
@@ -65,35 +65,35 @@ namespace Scope.Deserialization
         if (writeLog)
         {
           // Regex byteFormatter = new Regex("([0-9A-F]{8})");
-          Console.WriteLine("Header");
-          Console.WriteLine("0x{0:X6}: {1}", 0x00, header);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8})", headerLength + 0x00, fileLength);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) node offset",
-                            headerLength + 0x04,
-                            nodeTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) nodes",
-                            headerLength + 0x08,
-                            nodeTableCount);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) reference offset",
-                            headerLength + 0x12,
-                            attributeTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) references",
-                            headerLength + 0x16,
-                            attributeTableCount);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child offset",
-                            headerLength + 0x20,
-                            childTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child",
-                            headerLength + 0x24,
-                            childTableCount);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content offset",
-                            headerLength + 0x28,
-                            stringTableOffset);
-          Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content",
-                            headerLength + 0x32,
-                            stringTableCount);
-          Console.WriteLine("");
-          Console.WriteLine("Node Table");
+          //Console.WriteLine("Header");
+          //Console.WriteLine("0x{0:X6}: {1}", 0x00, header);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8})", headerLength + 0x00, fileLength);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) node offset",
+          //                  headerLength + 0x04,
+          //                  nodeTableOffset);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) nodes",
+          //                  headerLength + 0x08,
+          //                  nodeTableCount);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) reference offset",
+          //                  headerLength + 0x12,
+          //                  attributeTableOffset);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) references",
+          //                  headerLength + 0x16,
+          //                  attributeTableCount);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child offset",
+          //                  headerLength + 0x20,
+          //                  childTableOffset);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child",
+          //                  headerLength + 0x24,
+          //                  childTableCount);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content offset",
+          //                  headerLength + 0x28,
+          //                  stringTableOffset);
+          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content",
+          //                  headerLength + 0x32,
+          //                  stringTableCount);
+          //Console.WriteLine("");
+          //Console.WriteLine("Node Table");
         }
 
         List<CryXmlNode> nodeTable = new List<CryXmlNode>();

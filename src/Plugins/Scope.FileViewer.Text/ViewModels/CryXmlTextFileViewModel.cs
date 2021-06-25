@@ -12,20 +12,17 @@ namespace Scope.FileViewer.Text.ViewModels
   {
     public CryXmlTextFileViewModel(IFile file)
     {
-      XmlDocument x;
+      XmlDocument xmlDoc;
 
       using (var s = file.Read())
       {
-        var header = new byte[4];
-        s.Read(header, 0, 4);
-        var headerText=Encoding.UTF8.GetString(header);
-        x = CryXmlSerializer.ReadStream(s);
+        xmlDoc = CryXmlSerializer.ReadStream(s);
       }
 
       StringBuilder text = new StringBuilder();
       using (TextWriter writer = new StringWriter(text))
       {
-        x.Save(writer);
+        xmlDoc.Save(writer);
       }
 
       var p = new Paragraph {FontFamily = new FontFamily("Consolas"), FontSize = 10};
