@@ -75,7 +75,7 @@ namespace Scope.Deserialization
           case ChunkType.CryXml:
 
             r.BaseStream.Seek(Offset, SeekOrigin.Begin);
-            var x = CryXmlSerializer.ReadStream(r.BaseStream);
+            var x = new DeserializeCryXml(r.BaseStream).Result;
             StringBuilder text = new StringBuilder();
             using (TextWriter writer = new StringWriter(text))
             {

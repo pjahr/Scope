@@ -5,8 +5,12 @@ namespace Scope.Deserialization
 {
   class CryXmlHeader
   {
-    public CryXmlHeader(BinaryReader r)
+    private readonly ByteOrderEnum _byteOrder;
+
+    public CryXmlHeader(BinaryReader r, ByteOrderEnum byteOrder)
     {
+      _byteOrder = byteOrder;
+
       string header = r.ReadFString(8);
 
       if (header != "CryXmlB")
@@ -14,19 +18,19 @@ namespace Scope.Deserialization
         throw new FormatException("Unknown File Format");
       }
 
-      XmlSize = r.ReadInt();
+      XmlSize = r.ReadInt(_byteOrder);
 
-      NodeTableOffset = r.ReadInt();
-      NodeTableCount = r.ReadInt();
+      NodeTableOffset = r.ReadInt(_byteOrder);
+      NodeTableCount = r.ReadInt(_byteOrder);
 
-      AttributeTableOffset = r.ReadInt();
-      AttributeTableCount = r.ReadInt();
+      AttributeTableOffset = r.ReadInt(_byteOrder);
+      AttributeTableCount = r.ReadInt(_byteOrder);
 
-      ChildTableOffset = r.ReadInt();
-      ChildTableCount = r.ReadInt();
+      ChildTableOffset = r.ReadInt(_byteOrder);
+      ChildTableCount = r.ReadInt(_byteOrder);
 
-      StringTableOffset = r.ReadInt();
-      StringTableSize = r.ReadInt();
+      StringTableOffset = r.ReadInt(_byteOrder);
+      StringTableSize = r.ReadInt(_byteOrder);
     }
 
     public int XmlSize { get; }

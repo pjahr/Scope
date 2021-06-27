@@ -13,7 +13,7 @@ namespace Scope.Tests.Deserialization
 
       using var s = new MemoryStream(file);
 
-      var xdoc = CryXmlSerializer.ReadStream(s);
+      var xdoc = new DeserializeCryXml(s).Result;
     }
   }
 }

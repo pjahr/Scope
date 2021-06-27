@@ -47,7 +47,7 @@
     <Compile Include="CryXmlHeader.cs" />
     <Compile Include="CryXmlNode.cs" />
     <Compile Include="CryXmlReference.cs" />
-    <Compile Include="CryXmlSerializer.cs" />
+    <Compile Include="DeserializeCryXml.cs" />
     <Compile Include="CryXmlValue.cs" />
     <Compile Include="Deserialize.cs" />
     <Compile Include="DeserializeChCr.cs" />

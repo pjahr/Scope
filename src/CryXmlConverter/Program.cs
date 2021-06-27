@@ -1,5 +1,4 @@
 ﻿using Scope.Deserialization;
-using System;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -23,7 +22,7 @@ namespace CryXmlConverter
                     
           if (headerText.StartsWith("CryXmlB"))
           {
-            x = CryXmlSerializer.ReadStream(s);
+            x = new DeserializeCryXml(s).Result;
             x.Save($"{path}.xml");
           }
 

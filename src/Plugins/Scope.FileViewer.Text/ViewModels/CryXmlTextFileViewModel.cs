@@ -16,7 +16,7 @@ namespace Scope.FileViewer.Text.ViewModels
 
       using (var s = file.Read())
       {
-        xmlDoc = CryXmlSerializer.ReadStream(s);
+        xmlDoc = new DeserializeCryXml(s).Result;
       }
 
       StringBuilder text = new StringBuilder();

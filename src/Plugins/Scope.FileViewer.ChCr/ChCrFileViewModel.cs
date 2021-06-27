@@ -16,10 +16,7 @@ namespace Scope.FileViewer.ChCr
 
       using (var s = file.Read())
       {
-        var header = new byte[4];
-        s.Read(header, 0, 4);
-        var headerText=Encoding.UTF8.GetString(header);
-        x = CryXmlSerializer.ReadStream(s);
+        x = new DeserializeCryXml(s).Result;
       }
 
       StringBuilder text = new StringBuilder();
