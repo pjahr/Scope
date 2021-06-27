@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -10,198 +9,55 @@ namespace Scope.Deserialization
   {
     public static XmlDocument ReadFile(string file)
     {
-      return ReadStream(File.OpenRead(file), writeLog:true);
+      return ReadStream(File.OpenRead(file));
     }
 
-    public static XmlDocument ReadStream(Stream stream,
-                                         ByteOrderEnum byteOrder = ByteOrderEnum.LittleEndian,
-                                         bool writeLog = false)
+    public static XmlDocument ReadStream(Stream stream)
     {
       using (BinaryReader r = new BinaryReader(stream))
       {
-        string header = r.ReadFString(8);
+        var header = new CryXmlHeader(r);
 
-        if (header == "CryXml" || header == "CryXmlB")
+        r.BaseStream.Seek(header.NodeTableOffset, SeekOrigin.Begin);
+
+        var nodes = new List<CryXmlNode>();
+        for (int i = 0; i < header.NodeTableCount; i++)
         {
-          //var cString = r.ReadCString();
-        }
-        else if (header == "CRY3SDK")
-        {
-          var bytes = r.ReadBytes(2);
-        }
-        else
-        {
-          throw new FormatException("Unknown File Format");
+          nodes.Add(new CryXmlNode(r, i));
         }
 
-        //var headerLength = r.BaseStream.Position;
+        r.BaseStream.Seek(header.AttributeTableOffset, SeekOrigin.Begin);
 
-        //byteOrder = ByteOrderEnum.BigEndian;
+        var attributes = new List<CryXmlAttribute>();
 
-        var fileLength = r.ReadInt(byteOrder);
+        for (int i = 0; i < header.AttributeTableCount; i++)
+        {
+          attributes.Add(new CryXmlAttribute(r));
+        }
 
-        //if (fileLength != r.BaseStream.Length)
+        r.BaseStream.Seek(header.ChildTableOffset, SeekOrigin.Begin);
+
+        var parents = new List<int>();
+        for (int i = 0; i < header.ChildTableCount; i++)
+        {
+          parents.Add(r.ReadInt());
+        }
+
+        r.BaseStream.Seek(header.StringTableOffset, SeekOrigin.Begin);
+
+        //var dataTable = new List<CryXmlValue>();
+
+        //for (int i = 0; i < header.StringTableSize; i++)
         //{
-        //  r.BaseStream.Seek(headerLength, SeekOrigin.Begin);
-        //  byteOrder = ByteOrderEnum.LittleEndian;
-        //  fileLength = r.ReadInt(byteOrder);
+        //  dataTable.Add(new CryXmlValue(r, header.StringTableOffset));
         //}
 
-        var nodeTableOffset = r.ReadInt(byteOrder);
-        var nodeTableCount = r.ReadInt(byteOrder);
-        var nodeTableSize = 28;
-
-        var attributeTableOffset = r.ReadInt(byteOrder);
-        var attributeTableCount = r.ReadInt(byteOrder);
-        //var referenceTableSize = 8;
-
-        var childTableOffset = r.ReadInt(byteOrder);
-        var childTableCount = r.ReadInt(byteOrder);
-        //var length3 = 4;
-
-        var stringTableOffset = r.ReadInt(byteOrder);
-        var stringTableCount = r.ReadInt(byteOrder);
-
-        if (writeLog)
-        {
-          // Regex byteFormatter = new Regex("([0-9A-F]{8})");
-          //Console.WriteLine("Header");
-          //Console.WriteLine("0x{0:X6}: {1}", 0x00, header);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8})", headerLength + 0x00, fileLength);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) node offset",
-          //                  headerLength + 0x04,
-          //                  nodeTableOffset);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) nodes",
-          //                  headerLength + 0x08,
-          //                  nodeTableCount);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) reference offset",
-          //                  headerLength + 0x12,
-          //                  attributeTableOffset);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) references",
-          //                  headerLength + 0x16,
-          //                  attributeTableCount);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child offset",
-          //                  headerLength + 0x20,
-          //                  childTableOffset);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) child",
-          //                  headerLength + 0x24,
-          //                  childTableCount);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content offset",
-          //                  headerLength + 0x28,
-          //                  stringTableOffset);
-          //Console.WriteLine("0x{0:X6}: {1:X8} (Dec: {1:D8}) content",
-          //                  headerLength + 0x32,
-          //                  stringTableCount);
-          //Console.WriteLine("");
-          //Console.WriteLine("Node Table");
-        }
-
-        List<CryXmlNode> nodeTable = new List<CryXmlNode>();
-        r.BaseStream.Seek(nodeTableOffset, SeekOrigin.Begin);
-        int nodeID = 0;
-        while (r.BaseStream.Position < nodeTableOffset + nodeTableCount * nodeTableSize)
-        {
-          var position = r.BaseStream.Position;
-          var value = new CryXmlNode
-          {
-            NodeID = nodeID++,
-            NodeNameOffset = r.ReadInt(byteOrder),
-            ContentOffset = r.ReadInt(byteOrder),
-            AttributeCount = r.ReadInt16(byteOrder),
-            ChildCount = r.ReadInt16(byteOrder),
-            ParentNodeID = r.ReadInt(byteOrder),
-            FirstAttributeIndex = r.ReadInt(byteOrder),
-            FirstChildIndex = r.ReadInt(byteOrder),
-            Reserved = r.ReadInt(byteOrder)
-          };
-
-          nodeTable.Add(value);
-          if (writeLog)
-          {
-            Console.WriteLine("0x{0:X6}: {1:X8} {2:X8} attr:{3:X4} {4:X4} {5:X8} {6:X8} {7:X8} {8:X8}",
-                              position,
-                              value.NodeNameOffset,
-                              value.ContentOffset,
-                              value.AttributeCount,
-                              value.ChildCount,
-                              value.ParentNodeID,
-                              value.FirstAttributeIndex,
-                              value.FirstChildIndex,
-                              value.Reserved);
-          }
-        }
-
-        if (writeLog)
-        {
-          Console.WriteLine("");
-          Console.WriteLine("Reference Table");
-        }
-
-        List<CryXmlReference> attributeTable = new List<CryXmlReference>();
-        r.BaseStream.Seek(attributeTableOffset, SeekOrigin.Begin);
-        while (r.BaseStream.Position
-               < attributeTableOffset + attributeTableCount * referenceTableSize)
-        {
-          var position = r.BaseStream.Position;
-          var value = new CryXmlReference
-          {
-            NameOffset = r.ReadInt(byteOrder),
-            ValueOffset = r.ReadInt(byteOrder)
-          };
-
-          attributeTable.Add(value);
-          if (writeLog)
-          {
-            Console.WriteLine("0x{0:X6}: {1:X8} {2:X8}",
-                              position,
-                              value.NameOffset,
-                              value.ValueOffset);
-          }
-        }
-
-        if (writeLog)
-        {
-          Console.WriteLine("");
-          Console.WriteLine("Order Table");
-        }
-
-        List<int> parentTable = new List<int>();
-        r.BaseStream.Seek(childTableOffset, SeekOrigin.Begin);
-        while (r.BaseStream.Position < childTableOffset + childTableCount * length3)
-        {
-          var position = r.BaseStream.Position;
-          var value = r.ReadInt(byteOrder);
-
-          parentTable.Add(value);
-          if (writeLog)
-          {
-            Console.WriteLine("0x{0:X6}: {1:X8}", position, value);
-          }
-        }
-
-        if (writeLog)
-        {
-          Console.WriteLine("");
-          Console.WriteLine("Dynamic Dictionary");
-        }
-
         List<CryXmlValue> dataTable = new List<CryXmlValue>();
-        r.BaseStream.Seek(stringTableOffset, SeekOrigin.Begin);
+        r.BaseStream.Seek(header.StringTableOffset, SeekOrigin.Begin);
         while (r.BaseStream.Position < r.BaseStream.Length)
         {
           var position = r.BaseStream.Position;
-          var value = new CryXmlValue
-          {
-            Offset = (int)position - stringTableOffset,
-            Value = r.ReadCString()
-          };
-
-          dataTable.Add(value);
-
-          if (writeLog)
-          {
-            Console.WriteLine("0x{0:X6}: {1:X8} {2}", position, value.Offset, value.Value);
-          }
+          dataTable.Add(new CryXmlValue(r, header.StringTableOffset));
         }
 
         var dataMap = dataTable.ToDictionary(k => k.Offset, v => v.Value);
@@ -212,21 +68,21 @@ namespace Scope.Deserialization
 
         Dictionary<int, XmlElement> xmlMap = new Dictionary<int, XmlElement>();
 
-        foreach (var node in nodeTable)
+        foreach (var node in nodes)
         {
-          XmlElement element = xmlDoc.CreateElement(dataMap[node.NodeNameOffset]);
+          XmlElement element = xmlDoc.CreateElement(dataMap[node.ElementNameOffset]);
 
           for (int i = 0,
                    j = node.AttributeCount;
                i < j;
                i++)
           {
-            if (dataMap.ContainsKey(attributeTable[attributeIndex]
+            if (dataMap.ContainsKey(attributes[attributeIndex]
                                      .ValueOffset))
             {
-              element.SetAttribute(dataMap[attributeTable[attributeIndex]
+              element.SetAttribute(dataMap[attributes[attributeIndex]
                                             .NameOffset],
-                                   dataMap[attributeTable[attributeIndex]
+                                   dataMap[attributes[attributeIndex]
                                             .ValueOffset]);
             }
             else
@@ -253,9 +109,9 @@ namespace Scope.Deserialization
             //element.AppendChild(xmlDoc.CreateCDataSection("BUGGED"));
           }
 
-          if (xmlMap.ContainsKey(node.ParentNodeID))
+          if (xmlMap.ContainsKey(node.ParentNodeIndex))
           {
-            xmlMap[node.ParentNodeID]
+            xmlMap[node.ParentNodeIndex]
              .AppendChild(element);
           }
           else

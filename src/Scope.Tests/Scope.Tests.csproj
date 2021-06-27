@@ -10,6 +10,11 @@
 
   <ItemGroup>
     <None Remove="test.txt" />
+    <None Remove="TestData\battleroyale.rmp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="TestData\battleroyale.rmp" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Scope.Deserialization\Scope.Deserialization.csproj" />
     <ProjectReference Include="..\Scope.Utils\Scope.Utils.csproj" />
     <ProjectReference Include="..\Scope\Scope.csproj" />
   </ItemGroup>
@@ -31,6 +37,21 @@
     <Resource Include="test.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

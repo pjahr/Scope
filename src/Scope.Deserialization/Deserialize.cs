@@ -6,8 +6,10 @@ namespace Scope.Deserialization
 {
   public static class Deserialize
   {
+    private const ByteOrderEnum Default = ByteOrderEnum.BigEndian;
+
     public static int ReadInt(this BinaryReader r,
-                              ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
+                              ByteOrderEnum byteOrder = Default)
     {
       var bytes = new[] { r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte() };
 
@@ -21,7 +23,7 @@ namespace Scope.Deserialization
     }
 
     public static short ReadInt16(this BinaryReader r,
-                                  ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
+                                  ByteOrderEnum byteOrder = Default)
     {
       var bytes = new[] { r.ReadByte(), r.ReadByte() };
 
@@ -35,7 +37,7 @@ namespace Scope.Deserialization
     }
 
     public static uint ReadUInt32(this BinaryReader r,
-                                  ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
+                                  ByteOrderEnum byteOrder = Default)
     {
       var bytes = new[] { r.ReadByte(), r.ReadByte(), r.ReadByte(), r.ReadByte() };
 
@@ -49,7 +51,7 @@ namespace Scope.Deserialization
     }
 
     public static ushort ReadUInt16(this BinaryReader br,
-                                         ByteOrderEnum byteOrder = ByteOrderEnum.BigEndian)
+                                         ByteOrderEnum byteOrder = Default)
     {
       var bytes = new byte[] {
                 br.ReadByte(),

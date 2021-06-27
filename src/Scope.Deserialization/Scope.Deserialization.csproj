@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ByteOrderEnum.cs" />
+    <Compile Include="CryXmlAttribute.cs" />
+    <Compile Include="CryXmlHeader.cs" />
     <Compile Include="CryXmlNode.cs" />
     <Compile Include="CryXmlReference.cs" />
     <Compile Include="CryXmlSerializer.cs" />
