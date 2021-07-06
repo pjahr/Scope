@@ -101,7 +101,7 @@
   <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\..\Scope.Deserialization\Scope.Deserialization.csproj">
-      <Project>{377CA05C-01B3-4F16-ABCB-085D95790FF2}</Project>
+      <Project>{377ca05c-01b3-4f16-abcb-085d95790ff2}</Project>
       <Name>Scope.Deserialization</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Scope.PluginApi\Scope.Interfaces.csproj">

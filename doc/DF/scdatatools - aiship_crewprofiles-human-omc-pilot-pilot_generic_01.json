@@ -1,0 +1,1528 @@
+{
+    "BBoxSelection": false,
+    "Category": "Actors",
+    "Components": [
+        {
+            "SActorComponentParams": {
+                "__polymorphicType": "SActorComponentParams",
+                "__type": "DataForgeComponentParams",
+                "aimFOV": 200.0,
+                "aimIKLayer": 8,
+                "backwardMultiplier": 0.699999988079071,
+                "character": "00000000-0000-0000-0000-000000000000",
+                "characterNameData": "00000000-0000-0000-0000-000000000000",
+                "isAIControlled": true,
+                "itemPorts": {
+                    "PortFlags": "",
+                    "PortTags": "",
+                    "Ports": [
+                        {
+                            "SItemPortDef": {
+                                "AttachmentImplementation": {
+                                    "Helper": {
+                                        "Helper": {
+                                            "Name": "",
+                                            "Offset": {
+                                                "Position": {
+                                                    "__type": "Vec3",
+                                                    "x": 0.0,
+                                                    "y": 0.0,
+                                                    "z": 0.0
+                                                },
+                                                "Rotation": {
+                                                    "__type": "Ang3",
+                                                    "x": 0.0,
+                                                    "y": 0.0,
+                                                    "z": 0.0
+                                                },
+                                                "__type": "QuatT"
+                                            },
+                                            "SimulationParams": null,
+                                            "__type": "SItemPortDefHelper"
+                                        },
+                                        "SubHelpers": [],
+                                        "Tags": "",
+                                        "__type": "SItemPortDefHelperNode"
+                                    },
+                                    "__polymorphicType": "SItemPortDefAttachmentImplementationSkin",
+                                    "__type": "SItemPortDefAttachmentImplementationBase"
+                                },
+                                "AttachmentPoints": [],
+                                "Connections": [],
+                                "DamageTech": null,
+                                "DefaultWeaponGroup": "UNDEFINED",
+                                "DisabledPortLinks": [],
+                                "DisplayName": "",
+                                "Extension": null,
+                                "Flags": "",
+                                "InteractionPointOffset": {
+                                    "__type": "Vec3",
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "InteractionPointSize": -1.0,
+                                "MaxSize": 1,
+                                "MinSize": 1,
+                                "Name": "Body_ItemPort",
+                                "PortTags": "",
+                                "RequiredPortTags": "",
+                                "Types": [
+                                    {
+                                        "SItemPortDefTypes": {
+                                            "SubTypes": [],
+                                            "Type": "Char_Body",
+                                            "__type": "SItemPortDefTypes"
+                                        }
+                                    }
+                                ],
+                                "__type": "SItemPortDef",
+                                "control": null,
+                                "controllableTag": "",
+                                "linkedItemPorts": []
+                            }
+                        }
+                    ],
+                    "RequiredItemTags": "",
+                    "__type": "SItemPortCoreParams",
+                    "masterController": null
+                },
+                "jumpFallLandConfig": "bceeb3fe-dd5f-4365-b6fe-372fbcee1c59",
+                "jumpHeight": 1.5,
+                "leanAngle": 15.0,
+                "ledgeGrabbingParams": "68de2d67-2eab-4dbb-9c09-efa8005d3ab0",
+                "lookIKLayer": 8,
+                "maxDeltaAngleRateNormal": 360.0,
+                "maxLookAimAngle": 120.0,
+                "movementModifiersRecord": "00000000-0000-0000-0000-000000000000",
+                "proceduralAnimationRecord": "00000000-0000-0000-0000-000000000000",
+                "turnThresholdAngle": 5.0,
+                "turnThresholdTime": 0.5
+            }
+        },
+        {
+            "SEntityComponentDefaultLoadoutParams": {
+                "__polymorphicType": "SEntityComponentDefaultLoadoutParams",
+                "__type": "DataForgeComponentParams",
+                "loadout": {
+                    "BaseLoadout": {
+                        "__polymorphicType": "SItemPortLoadoutXMLParams",
+                        "__type": "SItemPortLoadoutBaseParams",
+                        "loadoutPath": "scripts/loadouts/Character/Human/Body/NPC/Slaver/s42e1_slaverpilot_02.xml"
+                    },
+                    "Outfits": [
+                        {
+                            "SItemPortLoadoutOutfitTagParams": {
+                                "Loadouts": [
+                                    {
+                                        "SItemPortLoadoutXMLParams": {
+                                            "__polymorphicType": "SItemPortLoadoutXMLParams",
+                                            "__type": "SItemPortLoadoutBaseParams",
+                                            "loadoutPath": "scripts/loadouts/Character/Human/Armor/NPC/Slaver/m_slaver_undersuit_01.xml"
+                                        }
+                                    },
+                                    {
+                                        "SItemPortLoadoutXMLParams": {
+                                            "__polymorphicType": "SItemPortLoadoutXMLParams",
+                                            "__type": "SItemPortLoadoutBaseParams",
+                                            "loadoutPath": "scripts/loadouts/Character/Human/Armor/NPC/Slaver/m_slaver_undersuit_helmet_01.xml"
+                                        }
+                                    }
+                                ],
+                                "OutfitNameTags": [],
+                                "__type": "SItemPortLoadoutOutfitTagParams"
+                            }
+                        }
+                    ],
+                    "__polymorphicType": "SItemPortLoadoutOutfitParams",
+                    "__type": "SItemPortLoadoutBaseParams"
+                }
+            }
+        },
+        {
+            "SGeometryResourceParams": {
+                "Geometry": {
+                    "Geometry": {
+                        "AttachFlags": 0,
+                        "BBoxJoint": "",
+                        "BBoxRadius": 0.0,
+                        "Damage": 0.0,
+                        "DeformerType": "Standard",
+                        "Dirt": 0.0,
+                        "Geometry": {
+                            "__polymorphicType": "GlobalResourceGeometry",
+                            "__type": "GlobalResourceBase",
+                            "path": "objects/characters/human/male_v7/export/bhm_skeleton_v7.chr"
+                        },
+                        "Interference": 0.0,
+                        "Material": {
+                            "__polymorphicType": "GlobalResourceMaterial",
+                            "__type": "GlobalResourceBase",
+                            "path": ""
+                        },
+                        "MaterialAttachments": "",
+                        "ModifiersPath": "",
+                        "ProtosBShapeExclude": 0,
+                        "ProxyCDFPath": "",
+                        "Slot": "Main",
+                        "VisFP": true,
+                        "VisSecondaryViews": true,
+                        "VisShadow": true,
+                        "VisTP": true,
+                        "Wear": 0.0,
+                        "WrinkleMap": true,
+                        "__type": "SGeometryDataParams",
+                        "viewDistRatio": "00000000-0000-0000-0000-000000000000"
+                    },
+                    "ScaleMultiplier": 1.0,
+                    "SubGeometry": [],
+                    "Tags": "",
+                    "__type": "SGeometryNodeParams"
+                },
+                "Material": {
+                    "Material": {
+                        "__polymorphicType": "GlobalResourceMaterial",
+                        "__type": "GlobalResourceBase",
+                        "path": ""
+                    },
+                    "Tags": "",
+                    "__type": "SMaterialNodeParams",
+                    "materialVariants": []
+                },
+                "ModelTag": null,
+                "__polymorphicType": "SGeometryResourceParams",
+                "__type": "DataForgeComponentParams",
+                "cacheResources": false
+            }
+        },
+        {
+            "SPhysicalProxyComponentParams": {
+                "__polymorphicType": "SPhysicalProxyComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SEntityComponentObjectMetadataParams": {
+                "__polymorphicType": "SEntityComponentObjectMetadataParams",
+                "__type": "DataForgeComponentParams",
+                "hasLocalBounds": true,
+                "metadata": [],
+                "name": "@LOC_EMPTY"
+            }
+        },
+        {
+            "SCRTTCameraParams": {
+                "__polymorphicType": "SCRTTCameraParams",
+                "__type": "DataForgeComponentParams",
+                "defaultCamDistance": 0.4000000059604645,
+                "onFootCameraView": "00000000-0000-0000-0000-000000000000",
+                "vehicleCameraView": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "EntityComponentRoomOccupantParams": {
+                "__polymorphicType": "EntityComponentRoomOccupantParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "ActorStatusComponentParams": {
+                "__polymorphicType": "ActorStatusComponentParams",
+                "__type": "DataForgeComponentParams",
+                "actorStatusRecord": "7e51f42b-8959-4818-b2f0-794914904c22"
+            }
+        },
+        {
+            "SSCActorExternalForceResponseComponentParams": {
+                "__polymorphicType": "SSCActorExternalForceResponseComponentParams",
+                "__type": "DataForgeComponentParams",
+                "forceReactionsDefRecord": "25706613-06ab-4bf4-8ce3-02458ef4445c",
+                "hitReactionsDefRecord": "e39c3bf0-821f-42ca-8b29-402bf83e5973",
+                "shakeRecord": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "SActorAnimationComponentParams": {
+                "__polymorphicType": "SActorAnimationComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCSignatureSystemParams": {
+                "__polymorphicType": "SSCSignatureSystemParams",
+                "__type": "DataForgeComponentParams",
+                "baseSignatureParams": null,
+                "crossSectionAxisMultipliers": {
+                    "__type": "SSCSignatureSystemCrossSectionAxisMultiplierParams",
+                    "xAxis": 1.0,
+                    "yAxis": 1.0,
+                    "zAxis": 1.0
+                }
+            }
+        },
+        {
+            "SSCActorActionHandlerComponentParams": {
+                "__polymorphicType": "SSCActorActionHandlerComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCActorControlStateHostComponentParams": {
+                "__polymorphicType": "SSCActorControlStateHostComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCActorResultStateHostComponentParams": {
+                "__polymorphicType": "SSCActorResultStateHostComponentParams",
+                "__type": "DataForgeComponentParams",
+                "dimensions": [
+                    {
+                        "ActorStanceDimensionsInfoStandNoWeapon": "e18854d2-2657-4b95-ba86-744f8b7a4db6"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoStandUnarmedCombat": "77d90282-2627-4513-8a8f-03cca2a84c00"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoStandEnterCarry": "b8053168-6573-4f72-818b-b8ae9fd0ab13"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoStandExitCarry": "145b73b4-926d-4b15-b673-dc5ec648240e"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoStand": "b31234e2-6a4f-4270-b720-e8462d55899a"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoCrouch": "c1d8b755-3195-4273-95b8-20fb1e68ec86"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoProne": "1e866955-45e4-4d72-afb7-1e8d40e46f2b"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoProneBack": "154ecf04-6d70-4b8b-bc56-71b3e881f105"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoSeated": "b90b070f-8a18-462c-938c-8c6a16a6d40b"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoStandSquashed": "28dfba43-4adc-45d7-a93a-24a4d3bdf3e5"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoCoverHigh": "341c793a-66b4-45b3-a169-c1a442b0cc2c"
+                    },
+                    {
+                        "ActorStanceDimensionsInfoCoverLow": "6f968307-0ece-448c-badb-b45f9b210a98"
+                    }
+                ],
+                "speeds": [
+                    {
+                        "ActorStanceSpeedsInfoStandBlock": "23ca6192-8178-480c-93cf-1df4cab1c397"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoStandNoWeaponAI": "1161640b-485d-42a8-b34b-34afc69dbe45"
+                    },
+                    {
+                        "ActorStanceSpeedsUnarmedCombatAI": "c10a1062-f0f8-4ffd-a8fd-7e2a653befad"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoStandExitCarryAI": "4df36b00-69d3-47f5-b57e-784fe13faa4c"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoStandExitCarryAI": "4df36b00-69d3-47f5-b57e-784fe13faa4c"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoStandAI": "88d261e5-aafc-4ecd-8f96-4152ff455ad8"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoCrouchAI": "a6a3bec9-2ee2-4c23-bf06-f0d0bc72e4c3"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoProneAI": "c81b2643-afbb-4f70-a143-20da9163c7f4"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoSeated": "82aa9dd8-5c67-44a3-86ab-7269d9dd379e"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoStandSquashedAI": "f11238fb-6e5e-49c4-b770-b2de3b330207"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoCoverHigh": "679b08cf-8972-4018-9235-30e9d95bf809"
+                    },
+                    {
+                        "ActorStanceSpeedsInfoCoverLow": "e321f906-8359-42a9-87ef-be47282bf871"
+                    }
+                ]
+            }
+        },
+        {
+            "SSCActorRotationComponentParams": {
+                "__polymorphicType": "SSCActorRotationComponentParams",
+                "__type": "DataForgeComponentParams",
+                "actorAimLimits": "4d0cbb00-3227-4db9-96ed-394fb398baa6",
+                "actorLookLimits": "120d1d75-97b4-40d5-ad59-33fa87c2ca9e",
+                "turnAngles": {
+                    "__type": "ActorTurnAngles",
+                    "defaultTurnAngle": 60.0,
+                    "proneTurnAngle": 30.0,
+                    "unarmedCombatTurnAngle": 10.0
+                }
+            }
+        },
+        {
+            "SSCActorSuitManagerComponentParams": {
+                "__polymorphicType": "SSCActorSuitManagerComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "FoleyComponentParams": {
+                "__polymorphicType": "FoleyComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCActorEffectsControllerParams": {
+                "__polymorphicType": "SSCActorEffectsControllerParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCActorMonitorComponentParams": {
+                "__polymorphicType": "SSCActorMonitorComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCActorInteractionHelperParams": {
+                "__polymorphicType": "SSCActorInteractionHelperParams",
+                "__type": "DataForgeComponentParams",
+                "initiallyLockedInteractions": [
+                    "Refill Ammo",
+                    "Medpen",
+                    "Refill Grenades",
+                    "Talk"
+                ]
+            }
+        },
+        {
+            "SSCActorSpatialAwarenessComponentParams": {
+                "__polymorphicType": "SSCActorSpatialAwarenessComponentParams",
+                "__type": "DataForgeComponentParams",
+                "duckingParams": "4a83e669-417c-4be2-97bb-f900f8f31114",
+                "hazardParams": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "SSCActorViewComponentParams": {
+                "__polymorphicType": "SSCActorViewComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SGreenZoneObedienceComponentParams": {
+                "__polymorphicType": "SGreenZoneObedienceComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCActorEmotionComponentParams": {
+                "__polymorphicType": "SSCActorEmotionComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "BodyHealthComponentParams": {
+                "__polymorphicType": "BodyHealthComponentParams",
+                "__type": "DataForgeComponentParams",
+                "bodyHealthParamsRecord": "222ba2bb-77a3-4b3c-924a-81b927f3d9c0"
+            }
+        },
+        {
+            "SSCActorPhysicsControllerComponentParams": {
+                "__polymorphicType": "SSCActorPhysicsControllerComponentParams",
+                "__type": "DataForgeComponentParams",
+                "physType": {
+                    "Mass": 110.0,
+                    "__polymorphicType": "SEntityActorPhysicsControllerParams",
+                    "__type": "SEntityBasePhysicsControllerParams",
+                    "airControl": 0.8999999761581421,
+                    "airResistance": 0.0,
+                    "breakableParams": null,
+                    "colliderMat": "mat_player_collider",
+                    "gameCollisionClass": null,
+                    "inertia": 10.0,
+                    "inertiaAccel": 11.0,
+                    "maxClimbAngle": 50.0,
+                    "maxVelGround": 32.0,
+                    "minFallAngle": 50.0,
+                    "minSlideAngle": 75.0,
+                    "stiffnessScale": 2.0,
+                    "timeImpulseRecover": 1.0
+                }
+            }
+        },
+        {
+            "SAnimatedCharacterComponentParams": {
+                "__polymorphicType": "SAnimatedCharacterComponentParams",
+                "__type": "DataForgeComponentParams",
+                "actionController": "Animations/Mannequin/ADB/playerControllerDefs.xml",
+                "animDatabase3P": "Animations/Mannequin/ADB/playerAnims.adb",
+                "soundDatabase": "Animations/Mannequin/ADB/playerSounds.adb"
+            }
+        },
+        {
+            "SCItemUserParams": {
+                "__polymorphicType": "SCItemUserParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SCActorCollisionAvoidanceParams": {
+                "__polymorphicType": "SCActorCollisionAvoidanceParams",
+                "__type": "DataForgeComponentParams",
+                "alwaysAnObstacle": false,
+                "passRadius": 0.30000001192092896,
+                "passRadiusObstacle": 0.5
+            }
+        },
+        {
+            "SubsumptionEventReceiverComponentParams": {
+                "__polymorphicType": "SubsumptionEventReceiverComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SubsumptionComponentParams": {
+                "__polymorphicType": "SubsumptionComponentParams",
+                "__type": "DataForgeComponentParams",
+                "subsumptionActivity": "Pilot_Idle",
+                "subsumptionMastergraph": ""
+            }
+        },
+        {
+            "SObservableComponentParams": {
+                "__polymorphicType": "SObservableComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SCommunicationUserComponentParams": {
+                "__polymorphicType": "SCommunicationUserComponentParams",
+                "__type": "DataForgeComponentParams",
+                "communicationConfig": "00000000-0000-0000-0000-000000000000",
+                "contextualDialog": "",
+                "voiceBundle": "faec3a2a-85dc-4870-883d-ee7d3c5dcf39",
+                "voiceSingle": "00000000-0000-0000-0000-000000000000"
+            }
+        },
+        {
+            "SEntityInteractableParams": {
+                "Interactable": {
+                    "InteractionPoints": [
+                        {
+                            "SInteractionPointParams": {
+                                "AdditionalCollisionBones": [],
+                                "AngleConstraint": {
+                                    "__type": "SAngleConstraint",
+                                    "angleRange": 181.0,
+                                    "forwardDirOffset": {
+                                        "__type": "Vec3",
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    }
+                                },
+                                "ApplyToEntireSkeleton": true,
+                                "FirstInteractionPrimary": true,
+                                "HelperName": "Spine3",
+                                "HighlightBehaviors": [],
+                                "Interactions": [
+                                    {
+                                        "SInteractionParams": {
+                                            "DisplayName": "@LOC_EMPTY",
+                                            "Interaction": {
+                                                "DisplayName": "@NPC_Interact_Generic_Talk",
+                                                "DisplayType": "Show",
+                                                "FocusModeOnly": false,
+                                                "GenericCursor": "SingleAction",
+                                                "Linkable": false,
+                                                "LockedByLinks": false,
+                                                "Name": "Talk",
+                                                "QueryTags": [],
+                                                "RequiresAuthorizedUser": false,
+                                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                                "Sendable": false,
+                                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                                "__type": "SSharedInteractionParams",
+                                                "available": true,
+                                                "conditionList": null
+                                            },
+                                            "IsPrimary": false,
+                                            "__type": "SInteractionParams"
+                                        }
+                                    },
+                                    {
+                                        "SInteractionParams": {
+                                            "DisplayName": "@LOC_EMPTY",
+                                            "Interaction": {
+                                                "DisplayName": "@LOC_EMPTY",
+                                                "DisplayType": "Hide",
+                                                "FocusModeOnly": false,
+                                                "GenericCursor": "SingleAction",
+                                                "Linkable": false,
+                                                "LockedByLinks": false,
+                                                "Name": "LookAt",
+                                                "QueryTags": [],
+                                                "RequiresAuthorizedUser": false,
+                                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                                "Sendable": false,
+                                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                                "__type": "SSharedInteractionParams",
+                                                "available": true,
+                                                "conditionList": null
+                                            },
+                                            "IsPrimary": false,
+                                            "__type": "SInteractionParams"
+                                        }
+                                    }
+                                ],
+                                "MaxCursorScreenDistance": 2.0,
+                                "Offset": {
+                                    "Position": {
+                                        "__type": "Vec3",
+                                        "x": 0.10000000149011612,
+                                        "y": 0.10000000149011612,
+                                        "z": 0.0
+                                    },
+                                    "Rotation": {
+                                        "__type": "Ang3",
+                                        "x": 0.0,
+                                        "y": 0.0,
+                                        "z": 0.0
+                                    },
+                                    "__type": "QuatT"
+                                },
+                                "OnlySelectableInLookDir": false,
+                                "Radius": 2.4000000953674316,
+                                "ShowHighlight": false,
+                                "ShowInnerThoughtsOffScreen": false,
+                                "TextJustification": "Middle",
+                                "TextOrientation": "RotateToPlayer",
+                                "TextScale": 1.0,
+                                "UseHelperLocation": true,
+                                "__type": "SInteractionPointParams",
+                                "longRangeIP": false
+                            }
+                        }
+                    ],
+                    "SharedInteractions": [
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@LOC_EMPTY",
+                                "DisplayType": "Hide",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "LookAt",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@NPC_Interact_Generic_Talk",
+                                "DisplayType": "Show",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "Talk",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@usable_use",
+                                "DisplayType": "Hide",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "Order",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@usable_use",
+                                "DisplayType": "Hide",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "Serve",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@usable_use",
+                                "DisplayType": "Show",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "TakeOrder",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@ui_interactor_pickup_ammo",
+                                "DisplayType": "Show",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "Refill Ammo",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@ui_interactor_pickup_grenade",
+                                "DisplayType": "Show",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "Refill Grenades",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@usable_refillMedPens",
+                                "DisplayType": "Show",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "Medpen",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        },
+                        {
+                            "SSharedInteractionParams": {
+                                "DisplayName": "@usable_use",
+                                "DisplayType": "Hide",
+                                "FocusModeOnly": false,
+                                "GenericCursor": "SingleAction",
+                                "Linkable": false,
+                                "LockedByLinks": false,
+                                "Name": "TakeOrder",
+                                "QueryTags": [],
+                                "RequiresAuthorizedUser": false,
+                                "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                "Sendable": false,
+                                "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                "__type": "SSharedInteractionParams",
+                                "available": true,
+                                "conditionList": null
+                            }
+                        }
+                    ],
+                    "__type": "SInteractableParams",
+                    "actionHandlerTasks": [],
+                    "interactionTasks": [],
+                    "itemActionTasks": []
+                },
+                "__polymorphicType": "SEntityInteractableParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SARDataComponentParams": {
+                "__polymorphicType": "SARDataComponentParams",
+                "__type": "DataForgeComponentParams",
+                "dataType": "Player",
+                "description": "@LOC_EMPTY",
+                "labelAttachOffset": {
+                    "__type": "Vec3",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 1.0199999809265137
+                },
+                "labelMovementType": "FacingPlayer",
+                "labelScale": {
+                    "__type": "Vec3",
+                    "x": 2.0,
+                    "y": 2.0,
+                    "z": 2.0
+                },
+                "labelZOrientationOffset": 0.0,
+                "queryOffset": {
+                    "__type": "Vec3",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "rangeMax": 25.0,
+                "rangeMin": 1.0,
+                "scaleCapDistance": 10.0,
+                "subtitle1": "@LOC_EMPTY",
+                "subtitle2": "@LOC_EMPTY",
+                "title1": "@LOC_EMPTY",
+                "title2": "@LOC_EMPTY",
+                "visibleThroughWalls": false
+            }
+        },
+        {
+            "SCItemCommsComponentParams": {
+                "__polymorphicType": "SCItemCommsComponentParams",
+                "__type": "DataForgeComponentParams",
+                "setup": "201bfe98-d5f6-499a-bd02-0076c73ddc19"
+            }
+        },
+        {
+            "MovementSystemComponentParams": {
+                "__polymorphicType": "MovementSystemComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "PathingComponentParams": {
+                "__polymorphicType": "PathingComponentParams",
+                "__type": "DataForgeComponentParams",
+                "navigationType": "MediumSizedCharacters"
+            }
+        },
+        {
+            "SEntityComponentHostilityParams": {
+                "__polymorphicType": "SEntityComponentHostilityParams",
+                "__type": "DataForgeComponentParams",
+                "faction": "96f7df5a-90ad-4c95-bb28-1b62481e0fa1",
+                "wantedLevelHostility": null
+            }
+        },
+        {
+            "SAttachableComponentParams": {
+                "AttachDef": {
+                    "DisplayType": "",
+                    "Grade": 1,
+                    "Localization": {
+                        "Description": "@LOC_EMPTY",
+                        "Name": "@LOC_PLACEHOLDER",
+                        "__type": "SCItemLocalization",
+                        "displayFeatures": {
+                            "Callout1": "@LOC_EMPTY",
+                            "Callout2": "@LOC_EMPTY",
+                            "Callout3": "@LOC_EMPTY",
+                            "FrontendBackground": "",
+                            "History": "@LOC_EMPTY",
+                            "LogoSimplifiedWhite": "",
+                            "UIPriority": 0,
+                            "__type": "SCExtendedLocalizationLevelParams"
+                        }
+                    },
+                    "Manufacturer": "00000000-0000-0000-0000-000000000000",
+                    "RequiredTags": "",
+                    "Size": 1,
+                    "SubType": "UNDEFINED",
+                    "Tags": "",
+                    "Type": "NOITEM_Player",
+                    "__type": "SItemDefinition",
+                    "inventoryOccupancyVolume": {
+                        "__polymorphicType": "SCentiCargoUnit",
+                        "__type": "SBaseCargoUnit",
+                        "centiSCU": 1
+                    },
+                    "mannequinTags": {
+                        "__type": "SCItemMannequinTags",
+                        "mannequinBaseTag": "",
+                        "mannequinClassTag": "",
+                        "mannequinTypeTag": ""
+                    }
+                },
+                "__polymorphicType": "SAttachableComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AudioAllegianceParams": {
+                "__polymorphicType": "AudioAllegianceParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SEntityComponentEffects": {
+                "__polymorphicType": "SEntityComponentEffects",
+                "__type": "DataForgeComponentParams",
+                "entityEffects": {
+                    "__polymorphicType": "SEntitityEffectSystem_System",
+                    "__type": "SEntitityEffectSystem_SystemBase",
+                    "audioEnvironmentEffects": null,
+                    "lightEffects": null,
+                    "materialEffects": {
+                        "__polymorphicType": "EntityEffectSystem_MaterialCategory",
+                        "__type": "SEntityEffectSystem_Category",
+                        "allowMultipleTags": false,
+                        "enabled": true,
+                        "tagEffects": [
+                            {
+                                "EntityEffectSystem_MaterialTagEffect": {
+                                    "__polymorphicType": "EntityEffectSystem_MaterialTagEffect",
+                                    "__type": "EntityEffectSystem_MaterialEffect",
+                                    "enabled": true,
+                                    "name": "Screen Interference",
+                                    "propertyLinks": [
+                                        {
+                                            "EntityEffectSystem_MaterialPropertyLink": {
+                                                "__polymorphicType": "EntityEffectSystem_MaterialPropertyLink",
+                                                "__type": "SEntityEffectSystem_PropertyLink",
+                                                "materialProperty": "Interference",
+                                                "modifiers": [],
+                                                "parameterName": "4b550377-9155-4dd0-afee-3deb4ae4ad07",
+                                                "slot": {
+                                                    "__polymorphicType": "EntityEffectSystem_MaterialSlotSelection_Default",
+                                                    "__type": "EntityEffectSystem_MaterialSlotSelection"
+                                                },
+                                                "subMeshName": ""
+                                            }
+                                        }
+                                    ],
+                                    "tag": "c3ca3e12-5c26-450e-a1b5-fa170ec4703d"
+                                }
+                            }
+                        ],
+                        "triggerEffects": []
+                    },
+                    "particleEffects": null,
+                    "sequencerTags": [],
+                    "soundEffects": null,
+                    "uiOwnerEffects": null
+                },
+                "staticColors": [],
+                "staticValues": [],
+                "tagsToEnableOnLoad": [],
+                "triggersToEnableOnLoad": []
+            }
+        },
+        {
+            "EMPoolParams": {
+                "__polymorphicType": "EMPoolParams",
+                "__type": "DataForgeComponentParams",
+                "overrideEmValue": 0.0
+            }
+        },
+        {
+            "SActorUsableParams": {
+                "__polymorphicType": "SActorUsableParams",
+                "__type": "DataForgeComponentParams",
+                "abilityLocks": [],
+                "alignmentSlots": [
+                    {
+                        "PointAlignmentSlot": {
+                            "__polymorphicType": "PointAlignmentSlot",
+                            "__type": "UsableAlignmentSlot",
+                            "available": true,
+                            "canPlayerUse": true,
+                            "enterParams": {
+                                "__polymorphicType": "SUsableEnterTransitionParams",
+                                "__type": "SUsableTransitionParams",
+                                "additionalTags": "",
+                                "aiSignal": "UseStart",
+                                "holsterWeapon": true,
+                                "transitionAudioTrigger": {
+                                    "__polymorphicType": "GlobalResourceAudio",
+                                    "__type": "GlobalResourceBase",
+                                    "audioTrigger": ""
+                                }
+                            },
+                            "exitParams": {
+                                "__polymorphicType": "SUsableExitTransitionParams",
+                                "__type": "SUsableTransitionParams",
+                                "additionalTags": "",
+                                "aiSignal": "UseEnd",
+                                "exitInteraction": null,
+                                "exitOnDamageTaken": false,
+                                "exitOnJump": false,
+                                "exitOnMovement": false,
+                                "inputExit": true,
+                                "transitionAudioTrigger": {
+                                    "__polymorphicType": "GlobalResourceAudio",
+                                    "__type": "GlobalResourceBase",
+                                    "audioTrigger": ""
+                                }
+                            },
+                            "fragmentTag": "",
+                            "fragmentTagsForSlot": "",
+                            "helperName": "",
+                            "interactionPoints": [
+                                {
+                                    "SInteractionPointParams": "weakPointer:SInteractionPointParams"
+                                }
+                            ],
+                            "linkMode": "NoLink",
+                            "relativeTransform": {
+                                "Position": {
+                                    "__type": "Vec3",
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "Rotation": {
+                                    "__type": "Ang3",
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "__type": "QuatT"
+                            },
+                            "slotControlledUseChannelArchetypes": [],
+                            "slottingItemPort": null,
+                            "spotStance": "Stand",
+                            "usableIdleParams": {
+                                "__type": "SUsableIdleParams",
+                                "idlePoseOverrides": []
+                            },
+                            "useADIK": false,
+                            "useHandIK": false,
+                            "viewParams": {
+                                "__type": "SUsableViewParams",
+                                "viewLimitPitchMax": 45.0,
+                                "viewLimitPitchMin": -45.0,
+                                "viewLimitYawMax": 45.0,
+                                "viewLimitYawMin": -45.0
+                            }
+                        }
+                    }
+                ],
+                "archetype": "108990d3-5bb1-44fb-a944-f8691f9ecec9",
+                "fragmentTag": "",
+                "navigationLinks": [],
+                "specializedData": {
+                    "__type": "SSpecializedData",
+                    "specializedDataEntry": []
+                },
+                "usableSequencerTasks": [],
+                "useSlots": [
+                    {
+                        "UsableUseSlot": {
+                            "__type": "UsableUseSlot",
+                            "additionalFragmentTags": "",
+                            "isScoochable": false,
+                            "name": "Order",
+                            "optionalGameTags": [],
+                            "relativeTransform": {
+                                "Position": {
+                                    "__type": "Vec3",
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "Rotation": {
+                                    "__type": "Ang3",
+                                    "x": 0.0,
+                                    "y": 0.0,
+                                    "z": 0.0
+                                },
+                                "__type": "QuatT"
+                            },
+                            "slottingReference": [],
+                            "usableItemPorts": [],
+                            "useChannelInstances": [
+                                {
+                                    "UsableUseChannelInstance": {
+                                        "__type": "UsableUseChannelInstance",
+                                        "alignmentSlots": [
+                                            {
+                                                "PointAlignmentSlot": "weakPointer:PointAlignmentSlot"
+                                            }
+                                        ],
+                                        "conditionList": null,
+                                        "fragmentTag": "",
+                                        "interaction": {
+                                            "DisplayName": "@usable_use",
+                                            "DisplayType": "Hide",
+                                            "FocusModeOnly": false,
+                                            "GenericCursor": "SingleAction",
+                                            "Linkable": false,
+                                            "LockedByLinks": false,
+                                            "Name": "Order",
+                                            "QueryTags": [],
+                                            "RequiresAuthorizedUser": false,
+                                            "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                            "Sendable": false,
+                                            "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                            "__type": "SSharedInteractionParams",
+                                            "available": true,
+                                            "conditionList": null
+                                        },
+                                        "isEnabled": true,
+                                        "preparationSequence": null,
+                                        "slottingMode": "EnabledOnAndOffSlotting",
+                                        "useChannelArchetype": "a0b15884-1a43-4e47-a553-03f8a33e3e71",
+                                        "useChannelInstancesToDisable": [],
+                                        "useChannelInstancesToEnable": []
+                                    }
+                                },
+                                {
+                                    "UsableUseChannelInstance": {
+                                        "__type": "UsableUseChannelInstance",
+                                        "alignmentSlots": [
+                                            {
+                                                "PointAlignmentSlot": "weakPointer:PointAlignmentSlot"
+                                            }
+                                        ],
+                                        "conditionList": null,
+                                        "fragmentTag": "",
+                                        "interaction": {
+                                            "DisplayName": "@usable_use",
+                                            "DisplayType": "Hide",
+                                            "FocusModeOnly": false,
+                                            "GenericCursor": "SingleAction",
+                                            "Linkable": false,
+                                            "LockedByLinks": false,
+                                            "Name": "Serve",
+                                            "QueryTags": [],
+                                            "RequiresAuthorizedUser": false,
+                                            "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                            "Sendable": false,
+                                            "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                            "__type": "SSharedInteractionParams",
+                                            "available": true,
+                                            "conditionList": null
+                                        },
+                                        "isEnabled": true,
+                                        "preparationSequence": null,
+                                        "slottingMode": "EnabledOnAndOffSlotting",
+                                        "useChannelArchetype": "97cdbdaa-cf32-4001-a883-549658694136",
+                                        "useChannelInstancesToDisable": [],
+                                        "useChannelInstancesToEnable": []
+                                    }
+                                },
+                                {
+                                    "UsableUseChannelInstance": {
+                                        "__type": "UsableUseChannelInstance",
+                                        "alignmentSlots": [
+                                            {
+                                                "PointAlignmentSlot": "weakPointer:PointAlignmentSlot"
+                                            }
+                                        ],
+                                        "conditionList": null,
+                                        "fragmentTag": "",
+                                        "interaction": {
+                                            "DisplayName": "@usable_use",
+                                            "DisplayType": "Show",
+                                            "FocusModeOnly": false,
+                                            "GenericCursor": "SingleAction",
+                                            "Linkable": false,
+                                            "LockedByLinks": false,
+                                            "Name": "TakeOrder",
+                                            "QueryTags": [],
+                                            "RequiresAuthorizedUser": false,
+                                            "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                            "Sendable": false,
+                                            "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                            "__type": "SSharedInteractionParams",
+                                            "available": true,
+                                            "conditionList": null
+                                        },
+                                        "isEnabled": true,
+                                        "preparationSequence": null,
+                                        "slottingMode": "EnabledOnAndOffSlotting",
+                                        "useChannelArchetype": "0986625f-7cd4-4ddd-a38e-ab7102d4024e",
+                                        "useChannelInstancesToDisable": [],
+                                        "useChannelInstancesToEnable": []
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "views": []
+            }
+        },
+        {
+            "SEntityLootableContainerParams": {
+                "__polymorphicType": "SEntityLootableContainerParams",
+                "__type": "DataForgeComponentParams",
+                "blockingTagsOnSwapOutfit": "",
+                "forceFirstSelect": false,
+                "fragmentTags": "",
+                "infiniteLootable": false,
+                "itemPortRules": [],
+                "mainInteractionPoint": {
+                    "AdditionalCollisionBones": [],
+                    "AngleConstraint": {
+                        "__type": "SAngleConstraint",
+                        "angleRange": 181.0,
+                        "forwardDirOffset": {
+                            "__type": "Vec3",
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        }
+                    },
+                    "ApplyToEntireSkeleton": true,
+                    "FirstInteractionPrimary": true,
+                    "HelperName": "Spine3",
+                    "HighlightBehaviors": [],
+                    "Interactions": [
+                        {
+                            "SInteractionParams": {
+                                "DisplayName": "@LOC_EMPTY",
+                                "Interaction": {
+                                    "DisplayName": "@NPC_Interact_Generic_Talk",
+                                    "DisplayType": "Show",
+                                    "FocusModeOnly": false,
+                                    "GenericCursor": "SingleAction",
+                                    "Linkable": false,
+                                    "LockedByLinks": false,
+                                    "Name": "Talk",
+                                    "QueryTags": [],
+                                    "RequiresAuthorizedUser": false,
+                                    "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                    "Sendable": false,
+                                    "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                    "__type": "SSharedInteractionParams",
+                                    "available": true,
+                                    "conditionList": null
+                                },
+                                "IsPrimary": false,
+                                "__type": "SInteractionParams"
+                            }
+                        },
+                        {
+                            "SInteractionParams": {
+                                "DisplayName": "@LOC_EMPTY",
+                                "Interaction": {
+                                    "DisplayName": "@LOC_EMPTY",
+                                    "DisplayType": "Hide",
+                                    "FocusModeOnly": false,
+                                    "GenericCursor": "SingleAction",
+                                    "Linkable": false,
+                                    "LockedByLinks": false,
+                                    "Name": "LookAt",
+                                    "QueryTags": [],
+                                    "RequiresAuthorizedUser": false,
+                                    "RoomTag": "00000000-0000-0000-0000-000000000000",
+                                    "Sendable": false,
+                                    "UsableTag": "00000000-0000-0000-0000-000000000000",
+                                    "__type": "SSharedInteractionParams",
+                                    "available": true,
+                                    "conditionList": null
+                                },
+                                "IsPrimary": false,
+                                "__type": "SInteractionParams"
+                            }
+                        }
+                    ],
+                    "MaxCursorScreenDistance": 2.0,
+                    "Offset": {
+                        "Position": {
+                            "__type": "Vec3",
+                            "x": 0.10000000149011612,
+                            "y": 0.10000000149011612,
+                            "z": 0.0
+                        },
+                        "Rotation": {
+                            "__type": "Ang3",
+                            "x": 0.0,
+                            "y": 0.0,
+                            "z": 0.0
+                        },
+                        "__type": "QuatT"
+                    },
+                    "OnlySelectableInLookDir": false,
+                    "Radius": 2.4000000953674316,
+                    "ShowHighlight": false,
+                    "ShowInnerThoughtsOffScreen": false,
+                    "TextJustification": "Middle",
+                    "TextOrientation": "RotateToPlayer",
+                    "TextScale": 1.0,
+                    "UseHelperLocation": true,
+                    "__type": "SInteractionPointParams",
+                    "longRangeIP": false
+                },
+                "mainInteractions": [
+                    {
+                        "SSharedInteractionParams": "weakPointer:SSharedInteractionParams"
+                    },
+                    {
+                        "SSharedInteractionParams": "weakPointer:SSharedInteractionParams"
+                    },
+                    {
+                        "SSharedInteractionParams": "weakPointer:SSharedInteractionParams"
+                    }
+                ],
+                "maxOffsetRotation": {
+                    "__type": "Ang3",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "maxOffsetTranslation": {
+                    "__type": "Vec3",
+                    "x": 0.0,
+                    "y": 0.0,
+                    "z": 0.0
+                },
+                "placeOutfitRules": [],
+                "radius": 1.600000023841858,
+                "smartRefillAmmo": false,
+                "smartRefillGrenadesAndAmmo": false,
+                "takeExclussionRules": [],
+                "validTagsOnSwapOutfit": ""
+            }
+        },
+        {
+            "AudioRayOcclusionParams": {
+                "__polymorphicType": "AudioRayOcclusionParams",
+                "__type": "DataForgeComponentParams",
+                "occlusionCalcRule": "Average",
+                "occlusionType": "MultiRayRadius",
+                "rayTargetBoneName": "HeadCam"
+            }
+        },
+        {
+            "SEntityAudioControllerParams": {
+                "__polymorphicType": "SEntityAudioControllerParams",
+                "__type": "DataForgeComponentParams",
+                "audioControllerEntityType": "Actor",
+                "fullLODDistance": 50.0,
+                "fullToLowLODDistance": 55.0,
+                "offLODDistance": 505.0,
+                "offToLowLODDistance": 500.0,
+                "randomSeedCount": 4
+            }
+        },
+        {
+            "GForceComponentParams": {
+                "__polymorphicType": "GForceComponentParams",
+                "__type": "DataForgeComponentParams",
+                "gforceHeadBobRecord": "00000000-0000-0000-0000-000000000000",
+                "gforceParamsRecord": "ff174b5c-104a-4272-80bf-ccc5e67646aa"
+            }
+        },
+        {
+            "AITargetableComponentParams": {
+                "__polymorphicType": "AITargetableComponentParams",
+                "__type": "DataForgeComponentParams",
+                "suggestedAttackerCapacity": 1.0
+            }
+        },
+        {
+            "AISeatOperatorComponentParams": {
+                "__polymorphicType": "AISeatOperatorComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AISeatFlightControllerComponentParams": {
+                "__polymorphicType": "AISeatFlightControllerComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AISeatWeaponControllerComponentParams": {
+                "__polymorphicType": "AISeatWeaponControllerComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AISeatShieldControllerComponentParams": {
+                "__polymorphicType": "AISeatShieldControllerComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "RangeEventDispatcherComponentParams": {
+                "__polymorphicType": "RangeEventDispatcherComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AISeatDashboardControllerComponentParams": {
+                "__polymorphicType": "AISeatDashboardControllerComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AISeatQuantumDriveControllerComponentParams": {
+                "__polymorphicType": "AISeatQuantumDriveControllerComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SubsumptionMissionLinkComponentParams": {
+                "__polymorphicType": "SubsumptionMissionLinkComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AudioListenerParams": {
+                "__polymorphicType": "AudioListenerParams",
+                "__type": "DataForgeComponentParams",
+                "bus": "ListenerBus",
+                "enabled": false,
+                "inputRadius": 5.0,
+                "outputRadius": 0.5,
+                "primaryListener": false
+            }
+        },
+        {
+            "SubsumptionDataComponentParams": {
+                "__polymorphicType": "SubsumptionDataComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SubsumptionAssignmentComponentParams": {
+                "__polymorphicType": "SubsumptionAssignmentComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SEntityComponentIKControllerParams": {
+                "__polymorphicType": "SEntityComponentIKControllerParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SSCActorSmoothLocomotionComponentParams": {
+                "__polymorphicType": "SSCActorSmoothLocomotionComponentParams",
+                "__type": "DataForgeComponentParams",
+                "useSmoothLocomotion": true
+            }
+        },
+        {
+            "SAISkillsComponentParams": {
+                "__polymorphicType": "SAISkillsComponentParams",
+                "__type": "DataForgeComponentParams",
+                "profile": "b42c7300-2787-4e4d-97de-521bd78d4f6c",
+                "skills": "067224d6-3d6d-40b1-85a9-43b5479b5f9b"
+            }
+        },
+        {
+            "SCoverSystemComponentParams": {
+                "__polymorphicType": "SCoverSystemComponentParams",
+                "__type": "DataForgeComponentParams",
+                "agentRadius": 0.5,
+                "distanceToCover": 0.5,
+                "effectiveCoverHeight": 1.100000023841858,
+                "effectiveHighCoverHeight": 2.0,
+                "inCoverRadius": 0.10000000149011612,
+                "postureData": "1ade7aa5-be4c-40a7-b011-4009ab6f33a2"
+            }
+        },
+        {
+            "SVisionComponentParams": {
+                "FOVHorizontal": 210.0,
+                "FOVVertical": 150.0,
+                "PrimaryFOVHorizontal": 90.0,
+                "PrimaryFOVVertical": 90.0,
+                "__polymorphicType": "SVisionComponentParams",
+                "__type": "DataForgeComponentParams",
+                "sightRange": 50.0
+            }
+        },
+        {
+            "SRadarSenseComponentParams": {
+                "__polymorphicType": "SRadarSenseComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SHearingComponentParams": {
+                "__polymorphicType": "SHearingComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "AttentionTargetComponentParams": {
+                "__polymorphicType": "AttentionTargetComponentParams",
+                "__type": "DataForgeComponentParams",
+                "attackerScore": 1.0
+            }
+        },
+        {
+            "SEntityPerceptionComponentParams": {
+                "__polymorphicType": "SEntityPerceptionComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        },
+        {
+            "SCActorDNAComponentParams": {
+                "DNA": "0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF0009FFFF000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+                "__polymorphicType": "SCActorDNAComponentParams",
+                "__type": "DataForgeComponentParams"
+            }
+        }
+    ],
+    "Icon": "",
+    "Invisible": false,
+    "StaticEntityClassData": [],
+    "__id": "bf52df99-a25e-4468-bb0f-40c935afed9c",
+    "__path": "libs/foundry/records/actor/actors/aiship_crewprofiles/human/omc/pilot/aiship_crewprofiles-human-omc-pilot-pilot_generic_01.xml",
+    "__type": "EntityClassDefinition",
+    "lifetimePolicy": "00000000-0000-0000-0000-000000000000",
+    "tags": []
+}
