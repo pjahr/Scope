@@ -154,7 +154,6 @@ namespace Scope.FileViewer.DataForge.Models
 
     private void ReadValues(BinaryReader r, uint textLength)
     {
-      //var values = new List<string>();
       var maxPosition = r.BaseStream.Position + textLength;
       var startPosition = r.BaseStream.Position;
       ValueMap = new Dictionary<uint, string>();
@@ -162,10 +161,8 @@ namespace Scope.FileViewer.DataForge.Models
       {
         var offset = r.BaseStream.Position - startPosition;
         var value = r.ReadNullTerminatedString();
-        //values.Add(value);
         ValueMap[(uint)offset] = value;
       }
-      //ValueTable = values.ToArray();
     }
 
     private void MapData(BinaryReader r)

@@ -8,22 +8,20 @@ namespace Scope.FileViewer.DataForge.Models
   public class File : IFile
   {
     private readonly byte[] _bytes;
-    private readonly Struct _dataForgeItem;
 
     public File(string name, string path, Struct dataForgeItem)
     {
-      if (name.Contains("AIShip_CrewProfiles_Human_OMC_Gunner_Gunner_Generic_01"))
+      if (name.Contains("AIShip_CrewProfiles-Human-OMC-Gunner-Gunner_Generic_01"))
       {
 
       }
 
       Name = $"{name}.json";
       Path = path;
-      _dataForgeItem = dataForgeItem;
 
       var b = new StringBuilder();
       int i = 0;
-      var json = Serialize(dataForgeItem, i, b);
+      var json = Serialize(name, dataForgeItem, i, b);
       _bytes = Encoding.UTF8.GetBytes(json);
 
       BytesUncompressed = _bytes.Length;
@@ -41,11 +39,13 @@ namespace Scope.FileViewer.DataForge.Models
       return new MemoryStream(_bytes);
     }
 
-    private static string Serialize(Struct s, int i, StringBuilder b)
+    private static string Serialize(string name, Struct s, int i, StringBuilder b)
     {
+      b.Append($"{Indent(i)}\"{name}\":\r\n");
+
       b.Append($"{Indent(i)}{{\r\n");
 
-      b.Append($"{Indent(i + 1)}\"name\": \"{ s.Name}\"\r\n");
+      //b.Append($"{Indent(i + 1)}\"_name\": \"{ s.Name}\"\r\n");
 
       foreach (var property in s.Properties)
       {
@@ -67,15 +67,11 @@ namespace Scope.FileViewer.DataForge.Models
       switch (p.Type)
       {
         case DataType.Class:
-          SerializeComplexProperty(p, i, b);
-          break;
-        case DataType.WeakPointer:         
         case DataType.StrongPointer:
-        case DataType.Reference:
-          b.Append("\r\n# REFERENCE ################\r\n");
-          SerializeElementaryProperty(p, i, b);
-          b.Append("\r\n############################\r\n");
+          SerializeComplexProperty(p, i + 1, b);
           break;
+        case DataType.Reference:
+        case DataType.WeakPointer:
         case DataType.Enum:
         case DataType.Guid:
         case DataType.Locale:
@@ -93,10 +89,11 @@ namespace Scope.FileViewer.DataForge.Models
           SerializeElementaryProperty(p, i + 1, b);
           break;
         case DataType.Boolean:
-          b.Append($"{Indent(i)}\"{p.Name}\": {p.Value}\r\n");
+          var value = ((byte)p.Value) == 0 ? "False" : "True";
+          b.Append($"{Indent(i + 1)}\"{p.Name}\": {value}\r\n");
           break;
         default:
-          b.Append($"{Indent(i)}{p.Name}: \"Unknown DataType\"\r\n");
+          b.Append($"{Indent(i + 1)}{p.Name}: \"Unknown DataType\"\r\n");
           break;
       }
     }
@@ -105,26 +102,51 @@ namespace Scope.FileViewer.DataForge.Models
     {
       if (p.IsList)
       {
+        var list = (List<Property>)p.Value;
+
+        if (list.Count == 0)
+        {
+          b.Append($"[ ]\r\n");
+          return;
+        }
+
         b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
         b.Append($"{Indent(i)}[\r\n");
 
-        foreach (var item in (List<Property>)p.Value)
+        foreach (var item in list)
         {
-          b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-          b.Append($"{Indent(i)}{{");
-          Serialize((Struct)item.Value, i + 2, b);
+          if (item.Value as string != null)
+          {
+            SerializeElementaryProperty(new Property() { Name = p.Name, Type = DataType.String, Value = "NULL" }, i, b);
+          }
+          else
+          {
+            Serialize(item.Name, (Struct)item.Value, i + 2, b);
+          }
+
           b.Append($"{Indent(i)}}}");
         }
 
         b.Append($"{Indent(i)}]\r\n");
+        return;
+      }
+
+      // property is a single value
+
+      b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
+      b.Append($"{Indent(i)}{{");
+
+      if (p.Value as string == null)
+      {
+        Serialize(p.Name, (Struct)p.Value, i + 1, b);
       }
       else
       {
-        b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-        b.Append($"{Indent(i)}{{");
-        Serialize((Struct)p.Value, i + 1, b);
-        b.Append($"{Indent(i)}}}");
+        SerializeElementaryProperty(new Property() { Name = p.Name, Type = DataType.String, Value = "NULL" }, i, b);
       }
+
+      b.Append($"{Indent(i)}}}");
+
     }
 
     private static void SerializeElementaryProperty(Property p, int i, StringBuilder b)
