@@ -11,8 +11,6 @@ namespace Scope.FileViewer.DataForge
     /// <summary>
     /// Read a NULL-Terminated string from the stream
     /// </summary>
-    /// <param name="binaryReader"></param>
-    /// <returns></returns>
     public static String ReadNullTerminatedString(this BinaryReader binaryReader)
     {
       Int32 stringLength = 0;
@@ -73,7 +71,7 @@ namespace Scope.FileViewer.DataForge
       }
     }
 
-    public static IEnumerable<T> Times<T>(this int n, Func<int,T> generate)
+    public static IEnumerable<T> Times<T>(this int n, Func<int, T> generate)
     {
       for (int i = 0; i < n; i++)
       {

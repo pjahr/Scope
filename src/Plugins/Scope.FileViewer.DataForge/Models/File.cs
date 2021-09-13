@@ -89,8 +89,8 @@ namespace Scope.FileViewer.DataForge.Models
           SerializeElementaryProperty(p, i + 1, b);
           break;
         case DataType.Boolean:
-          var value = ((byte)p.Value) == 0 ? "False" : "True";
-          b.Append($"{Indent(i + 1)}\"{p.Name}\": {value}\r\n");
+          //var value = ((byte)p.Value) == 0 ? "False" : "True";
+          //b.Append($"{Indent(i + 1)}\"{p.Name}\": {value}\r\n");
           break;
         default:
           b.Append($"{Indent(i + 1)}{p.Name}: \"Unknown DataType\"\r\n");
