@@ -18,11 +18,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="WEMSharp">
-      <HintPath>..\..\packages\WEMSharp.1.0.0\WEMSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\Scope.PluginApi\Scope.Interfaces.csproj" />
     <ProjectReference Include="..\..\Scope.Utils\Scope.Utils.csproj" />
   </ItemGroup>
@@ -44,5 +39,10 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WEMSharp">
+      <HintPath>lib\WEMSharp\WEMSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

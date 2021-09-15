@@ -58,6 +58,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Scope.ico</ApplicationIcon>
+    <StartupObject>Scope.App</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">

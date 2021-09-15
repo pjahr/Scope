@@ -29,7 +29,7 @@ namespace Scope
 
 
       // register built-in app object graph
-      container.Register(Classes.FromThisAssembly()
+      container.Register(Classes.FromAssemblyContaining<Composition>()
                                 .IncludeNonPublicTypes()
                                 .Where(t => t.GetCustomAttributes(false)
                                              .Any(a => a is ExportAttribute))

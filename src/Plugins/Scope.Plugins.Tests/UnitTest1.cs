@@ -14,7 +14,7 @@ namespace Scope.Plugins.Tests
     private IMessageQueue _messageQueue;
     private IProgress<ProgressReport> _progress;
 
-    [Fact]
+    [Fact(Skip ="Run on demand")]
     public void It_deserializes_the_dcb_contents()
     {
       _messageQueue = Mock.Of<IMessageQueue>();
