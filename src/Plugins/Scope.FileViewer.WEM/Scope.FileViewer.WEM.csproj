@@ -3,9 +3,11 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutputPath>..\..\..\build\x64\Debug\Plugins\</OutputPath>
@@ -16,12 +18,6 @@
     <OutputPath>..\..\..\build\x64\Release\Plugins\</OutputPath>
     <LangVersion>8.0</LangVersion>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Scope.PluginApi\Scope.Interfaces.csproj" />
@@ -40,11 +36,10 @@
   <ItemGroup>
     <PackageReference Include="NAudio.Vorbis" Version="1.2.0" />
     <PackageReference Include="Nito.Mvvm.Async" Version="1.0.0-pre-03" />
-    <PackageReference Include="Nito.Mvvm.Core" Version="1.3.0" />
-    <PackageReference Include="Microsoft.DotNet.UpgradeAssistant.Extensions.Default.Analyzers" Version="0.3.242703">
-      <PrivateAssets>all</PrivateAssets>
+    <PackageReference Include="Nito.Mvvm.Core" Version="1.3.0" />    
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" >
+      <IncludeAssets>compile</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="WEMSharp">

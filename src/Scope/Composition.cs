@@ -21,33 +21,32 @@ namespace Scope
 
       // enable injection of multiple services with the same interface
       container.Kernel.Resolver.AddSubResolver(new CollectionResolver(container.Kernel));
-      
-      // special register: 'real' file sytem
-      container.Register(Component.For(typeof(IFileSystem))
-                                  .ImplementedBy(typeof(FileSystem))
-                                  .LifeStyle.Singleton);
 
+      // special register: 'real' file sytem
+      container.Register((ComponentRegistration<object>)Component.For(typeof(IFileSystem))
+                                                                 .ImplementedBy(typeof(FileSystem))
+                                                                 .LifeStyle.Singleton);
 
       // register built-in app object graph
-      container.Register(Classes.FromAssemblyContaining<Composition>()
-                                .IncludeNonPublicTypes()
-                                .Where(t => t.GetCustomAttributes(false)
-                                             .Any(a => a is ExportAttribute))
-                                .WithServiceSelf()
-                                .WithServiceAllInterfaces()
-                                .LifestyleSingleton());
-
+      container.Register((BasedOnDescriptor)Classes.FromAssemblyContaining<Composition>()
+                                                   .IncludeNonPublicTypes()
+                                                   .Where(t => t.GetCustomAttributes(false)
+                                                                .Any(a => a is ExportAttribute))
+                                                   .WithServiceSelf()
+                                                   .WithServiceAllInterfaces()
+                                                   .LifestyleSingleton());
       // register plugins
-      container.Register(Classes.FromAssemblyInDirectory(new AssemblyFilter("Plugins"))
-                                .IncludeNonPublicTypes()
-                                .Pick()
-                                .If(t => t.GetCustomAttributes(false)
-                                          .Any(a => a is ExportAttribute))
-                                .WithServiceAllInterfaces()
-                                .LifestyleSingleton()
-                                );
+      var registrations =
+        Classes.FromAssemblyInDirectory(new AssemblyFilter(@"Plugins"))
+                                 .IncludeNonPublicTypes()
+                                 .Pick()
+                                 .If(t => t.GetCustomAttributes(false)
+                                           .Any(a => a is ExportAttribute))
+                                 .WithServiceAllInterfaces()
+                                 .LifestyleSingleton();
+      container.Register(registrations);
 
-      _container = container;      
+      _container = container;
 
       PluginResources = container.ResolveAll<IResourceDictionary>();
       MainWindow = _container.Resolve<AppWindow>();
