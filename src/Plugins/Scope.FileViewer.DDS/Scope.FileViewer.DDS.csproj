@@ -27,6 +27,7 @@
     <ProjectReference Include="..\..\Scope.Utils\Scope.Utils.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
     <PackageReference Include="Pfim" Version="0.9.1" />
   </ItemGroup>
 </Project>
