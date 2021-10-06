@@ -73,7 +73,7 @@
     <Folder Include="Interfaces\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Lamar" Version="6.0.0" />
+    <PackageReference Include="Castle.Windsor" Version="5.1.1" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.37" />
     <PackageReference Include="Nito.Mvvm.Async" Version="1.0.0-pre-04" />
