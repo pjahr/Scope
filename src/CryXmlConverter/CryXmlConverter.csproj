@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0-windows</TargetFramework>
+    <Platforms>x64</Platforms>
     <OutputType>Exe</OutputType>
     <AssemblyName>cryxml2xml</AssemblyName>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
