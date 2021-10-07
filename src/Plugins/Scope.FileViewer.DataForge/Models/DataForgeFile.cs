@@ -9,7 +9,7 @@ namespace Scope.FileViewer.DataForge.Models
 {
   public class DataForgeFile
   {
-    private IMessageQueue _messages;
+    private readonly IMessageQueue _messages;
 
     private bool IsLegacy { get; }
     private int FileVersion { get; }
@@ -275,7 +275,9 @@ namespace Scope.FileViewer.DataForge.Models
       Files = new Dictionary<string, File>();
       Directories = new Dictionary<string, Directory>();
 
-      foreach (var record in RecordDefinitionTable)
+      Console.WriteLine($"Generating {RecordDefinitionTable.Count()} files...");
+
+      foreach (var record in RecordDefinitionTable.Take(100))
       {
         var recordPath = ValueMap[record.FileNameOffset];
         var recordName = ValueMap[record.NameOffset];

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reflection;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
@@ -36,7 +37,10 @@ namespace Scope
                                                    .WithServiceAllInterfaces()
                                                    .LifestyleSingleton());
       // register plugins
+      Assembly.LoadFrom("Plugins\\Scope.FileViewer.Text.dll");
+      Assembly.LoadFrom("Plugins\\Scope.FileViewer.DataForge.dll");
       var registrations =
+        
         Classes.FromAssemblyInDirectory(new AssemblyFilter(@"Plugins"))
                                  .IncludeNonPublicTypes()
                                  .Pick()

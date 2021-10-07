@@ -1,6 +1,7 @@
 ﻿using Scope.Interfaces;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Scope.FileViewer.DataForge.Models
@@ -11,9 +12,9 @@ namespace Scope.FileViewer.DataForge.Models
 
     public File(string name, string path, Struct dataForgeItem)
     {
-      if (name.Contains("AIShip_CrewProfiles-Human-OMC-Gunner-Gunner_Generic_01"))
+      //if (name.Contains("AIShip_CrewProfiles-Human-OMC-Gunner-Gunner_Generic_01"))
+      if (name.Contains("EntityClassDefinition.Actor"))        
       {
-
       }
 
       Name = $"{name}.json";
@@ -21,9 +22,10 @@ namespace Scope.FileViewer.DataForge.Models
 
       var b = new StringBuilder();
       int i = 0;
-      var json = Serialize(name, dataForgeItem, i, b);
+      Serialize(name, dataForgeItem, i, b);
+      var json = b.ToString();
       _bytes = Encoding.UTF8.GetBytes(json);
-
+      
       BytesUncompressed = _bytes.Length;
       BytesCompressed = _bytes.Length;
     }
@@ -39,27 +41,28 @@ namespace Scope.FileViewer.DataForge.Models
       return new MemoryStream(_bytes);
     }
 
-    private static string Serialize(string name, Struct s, int i, StringBuilder b)
+    private static void Serialize(string name, Struct s, int i, StringBuilder b)
     {
-      b.Append($"{Indent(i)}\"{name}\":\r\n");
+      b.Append($"{Indent(i)}\"{name}\": {{\r\n");
 
-      b.Append($"{Indent(i)}{{\r\n");
+      // single properties first
+      foreach (var property in s.Properties.Where(p => !p.IsList))
+      {
+        Serialize(property, i + 1, b);
+      }
 
-      //b.Append($"{Indent(i + 1)}\"_name\": \"{ s.Name}\"\r\n");
-
-      foreach (var property in s.Properties)
+      // then all list properties
+      foreach (var property in s.Properties.Where(p=>p.IsList))
       {
         Serialize(property, i + 1, b);
       }
 
       b.Append($"{Indent(i)}}}\r\n");
-
-      return b.ToString();
     }
 
     private static string Indent(int i)
     {
-      return new string(' ', i * 2);
+      return new string(' ', i);
     }
 
     private static void Serialize(Property p, int i, StringBuilder b)
@@ -86,11 +89,8 @@ namespace Scope.FileViewer.DataForge.Models
         case DataType.Int32:
         case DataType.Int16:
         case DataType.SByte:
-          SerializeElementaryProperty(p, i + 1, b);
-          break;
         case DataType.Boolean:
-          //var value = ((byte)p.Value) == 0 ? "False" : "True";
-          //b.Append($"{Indent(i + 1)}\"{p.Name}\": {value}\r\n");
+          SerializeElementaryProperty(p, i + 1, b);
           break;
         default:
           b.Append($"{Indent(i + 1)}{p.Name}: \"Unknown DataType\"\r\n");
@@ -106,12 +106,11 @@ namespace Scope.FileViewer.DataForge.Models
 
         if (list.Count == 0)
         {
-          b.Append($"[ ]\r\n");
+          b.Append($"{Indent(i)}\"{p.Name}\": []\r\n");
           return;
         }
 
-        b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-        b.Append($"{Indent(i)}[\r\n");
+        b.Append($"{Indent(i)}\"{p.Name}\": [\r\n");
 
         foreach (var item in list)
         {
@@ -124,7 +123,7 @@ namespace Scope.FileViewer.DataForge.Models
             Serialize(item.Name, (Struct)item.Value, i + 2, b);
           }
 
-          b.Append($"{Indent(i)}}}");
+          b.Append($"{Indent(i)}}}\r\n");
         }
 
         b.Append($"{Indent(i)}]\r\n");
@@ -133,8 +132,7 @@ namespace Scope.FileViewer.DataForge.Models
 
       // property is a single value
 
-      b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-      b.Append($"{Indent(i)}{{");
+      b.Append($"{Indent(i)}\"{p.Name}\": {{\r\n");
 
       if (p.Value as string == null)
       {
@@ -146,17 +144,22 @@ namespace Scope.FileViewer.DataForge.Models
       }
 
       b.Append($"{Indent(i)}}}");
-
     }
 
     private static void SerializeElementaryProperty(Property p, int i, StringBuilder b)
     {
       if (p.IsList)
       {
-        b.Append($"{Indent(i)}\"{p.Name}\": \r\n");
-        b.Append($"{Indent(i)}[\r\n");
+        var list = (List<Property>)p.Value;
+        if (list.Count == 0)
+        {
+          b.Append($"{Indent(i)}\"{p.Name}\": []\r\n");
+          return;
+        }
 
-        foreach (var item in (List<Property>)p.Value)
+        b.Append($"{Indent(i)}\"{p.Name}\": [\r\n");
+
+        foreach (var item in list)
         {
           SerializeElementaryProperty(item, i, b);
         }
