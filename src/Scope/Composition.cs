@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Reflection;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
@@ -28,7 +30,7 @@ namespace Scope
                                   .LifeStyle.Singleton);
 
       // register built-in app object graph
-      container.Register(Classes.FromThisAssembly()
+      container.Register(Classes.FromAssemblyContaining<Composition>()
                                 .IncludeNonPublicTypes()
                                 .Where(t => t.GetCustomAttributes(false)
                                              .Any(a => a is ExportAttribute))
@@ -37,12 +39,18 @@ namespace Scope
                                 .LifestyleSingleton());
 
       // register plugins
-      container.Register(Classes.FromAssemblyInDirectory(new AssemblyFilter("Plugins"))
-                                .IncludeNonPublicTypes()
-                                .Pick()
-                                .If(t => t.GetCustomAttributes(false)
+
+      var plugins=System.IO.Directory.GetFiles(AssemblyDirectory, "Scope.FileViewer.*.dll");
+
+      foreach (var plugin in plugins)
+      {
+        container.Register(Classes.FromAssembly(Assembly.LoadFrom(plugin))
+                                  .IncludeNonPublicTypes()
+                                  .Pick()
+                                  .If(t => t.GetCustomAttributes(false)
                                           .Any(a => a is ExportAttribute))
-                                .WithServiceAllInterfaces());
+                                .WithServiceAllInterfaces());          
+      }
 
       _container = container;
 
@@ -56,6 +64,20 @@ namespace Scope
     public void Dispose()
     {
       _container.Dispose();
+    }
+
+    static public string AssemblyDirectory
+    {
+      get
+      {
+        var codeBase = Assembly.GetExecutingAssembly().Location;
+
+        var uri = new UriBuilder(codeBase);
+
+        var path = Uri.UnescapeDataString(uri.Path);
+
+        return Path.GetDirectoryName(path);
+      }
     }
   }
 }

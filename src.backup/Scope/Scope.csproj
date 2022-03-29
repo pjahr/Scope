@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props" Condition="Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9ADBFBD6-E9A0-48E1-84EF-CA679368517F}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Scope</RootNamespace>
+    <AssemblyName>Scope</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <Deterministic>False</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\build\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>..\..\build\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ApplicationIcon>Scope_debug.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ApplicationIcon>Scope.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Scope.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.3.1\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Windsor.5.0.1\lib\net45\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
+    </Reference>
+    <Reference Include="CustomMarshalers" />
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.4.0, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Core.1.1.4\lib\net472\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.4.0, Culture=neutral, PublicKeyToken=8985beaab7ea3f04, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft-WindowsAPICodePack-Shell.1.1.4\lib\net472\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.Disposables, Version=1.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.Disposables.1.2.3\lib\netstandard2.0\Nito.Disposables.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.Mvvm.Async, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.Mvvm.Async.1.0.0-pre-03\lib\netstandard2.0\Nito.Mvvm.Async.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.Mvvm.Core, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Nito.Mvvm.Core.1.2.2\lib\netstandard2.0\Nito.Mvvm.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.4.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Abstractions, Version=10.0.0.0, Culture=neutral, PublicKeyToken=96bf224d23c43e59, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Abstractions.10.0.9\lib\net461\System.IO.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Json, Version=2.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Json.4.7.0\lib\netstandard2.0\System.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Composition.cs" />
+    <Compile Include="DispatcherHelper.cs" />
+    <Compile Include="Models\CurrentItem.cs" />
+    <Compile Include="Models\CurrentP4k.cs" />
+    <Compile Include="Models\Dialogs.cs" />
+    <Compile Include="Models\ExtractP4kContent.cs" />
+    <Compile Include="Models\GenerateFileSystem.cs" />
+    <Compile Include="Models\Interfaces\DirectoryMatch.cs" />
+    <Compile Include="Models\Interfaces\ICurrentItem.cs" />
+    <Compile Include="Models\Interfaces\ICurrentP4k.cs" />
+    <Compile Include="Models\Interfaces\IDialog.cs" />
+    <Compile Include="Models\Interfaces\IDialogs.cs" />
+    <Compile Include="Models\Interfaces\IExtractP4kContent.cs" />
+    <Compile Include="Models\Interfaces\IFileSystem.cs" />
+    <Compile Include="Models\Interfaces\IKnownFileExtensions.cs" />
+    <Compile Include="Models\Interfaces\IMessage.cs" />
+    <Compile Include="Models\Interfaces\IMessages.cs" />
+    <Compile Include="Models\Interfaces\IOutputDirectory.cs" />
+    <Compile Include="Models\Interfaces\IProgress.cs" />
+    <Compile Include="Models\Interfaces\IPinnedItems.cs" />
+    <Compile Include="Models\Interfaces\ISearch.cs" />
+    <Compile Include="Models\Interfaces\ISearchOptions.cs" />
+    <Compile Include="Models\Interfaces\FileMatch.cs" />
+    <Compile Include="Models\Interfaces\MatchType.cs" />
+    <Compile Include="Models\Interfaces\SearchMode.cs" />
+    <Compile Include="Models\Interfaces\SearchProgress.cs" />
+    <Compile Include="Models\KnownFileExtensions.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\Messages.cs" />
+    <Compile Include="Models\OpenP4kFileResult.cs" />
+    <Compile Include="Models\OutputDirectory.cs" />
+    <Compile Include="Models\P4kDirectory.cs" />
+    <Compile Include="Models\P4kFile.cs" />
+    <Compile Include="Models\P4kFileStatistics.cs" />
+    <Compile Include="Models\P4kFileSystem.cs" />
+    <Compile Include="Models\Progress.cs" />
+    <Compile Include="Models\PinnedItems.cs" />
+    <Compile Include="Models\Search.cs" />
+    <Compile Include="Models\SearchOptions.cs" />
+    <Compile Include="Models\UiDispatch.cs" />
+    <Compile Include="ViewModels\AboutWindowViewModel.cs" />
+    <Compile Include="ViewModels\CloseCurrentP4kFileMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\Commands\InitiateSearchCommand.cs" />
+    <Compile Include="ViewModels\Commands\OpenP4kFileCommand.cs" />
+    <Compile Include="ViewModels\CurrentP4kFileSystemViewModel.cs" />
+    <Compile Include="ViewModels\DirectoryTreeNodeViewModel.cs" />
+    <Compile Include="ViewModels\DisplayAboutDialogMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\ExitApplicationMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\FileItemViewModel.cs" />
+    <Compile Include="ViewModels\FileViewerCollectionViewModel.cs" />
+    <Compile Include="ViewModels\FileTreeNodeViewModel.cs" />
+    <Compile Include="ViewModels\IncludedExtensionViewModel.cs" />
+    <Compile Include="ViewModels\MenuItemBase.cs" />
+    <Compile Include="ViewModels\MainMenuViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\NoFileViewerViewModel.cs" />
+    <Compile Include="ViewModels\NoFileViewerViewModelFactory.cs" />
+    <Compile Include="ViewModels\OpenDiscordMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\OpenRedditMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\OpenP4kFileMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\P4kFileSystemViewModel.cs" />
+    <Compile Include="ViewModels\Commands\RelayCommand.cs" />
+    <Compile Include="ViewModels\RootMenuItemViewModel.cs" />
+    <Compile Include="ViewModels\PinnedDirectoryViewModel.cs" />
+    <Compile Include="ViewModels\PinnedFileViewModel.cs" />
+    <Compile Include="ViewModels\PinnedItemsViewModel.cs" />
+    <Compile Include="ViewModels\SearchFoundNoMatchViewModel.cs" />
+    <Compile Include="ViewModels\SearchOptionsViewModel.cs" />
+    <Compile Include="ViewModels\SearchViewModel.cs" />
+    <Compile Include="ViewModels\Separator.cs" />
+    <Compile Include="ViewModels\StatusBarViewModel.cs" />
+    <Compile Include="ViewModels\TreeNodeViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelExtensions.cs" />
+    <Compile Include="ViewModels\ViewModelUtils.cs" />
+    <Compile Include="Views\AboutWindowView.xaml.cs">
+      <DependentUpon>AboutWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AppWindow.xaml.cs">
+      <DependentUpon>AppWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Behaviors\AcquireKeyboardFocusOnClick.cs" />
+    <Compile Include="Views\Behaviors\BringVirtualTreeViewItemIntoViewBehavior.cs" />
+    <Compile Include="Views\Behaviors\TextBlockHighlightWordsInSquareBrackets.cs" />
+    <Compile Include="Views\Behaviors\TextBoxCallCommandOnKey.cs" />
+    <Compile Include="Views\Behaviors\TextBoxCommitOnChange.cs" />
+    <Compile Include="Views\Behaviors\TextBoxCommitOnEnter.cs" />
+    <Compile Include="Views\Behaviors\TreeViewItemExpanded.cs" />
+    <Compile Include="Views\Behaviors\TreeViewSelectionChangedBehavior.cs" />
+    <Compile Include="Views\Behaviors\CommandOnClick.cs" />
+    <Compile Include="Views\Behaviors\CommandOnDoubleClick.cs" />
+    <Compile Include="Views\Behaviors\CommandOnKey.cs" />
+    <Compile Include="Views\Behaviors\CommandOnReceiveKeyboardFocus.cs" />
+    <Compile Include="Views\BindingProxy.cs" />
+    <Compile Include="Views\Converters\EnumMatchToBooleanConverter.cs" />
+    <Compile Include="Views\CurrentP4kFsView.xaml.cs">
+      <DependentUpon>CurrentP4kFsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DirectoryItemView.xaml.cs">
+      <DependentUpon>DirectoryItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileItemView.xaml.cs">
+      <DependentUpon>FileItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileSystemTreeView.xaml.cs">
+      <DependentUpon>FileSystemTreeView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FileViewerCollectionView.xaml.cs">
+      <DependentUpon>FileViewerCollectionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\NoFileViewerView.xaml.cs">
+      <DependentUpon>NoFileViewerView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PinnedItemsView.xaml.cs">
+      <DependentUpon>PinnedItemsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchOptionsView.xaml.cs">
+      <DependentUpon>SearchOptionsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchView.xaml.cs">
+      <DependentUpon>SearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\StatusBarView.xaml.cs">
+      <DependentUpon>StatusBarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\Utils.cs" />
+    <Page Include="Resources\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Icons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AboutWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AppWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CurrentP4kFsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DirectoryItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileSystemTreeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\FileViewerCollectionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainMenuView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\NoFileViewerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PinnedItemsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchOptionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StatusBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Scope.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Scope.PluginApi\Scope.Interfaces.csproj">
+      <Project>{2754b0bb-5940-4fd7-bf44-3cd427e56174}</Project>
+      <Name>Scope.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scope.Utils\Scope.Utils.csproj">
+      <Project>{e60dd48e-1e9a-4e9d-9b5f-d5af75ab4cbb}</Project>
+      <Name>Scope.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Scope.Zip\Scope.Zip.csproj">
+      <Project>{abb14af2-3742-49ae-a85b-c631450e8c5b}</Project>
+      <Name>Scope.Zip</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.6.0.6\build\Fody.targets" Condition="Exists('..\packages\Fody.6.0.6\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.6.0.6\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.6.0.6\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
+  </Target>
+</Project>
