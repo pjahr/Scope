@@ -15,16 +15,16 @@ namespace Scope.FileViewer.DataForge
     /// <returns></returns>
     public static String ReadNullTerminatedString(this BinaryReader binaryReader)
     {
-      Int32 stringLength = 0;
+      Int32 stringLength = 0;      
 
-      while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length && binaryReader.ReadChar() != 0)
+      while (binaryReader.BaseStream.Position < binaryReader.BaseStream.Length && Convert.ToChar(binaryReader.ReadByte()) != 0)
         stringLength++;
 
       Int64 nul = binaryReader.BaseStream.Position;
 
       binaryReader.BaseStream.Seek(0 - stringLength - 1, SeekOrigin.Current);
 
-      Char[] chars = binaryReader.ReadChars(stringLength + 1);
+      Char[] chars = Enumerable.Range(0, stringLength + 1).Select(_=>Convert.ToChar(binaryReader.ReadByte())).ToArray();
 
       binaryReader.BaseStream.Seek(nul, SeekOrigin.Begin);
 
