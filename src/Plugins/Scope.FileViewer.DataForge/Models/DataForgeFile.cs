@@ -63,7 +63,7 @@ namespace Scope.FileViewer.DataForge.Models
 
       FileVersion = r.ReadInt32();
 
-      
+
       if (!IsLegacy) // seams to be obsolete
       {
         var atemp1 = r.ReadUInt16();
@@ -114,16 +114,10 @@ namespace Scope.FileViewer.DataForge.Models
 
 
       Profile(() => StructDefinitionTable = structDefinitionCount.ToArray(() => new StructDefinition(r, V)), "Reading structs");
-
-
       Profile(() => PropertyDefinitionTable = propertyDefinitionCount.ToArray(() => new PropertyDefinition(r, V)), "Reading properties");
-
       Profile(() => EnumDefinitionTable = enumDefinitionCount.ToArray(() => new EnumDefinition(r, V, i => EnumOptionTable[i].Value)), "Reading enums");
-
-      Profile(() => DataMappingTable = dataMappingCount.ToArray(() => new DataMapping(r, VS)), "Reading data mappings");
-
+      Profile(() => DataMappingTable = dataMappingCount.ToArray(() => new DataMapping(r, VS, FileVersion)), "Reading data mappings");
       Profile(() => RecordDefinitionTable = recordDefinitionCount.ToArray(() => new Record(r, V)), "Reading records");
-
       Profile(() => Int8Values = int8ValueCount.ToArray(r.ReadSByte), "Reading Int8");
       Profile(() => Int16Values = int16ValueCount.ToArray(r.ReadInt16), "Reading Int16");
       Profile(() => Int32Values = int32ValueCount.ToArray(r.ReadInt32), "Reading Int32");
@@ -135,14 +129,12 @@ namespace Scope.FileViewer.DataForge.Models
       Profile(() => BooleanValues = booleanValueCount.ToArray(r.ReadBoolean), "Reading Booleans");
       Profile(() => SingleValues = singleValueCount.ToArray(r.ReadSingle), "Reading Singles");
       Profile(() => DoubleValues = doubleValueCount.ToArray(r.ReadDouble), "Reading Doubles");
-
       Profile(() => GuidValues = guidValueCount.ToArray(r.ReadGuid), "Reading Guids");
       Profile(() => StringValues = stringValueCount.ToArray(() => new StringLookup(r, V)), "Reading Strings");
       Profile(() => LocaleValues = localeValueCount.ToArray(() => new StringLookup(r, V)), "Reading Locales");
       Profile(() => EnumValues = enumValueCount.ToArray(() => new StringLookup(r, V)), "Reading Enum values");
       Profile(() => StrongValues = strongValueCount.ToArray(() => new Pointer(r)), "Reading strong pointers");
       Profile(() => WeakValues = weakValueCount.ToArray(() => new Pointer(r)), "Reading weak pointers");
-
       Profile(() => ReferenceValues = referenceValueCount.ToArray(() => new Reference(r)), "Reading referenes");
       Profile(() => EnumOptionTable = enumOptionCount.ToArray(() => new StringLookup(r, V)), "Reading enum options");
 
@@ -277,7 +269,7 @@ namespace Scope.FileViewer.DataForge.Models
 
       Console.WriteLine($"Generating {RecordDefinitionTable.Count()} files...");
 
-      foreach (var record in RecordDefinitionTable.Take(100))
+      foreach (var record in RecordDefinitionTable)
       {
         var recordPath = ValueMap[record.FileNameOffset];
         var recordName = ValueMap[record.NameOffset];

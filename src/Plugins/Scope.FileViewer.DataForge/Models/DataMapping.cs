@@ -7,17 +7,25 @@ namespace Scope.FileViewer.DataForge.Models
   {
     private readonly Func<uint, string> _valueOf;
 
-    public DataMapping(BinaryReader r, Func<uint, string> valueOf)
+    public DataMapping(BinaryReader r, Func<uint, string> valueOf, int fileVersion)
     {
       _valueOf = valueOf;
 
-      StructCount = r.ReadUInt16();
-      StructIndex = r.ReadUInt16();
+      if (fileVersion >= 5)
+      {
+        StructCount = r.ReadUInt32();
+        StructIndex = r.ReadUInt32();
+      }
+      else
+      {
+        StructCount = r.ReadUInt16();
+        StructIndex = r.ReadUInt16();
+      }
+
     }
 
-    public ushort StructIndex { get; }
-    public ushort StructCount { get; }
-    public uint NameOffset { get; }
+    public uint StructIndex { get; }
+    public uint StructCount { get; }
 
     public string Name => _valueOf(StructIndex);
 
