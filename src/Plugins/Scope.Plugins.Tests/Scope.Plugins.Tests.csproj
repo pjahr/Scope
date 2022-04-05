@@ -7,7 +7,7 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutputPath>..\..\..\build\x64\Debug\Plugins</OutputPath>
   </PropertyGroup>
   <ItemGroup>
