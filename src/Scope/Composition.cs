@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
@@ -14,6 +15,8 @@ namespace Scope
 {
   internal class Composition : IDisposable
   {
+    private const string PluginDirectory = "Plugins";
+
     private readonly WindsorContainer _container;
 
     public Composition()
@@ -37,18 +40,33 @@ namespace Scope
                                                    .WithServiceAllInterfaces()
                                                    .LifestyleSingleton());
       // register plugins
-      Assembly.LoadFrom("Plugins\\Scope.FileViewer.Text.dll");
-      Assembly.LoadFrom("Plugins\\Scope.FileViewer.DataForge.dll");
-      var registrations =
-        
-        Classes.FromAssemblyInDirectory(new AssemblyFilter(@"Plugins"))
-                                 .IncludeNonPublicTypes()
-                                 .Pick()
-                                 .If(t => t.GetCustomAttributes(false)
-                                           .Any(a => a is ExportAttribute))
-                                 .WithServiceAllInterfaces()
-                                 .LifestyleSingleton();
-      container.Register(registrations);
+      //Assembly.LoadFrom("Plugins\\Scope.FileViewer.Text.dll");
+      //Assembly.LoadFrom("Plugins\\Scope.FileViewer.DataForge.dll");
+      //Assembly.LoadFrom("Plugins\\Scope.File.SOCPAK.dll");
+      //Assembly.LoadFrom("Plugins\\Scope.FileViewer.DataForge.dll");
+      //Assembly.LoadFrom("Plugins\\Scope.FileViewer.DataForge.dll");
+      //var registrations =
+
+      //  Classes.FromAssemblyInDirectory(new AssemblyFilter(@"Plugins"))
+      //                           .IncludeNonPublicTypes()
+      //                           .Pick()
+      //                           .If(t => t.GetCustomAttributes(false)
+      //                                     .Any(a => a is ExportAttribute))
+      //                           .WithServiceAllInterfaces()
+      //                           .LifestyleSingleton();
+      //container.Register(registrations);
+
+      var plugins = Directory.GetFiles(Path.Combine(AssemblyDirectory, PluginDirectory), "Scope.*.dll");
+
+      foreach (var plugin in plugins)
+      {
+        container.Register(Classes.FromAssembly(Assembly.LoadFrom(plugin))
+                                  .IncludeNonPublicTypes()
+                                  .Pick()
+                                  .If(t => t.GetCustomAttributes(false)
+                                          .Any(a => a is ExportAttribute))
+                                .WithServiceAllInterfaces());
+      }
 
       _container = container;
 
@@ -62,6 +80,20 @@ namespace Scope
     public void Dispose()
     {
       _container.Dispose();
+    }
+
+    static public string AssemblyDirectory
+    {
+      get
+      {
+        var codeBase = Assembly.GetExecutingAssembly().Location;
+
+        var uri = new UriBuilder(codeBase);
+
+        var path = Uri.UnescapeDataString(uri.Path);
+
+        return Path.GetDirectoryName(path);
+      }
     }
   }
 }
